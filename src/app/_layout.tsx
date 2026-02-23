@@ -5,6 +5,8 @@ import {
   Inter_700Bold,
 } from "@expo-google-fonts/inter";
 import { Loading } from "../components/Loading";
+import { Stack } from "expo-router";
+import { colors } from "../theme/colors";
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -17,5 +19,12 @@ export default function Layout() {
     return <Loading />;
   }
 
-  return null;
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: colors.white },
+      }}
+    />
+  );
 }
