@@ -28,7 +28,7 @@ export function HomeHeader() {
         <TextInput
           placeholder="Buscar mês"
           style={styles.textInput}
-          placeholderTextColor={colors.blue[800]}
+          placeholderTextColor={colors.blue[300]}
         />
 
         <View style={styles.yearSelect}>

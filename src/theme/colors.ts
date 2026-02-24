@@ -16,10 +16,10 @@ export const colors = {
     600: "#767680",
   },
   green: {
-    500: "#4AE124",
+    500: "#229206",
   },
   red: {
-    400: "#FF6767",
+    500: "#ee0f0f",
   },
   white: "#ffffff",
   black: "#000000",
