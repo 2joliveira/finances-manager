@@ -1,8 +1,9 @@
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { formatCurrency } from "@/utils/formatCyrrency";
 import { colors } from "@/theme";
 import { styles } from "./styles";
-import { formatCurrency } from "@/utils/formatCyrrency";
 
 interface TransactionCard {
   iconName: React.ComponentProps<typeof MaterialIcons>["name"];
@@ -20,7 +21,7 @@ export function TransactionCard({
   type,
 }: TransactionCard) {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={() => router.navigate('/transaction/id')}>
       <MaterialIcons
         name={iconName}
         size={20}
@@ -46,6 +47,6 @@ export function TransactionCard({
       >
         {formatCurrency(value)}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 }
