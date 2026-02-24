@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { colors } from "@/theme";
 import { styles } from "./styles";
-import { colors } from "../../theme/colors";
 
 export function MonthCard() {
   return (

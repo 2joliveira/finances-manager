@@ -1,6 +1,5 @@
+import { colors, fontFamily } from "@/theme";
 import { StyleSheet } from "react-native";
-import { colors } from "../../theme/colors";
-import { fontFamily } from "../../theme/fontFamily";
 
 export const styles = StyleSheet.create({
   container: {

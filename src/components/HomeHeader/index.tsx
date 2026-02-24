@@ -1,8 +1,8 @@
 import { Text, TextInput, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { colors } from "@/theme";
 import { styles } from "./styles";
-import { colors } from "../../theme/colors";
 
 export function HomeHeader() {
   return (

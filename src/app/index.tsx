@@ -1,8 +1,8 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { colors } from "@/theme";
 import { HomeHeader } from "../components/HomeHeader";
 import { MonthCard } from "../components/Monthcard";
-import { colors } from "../theme/colors";
 
 export default function Index() {
   return (
