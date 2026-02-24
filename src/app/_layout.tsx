@@ -6,7 +6,7 @@ import {
 } from "@expo-google-fonts/inter";
 import { Loading } from "../components/Loading";
 import { Stack } from "expo-router";
-import { colors } from "../theme/colors";
+import { colors } from "@/theme";
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -23,7 +23,7 @@ export default function Layout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: colors.white },
+        contentStyle: { backgroundColor: colors.gray[100] },
       }}
     />
   );

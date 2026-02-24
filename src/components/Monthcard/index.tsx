@@ -1,11 +1,15 @@
 import { Text, TouchableOpacity, View } from "react-native";
+import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { colors } from "@/theme";
 import { styles } from "./styles";
-import { colors } from "../../theme/colors";
 
 export function MonthCard() {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => router.navigate("/transactions/2023-01")}
+    >
       <View style={styles.cardHeader}>
         <Text style={styles.cardTitle}>Janeiro</Text>
 
