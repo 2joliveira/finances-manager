@@ -27,8 +27,8 @@ export function TransactionsHeader() {
 
       <View style={styles.detailsContainer}>
         <DetailsCard title="Receita" iconName="trending-up" value={5000} />
-        <DetailsCard title="Despesas" iconName="trending-down" value={5000} />
-        <DetailsCard title="Saldo" iconName="equal" value={5000} />
+        <DetailsCard title="Despesas" iconName="trending-down" value={3000} />
+        <DetailsCard title="Saldo" iconName="drag-handle" value={2000} />
       </View>
     </LinearGradient>
   );

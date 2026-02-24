@@ -5,14 +5,14 @@ import { formatCurrency } from "@/utils/formatCyrrency";
 
 interface DetailsCardProps {
   title: string;
-  iconName: string;
+  iconName: React.ComponentProps<typeof MaterialIcons>["name"];
   value: number;
 }
 
 export function DetailsCard({ title, iconName, value }: DetailsCardProps) {
   return (
     <View style={styles.container}>
-      <MaterialIcons name="trending-up" size={18} color={colors.blue[200]} />
+      <MaterialIcons name={iconName} size={18} color={colors.blue[200]} />
 
       <Text style={styles.title}>{title}</Text>
 
