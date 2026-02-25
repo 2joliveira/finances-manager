@@ -8,6 +8,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
+
+    position: "relative",
   },
   content: {
     paddingTop: 60,
@@ -19,7 +21,7 @@ export const styles = StyleSheet.create({
   icon: {
     padding: 8,
     backgroundColor: colors.blue[500],
-    borderRadius: 100,
+    borderRadius: 50,
   },
   title: {
     fontFamily: fontFamily.bold,
