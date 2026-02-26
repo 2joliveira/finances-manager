@@ -18,9 +18,14 @@ export interface MenuOption {
 
 const MENU_OPTIONS: MenuOption[] = [
   {
-    label: "Criar categoria",
+    label: "Criar Categoria",
     icon: "local-offer",
     type: "categoryForm",
+  },
+  {
+    label: "Criar Conta",
+    icon: "account-balance",
+    type: "accountForm",
   },
 ];
 
@@ -43,11 +48,12 @@ export function MenuDialog({ activeModal, setActiveModal }: MenuDialogProps) {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
+    width: "60%",
+    padding: 20,
     top: 60,
     right: 0,
-    backgroundColor: colors.gray[100],
-    padding: 20,
     borderRadius: 8,
-    width: "60%",
+    backgroundColor: colors.gray[100],
+    gap: 25,
   },
 });

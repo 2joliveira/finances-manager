@@ -6,8 +6,9 @@ import { colors } from "@/theme";
 import { styles } from "./styles";
 import { MenuDialog } from "./components/menuDialog";
 import { CategoryFormModal } from "./components/categoryFomModal";
+import { AccountFormModal } from "./components/accountFormModal";
 
-export type ActiveModal = "menu" | "categoryForm" | null;
+export type ActiveModal = "menu" | "categoryForm" | "accountForm" | null;
 
 export function HomeHeader() {
   const [activeModal, setActiveModal] = useState<ActiveModal>(null);
@@ -62,6 +63,11 @@ export function HomeHeader() {
 
       <CategoryFormModal
         activeModal={activeModal === "categoryForm"}
+        setActiveModal={setActiveModal}
+      />
+
+      <AccountFormModal
+        activeModal={activeModal === "accountForm"}
         setActiveModal={setActiveModal}
       />
     </LinearGradient>

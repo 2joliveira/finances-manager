@@ -15,7 +15,7 @@ interface CategoryFormProps {
   setActiveModal: (activeModal: ActiveModal) => void;
 }
 
-export function CategoryFormModal({
+export function AccountFormModal({
   activeModal,
   setActiveModal,
 }: CategoryFormProps) {
@@ -27,7 +27,7 @@ export function CategoryFormModal({
     >
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>Nova Categoria</Text>
+          <Text style={styles.title}>Nova Conta</Text>
 
           <MaterialIcons
             name="close"
@@ -39,18 +39,18 @@ export function CategoryFormModal({
         </View>
 
         <View>
-          <Text style={styles.label}>Nome da Categoria</Text>
+          <Text style={styles.label}>Forma de pagamento</Text>
 
           <TextInput
             style={styles.input}
-            placeholder="Ex: Alimentação"
+            placeholder="Ex: Cartão de crédito"
             placeholderTextColor={colors.gray[400]}
           />
         </View>
 
         <TouchableOpacity>
           <View style={styles.buton}>
-            <Text style={styles.buttonText}>Criar Categoria</Text>
+            <Text style={styles.buttonText}>Criar Forma de Pagamento</Text>
           </View>
         </TouchableOpacity>
       </View>
