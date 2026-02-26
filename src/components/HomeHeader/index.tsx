@@ -4,10 +4,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme";
 import { styles } from "./styles";
-import { HomeDialog } from "./components/HomeDialog";
+import { MenuDialog } from "./components/menuDialog";
+import { CategoryFormModal } from "./components/categoryFomModal";
+
+export type ActiveModal = "menu" | "categoryForm" | null;
 
 export function HomeHeader() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [activeModal, setActiveModal] = useState<ActiveModal>(null);
 
   return (
     <LinearGradient
@@ -28,7 +31,7 @@ export function HomeHeader() {
         </View>
 
         <TouchableOpacity
-          onPress={() => setIsVisible(true)}
+          onPress={() => setActiveModal("menu")}
           style={{ padding: 10, marginRight: -15 }}
         >
           <Ionicons
@@ -52,7 +55,15 @@ export function HomeHeader() {
         </View>
       </View>
 
-      <HomeDialog visible={isVisible} setVisible={setIsVisible} />
+      <MenuDialog
+        activeModal={activeModal === "menu"}
+        setActiveModal={setActiveModal}
+      />
+
+      <CategoryFormModal
+        activeModal={activeModal === "categoryForm"}
+        setActiveModal={setActiveModal}
+      />
     </LinearGradient>
   );
 }
