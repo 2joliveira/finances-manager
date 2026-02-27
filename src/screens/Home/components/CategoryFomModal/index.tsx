@@ -7,8 +7,8 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ActiveModal } from "..";
 import { colors, fontFamily } from "@/theme";
+import { ActiveModal } from "../HomeHeader";
 
 interface CategoryFormProps {
   activeModal: boolean;

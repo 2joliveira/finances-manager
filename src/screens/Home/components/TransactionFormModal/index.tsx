@@ -3,7 +3,7 @@ import Modal from "react-native-modal";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/theme";
 import { styles } from "./styles";
-import { InputSwitch } from "../InputSwitch";
+import { InputSwitch } from "../../../../components/InputSwitch";
 import { useState } from "react";
 
 interface TransactionFormModalProps {

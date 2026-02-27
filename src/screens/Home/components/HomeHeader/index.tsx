@@ -4,9 +4,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme";
 import { styles } from "./styles";
-import { MenuDialog } from "./components/menuDialog";
-import { CategoryFormModal } from "./components/categoryFomModal";
-import { AccountFormModal } from "./components/accountFormModal";
+import { MenuDialog } from "../MenuDialog";
+import { CategoryFormModal } from "../CategoryFomModal";
+import { AccountFormModal } from "../AccountFormModal";
 
 export type ActiveModal = "menu" | "categoryForm" | "accountForm" | null;
 

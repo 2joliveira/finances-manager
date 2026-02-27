@@ -2,7 +2,7 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Text } from "react-native";
 import { colors, fontFamily } from "@/theme";
-import { MenuOption } from "./menuDialog";
+import { MenuOption } from "../MenuDialog";
 
 interface MenuItemProps extends Omit<MenuOption, "type"> {
   onPress: () => void;
