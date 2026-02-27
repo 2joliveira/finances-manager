@@ -23,7 +23,6 @@ export function AccountFormModal({
     <Modal
       isVisible={activeModal}
       onSwipeComplete={() => setActiveModal(null)}
-      swipeDirection="right"
     >
       <View style={styles.container}>
         <View style={styles.header}>

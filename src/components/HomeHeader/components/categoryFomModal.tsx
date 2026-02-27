@@ -23,7 +23,6 @@ export function CategoryFormModal({
     <Modal
       isVisible={activeModal}
       onSwipeComplete={() => setActiveModal(null)}
-      swipeDirection="right"
     >
       <View style={styles.container}>
         <View style={styles.header}>
@@ -49,7 +48,7 @@ export function CategoryFormModal({
         </View>
 
         <TouchableOpacity>
-          <View style={styles.buton}>
+          <View style={styles.button}>
             <Text style={styles.buttonText}>Criar Categoria</Text>
           </View>
         </TouchableOpacity>
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.gray[800],
   },
-  buton: {
+  button: {
     width: "100%",
     alignItems: "center",
     justifyContent: "center",

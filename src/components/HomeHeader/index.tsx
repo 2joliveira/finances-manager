@@ -39,7 +39,6 @@ export function HomeHeader() {
             name="ellipsis-vertical"
             size={20}
             color={colors.gray[100]}
-            style={{}}
           />
         </TouchableOpacity>
       </View>
