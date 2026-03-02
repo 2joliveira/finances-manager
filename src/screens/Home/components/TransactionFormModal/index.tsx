@@ -7,6 +7,8 @@ import { Transaction, transactionSchema } from "@/models/transaction";
 import { InputSwitch } from "@/components/InputSwitch";
 import { colors } from "@/theme";
 import { styles } from "./styles";
+import { useCategoryDatabase } from "@/hooks/useCategoryDatabase";
+import { useEffect } from "react";
 
 interface TransactionFormModalProps {
   isOpen: boolean;
@@ -31,9 +33,23 @@ export function TransactionFormModal({
     },
   });
 
+  const { listAll } = useCategoryDatabase();
+
   function onSubmit(data: Transaction) {
     console.log(data);
   }
+
+  async function getCategories() {
+    const response = await listAll();
+
+    console.log({ response });
+
+    return response;
+  }
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   return (
     <Modal isVisible={isOpen}>
