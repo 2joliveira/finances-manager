@@ -41,8 +41,6 @@ export async function migrate(database: SQLiteDatabase) {
       transaction_id INTEGER NOT NULL,
       installment_number INTEGER NOT NULL,
       amount REAL NOT NULL,
-      due_date TEXT NOT NULL,
-      paid INTEGER NOT NULL DEFAULT 0,
 
       CONSTRAINT fk_transaction_installments
         FOREIGN KEY (transaction_id) REFERENCES transactions(id)

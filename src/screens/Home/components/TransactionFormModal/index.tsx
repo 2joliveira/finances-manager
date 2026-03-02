@@ -1,13 +1,12 @@
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
-import { MaterialIcons } from "@expo/vector-icons";
-import { colors } from "@/theme";
-import { styles } from "./styles";
-import { InputSwitch } from "../../../../components/InputSwitch";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { MaterialIcons } from "@expo/vector-icons";
 import { Transaction, transactionSchema } from "@/models/transaction";
+import { InputSwitch } from "@/components/InputSwitch";
+import { colors } from "@/theme";
+import { styles } from "./styles";
 
 interface TransactionFormModalProps {
   isOpen: boolean;
@@ -18,11 +17,7 @@ export function TransactionFormModal({
   isOpen,
   setIsOpen,
 }: TransactionFormModalProps) {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit } = useForm({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       description: "",
@@ -39,8 +34,6 @@ export function TransactionFormModal({
   function onSubmit(data: Transaction) {
     console.log(data);
   }
-
-  console.log({ errors });
 
   return (
     <Modal isVisible={isOpen}>

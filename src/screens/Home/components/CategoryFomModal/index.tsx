@@ -6,7 +6,10 @@ import {
   View,
 } from "react-native";
 import Modal from "react-native-modal";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Category, categorySchema } from "@/models/category";
 import { colors, fontFamily } from "@/theme";
 import { ActiveModal } from "../HomeHeader";
 
@@ -19,11 +22,20 @@ export function CategoryFormModal({
   activeModal,
   setActiveModal,
 }: CategoryFormProps) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(categorySchema),
+  });
+
+  function onSubmit(data: Category) {
+    console.log({ data });
+  }
+
   return (
-    <Modal
-      isVisible={activeModal}
-      onSwipeComplete={() => setActiveModal(null)}
-    >
+    <Modal isVisible={activeModal} onSwipeComplete={() => setActiveModal(null)}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Nova Categoria</Text>
@@ -40,14 +52,22 @@ export function CategoryFormModal({
         <View>
           <Text style={styles.label}>Nome da Categoria</Text>
 
-          <TextInput
-            style={styles.input}
-            placeholder="Ex: Alimentação"
-            placeholderTextColor={colors.gray[400]}
+          <Controller
+            control={control}
+            name="name"
+            render={({ field: { value, onChange } }) => (
+              <TextInput
+                style={styles.input}
+                placeholder="Ex: Alimentação"
+                placeholderTextColor={colors.gray[400]}
+                value={value}
+                onChangeText={onChange}
+              />
+            )}
           />
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSubmit(onSubmit)}>
           <View style={styles.button}>
             <Text style={styles.buttonText}>Criar Categoria</Text>
           </View>
