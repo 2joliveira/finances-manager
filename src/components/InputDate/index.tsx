@@ -3,14 +3,16 @@ import { View, Text, Pressable, Platform, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors, fontFamily } from "@/theme";
+import { Error } from "../Error";
 
 interface DateInputProps {
   value: Date | null;
   onChange: (date: Date) => void;
   label: string;
+  error?: string;
 }
 
-export function InputDate({ value, onChange, label }: DateInputProps) {
+export function InputDate({ value, onChange, label, error }: DateInputProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleChange = (_: any, selectedDate?: Date) => {
@@ -19,7 +21,15 @@ export function InputDate({ value, onChange, label }: DateInputProps) {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        ...styles.container,
+        ...(error && {
+          borderWidth: 1,
+          borderColor: colors.red[500],
+        }),
+      }}
+    >
       <Text style={value ? styles.placeholderOff : styles.placeholderOn}>
         {label}
       </Text>
@@ -39,6 +49,8 @@ export function InputDate({ value, onChange, label }: DateInputProps) {
           onChange={handleChange}
         />
       )}
+
+      {error && <Error message={error} />}
     </View>
   );
 }

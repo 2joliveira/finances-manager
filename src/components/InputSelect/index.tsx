@@ -3,6 +3,7 @@ import { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/theme";
 import { styles } from "./styles";
+import { Error } from "../Error";
 
 interface Option {
   id: number;
@@ -14,6 +15,7 @@ interface InputSelectProps {
   selectedOption: Option | null;
   onChange: (value: number) => void;
   options: Option[];
+  error?: string;
 }
 
 export function InputSelect({
@@ -21,6 +23,7 @@ export function InputSelect({
   selectedOption,
   options,
   onChange,
+  error,
 }: InputSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,7 +35,13 @@ export function InputSelect({
   return (
     <View>
       <TouchableOpacity
-        style={styles.container}
+        style={{
+          ...styles.container,
+          ...(error && {
+            borderWidth: 1,
+            borderColor: colors.red[500],
+          }),
+        }}
         onPress={() => setIsOpen(!isOpen)}
       >
         <Text
@@ -50,6 +59,8 @@ export function InputSelect({
             transform: [{ rotate: isOpen ? "180deg" : "0deg" }],
           }}
         />
+
+        {error && <Error message={error} />}
       </TouchableOpacity>
 
       <View

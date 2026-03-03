@@ -4,13 +4,14 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    height: "85%",
-    padding: 20,
+    height: "98%",
+    paddingHorizontal: 20,
+    paddingVertical: 15,
     bottom: -20,
     left: -20,
     right: -20,
     justifyContent: "space-between",
-    gap: 8,
+    gap: 20,
     backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -19,6 +20,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginBottom: 5,
   },
   title: {
     fontFamily: fontFamily.bold,
@@ -30,7 +32,7 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
   },
   label: {
-    padding: 5, 
+    paddingBottom: 5, 
     fontFamily: fontFamily.medium,
     fontSize: 14,
     color: colors.gray[500],

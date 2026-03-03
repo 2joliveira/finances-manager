@@ -16,3 +16,7 @@ export const transactionSchema = z.object({
 });
 
 export type Transaction = z.infer<typeof transactionSchema>;
+
+export interface TransactionModel extends Transaction {
+  id: number;
+}

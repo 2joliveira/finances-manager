@@ -4,17 +4,18 @@ import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Transaction, transactionSchema } from "@/models/transaction";
 import { useCategoryDatabase } from "@/hooks/useCategoryDatabase";
 import { useAccountDatabase } from "@/hooks/useAccountDatabase";
+import { useTransactionDatabase } from "@/hooks/useTransactionDatabase";
 import { InputSwitch } from "@/components/InputSwitch";
 import { InputSelect } from "@/components/InputSelect";
 import { InputText } from "@/components/InputText";
+import { InputDate } from "@/components/InputDate";
+import { Transaction, transactionSchema } from "@/models/transaction";
 import { CategoryModel } from "@/models/category";
 import { AccountModel } from "@/models/account";
 import { colors } from "@/theme";
 import { styles } from "./styles";
-import { InputDate } from "@/components/InputDate";
 
 interface TransactionFormModalProps {
   isOpen: boolean;
@@ -25,7 +26,12 @@ export function TransactionFormModal({
   isOpen,
   setIsOpen,
 }: TransactionFormModalProps) {
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       type: "expense",
@@ -34,6 +40,7 @@ export function TransactionFormModal({
   });
   const { listAll: listCategories } = useCategoryDatabase();
   const { listAll: listAccounts } = useAccountDatabase();
+  const { create } = useTransactionDatabase();
 
   const [categoryOptions, setCategoryOptions] = useState<CategoryModel[]>([]);
   const [accountOptions, setAccountOptions] = useState<AccountModel[]>([]);
@@ -44,7 +51,9 @@ export function TransactionFormModal({
   ];
 
   function onSubmit(data: Transaction) {
-    console.log(data);
+    create(data);
+    reset();
+    setIsOpen(false);
   }
 
   async function fetchCategories() {
@@ -64,6 +73,8 @@ export function TransactionFormModal({
     fetchCategories();
   }, []);
 
+  if (errors) console.log({ errors });
+
   return (
     <Modal isVisible={isOpen}>
       <View style={styles.container}>
@@ -72,7 +83,7 @@ export function TransactionFormModal({
 
           <MaterialIcons
             name="close"
-            size={24}
+            size={22}
             color={colors.gray[500]}
             style={styles.closeButton}
             onPress={() => setIsOpen(false)}
@@ -88,6 +99,7 @@ export function TransactionFormModal({
               placeholderTextColor={colors.gray[400]}
               value={value}
               onChange={onChange}
+              error={errors?.description?.message}
             />
           )}
         />
@@ -102,6 +114,7 @@ export function TransactionFormModal({
               value={value && String(value)}
               onChange={onChange}
               keyboardType="decimal-pad"
+              error={errors?.amount?.message}
             />
           )}
         />
@@ -182,6 +195,7 @@ export function TransactionFormModal({
               )}
               onChange={onChange}
               options={categoryOptions}
+              error={errors?.category_id?.message}
             />
           )}
         />
@@ -197,6 +211,7 @@ export function TransactionFormModal({
               )}
               onChange={onChange}
               options={accountOptions}
+              error={errors?.account_id?.message}
             />
           )}
         />
@@ -209,6 +224,7 @@ export function TransactionFormModal({
               label="Selecione a data da transação"
               value={value ? new Date(value) : new Date()}
               onChange={onChange}
+              error={errors?.transaction_date?.message}
             />
           )}
         />
