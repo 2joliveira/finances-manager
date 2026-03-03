@@ -14,6 +14,7 @@ import { CategoryModel } from "@/models/category";
 import { AccountModel } from "@/models/account";
 import { colors } from "@/theme";
 import { styles } from "./styles";
+import { InputDate } from "@/components/InputDate";
 
 interface TransactionFormModalProps {
   isOpen: boolean;
@@ -27,11 +28,8 @@ export function TransactionFormModal({
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
-      description: "",
       type: "expense",
       is_installment: false,
-      account_id: 0,
-      transaction_date: new Date().toISOString(),
     },
   });
   const { listAll: listCategories } = useCategoryDatabase();
@@ -199,6 +197,18 @@ export function TransactionFormModal({
               )}
               onChange={onChange}
               options={accountOptions}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="transaction_date"
+          render={({ field: { value, onChange } }) => (
+            <InputDate
+              label="Selecione a data da transação"
+              value={value ? new Date(value) : new Date()}
+              onChange={onChange}
             />
           )}
         />

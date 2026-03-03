@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     left: -20,
     right: -20,
     justifyContent: "space-between",
-    gap: 10,
+    gap: 8,
     backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

@@ -12,12 +12,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  placeholderOn: {
-    fontFamily: fontFamily.medium,
-    fontSize: 16,
-    color: colors.gray[400],
-  },
-  placeholderOff: {
+  placeholder: {
     position: "absolute",
     fontFamily: fontFamily.medium,
     fontSize: 12,
@@ -28,7 +23,7 @@ export const styles = StyleSheet.create({
   value: {
     flex: 1,
     fontFamily: fontFamily.medium,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.gray[800],
     zIndex: 999,
   },

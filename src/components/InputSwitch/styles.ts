@@ -12,7 +12,6 @@ export const styles = StyleSheet.create({
     padding: 1,
     overflow: "hidden",
   },
-
   thumb: {
     position: "absolute",
     left: 0,
@@ -21,21 +20,18 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.blue[500],
     borderRadius: 20,
   },
-
   option: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     zIndex: 1,
   },
-
   text: {
     fontSize: 14,
     fontWeight: "600",
     color: colors.gray[500],
   },
-
   textActive: {
-    color: "#FFFFFF",
+    color: colors.white,
   },
 });

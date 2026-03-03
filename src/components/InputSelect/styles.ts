@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   },
   placeholderOn: {
     fontFamily: fontFamily.medium,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.gray[400],
   },
   placeholderOff: {
@@ -23,11 +23,11 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.gray[400],
     top: 2,
-    left: 5,
+    left: 10,
   },
   value: {
     fontFamily: fontFamily.medium,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.gray[800],
     marginTop: 10,
   },
