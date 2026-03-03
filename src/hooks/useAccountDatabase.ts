@@ -1,21 +1,21 @@
 import { Alert } from "react-native";
 import { useSQLiteContext } from "expo-sqlite";
-import type { Category, CategoryModel } from "@/models/category";
+import { Account, AccountModel } from "@/models/account";
 
-export function useCategoryDatabase() {
+export function useAccountDatabase() {
   const database = useSQLiteContext();
 
-  async function create(data: Category) {
+  async function create(data: Account) {
     try {
       const statement = await database.prepareAsync(
-        "INSERT INTO categories (name) values ($name)",
+        "INSERT INTO accounts (name) values ($name)",
       );
 
       statement.executeAsync({
         $name: data.name,
       });
 
-      Alert.alert("Nova Categoria", "Categoria criada com sucesso!", [
+      Alert.alert("Nova Conta", "Conta criada com sucesso!", [
         {
           text: "Ok",
         },
@@ -27,7 +27,7 @@ export function useCategoryDatabase() {
 
   async function listAll() {
     try {
-      const response = await database.getAllAsync<CategoryModel>("SELECT * FROM categories");
+      const response = await database.getAllAsync<AccountModel>("SELECT * FROM accounts");
 
       return response;
     } catch (err) {

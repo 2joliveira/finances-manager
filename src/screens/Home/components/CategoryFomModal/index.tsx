@@ -25,7 +25,8 @@ export function CategoryFormModal({
 }: CategoryFormProps) {
   const {
     control,
-    handleSubmit
+    handleSubmit,
+    reset,
   } = useForm({
     resolver: zodResolver(categorySchema),
   });
@@ -34,6 +35,8 @@ export function CategoryFormModal({
 
   function onSubmit(data: Category) {
     create(data);
+    setActiveModal(null);
+    reset();
   }
 
   return (

@@ -30,18 +30,10 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
   },
   label: {
+    padding: 5, 
     fontFamily: fontFamily.medium,
     fontSize: 14,
     color: colors.gray[500],
-  },
-  input: {
-    padding: 10,
-    height: 50,
-    backgroundColor: colors.gray[200],
-    borderRadius: 10,
-    fontFamily: fontFamily.medium,
-    fontSize: 16,
-    color: colors.gray[800],
   },
   button: {
     width: "100%",
