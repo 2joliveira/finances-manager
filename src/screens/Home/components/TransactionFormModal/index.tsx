@@ -4,11 +4,13 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Transaction, transactionSchema } from "@/models/transaction";
+import { useCategoryDatabase } from "@/hooks/useCategoryDatabase";
 import { InputSwitch } from "@/components/InputSwitch";
+import { InputSelect } from "@/components/InputSelect";
 import { colors } from "@/theme";
 import { styles } from "./styles";
-import { useCategoryDatabase } from "@/hooks/useCategoryDatabase";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { CategoryModel } from "@/models/category";
 
 interface TransactionFormModalProps {
   isOpen: boolean;
@@ -23,32 +25,29 @@ export function TransactionFormModal({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       description: "",
-      amount: 0,
       type: "expense",
       is_installment: false,
       installments: 2,
-      category_id: 0,
       account_id: 0,
       transaction_date: new Date().toISOString(),
     },
   });
-
   const { listAll } = useCategoryDatabase();
+
+  const [categoryOptions, setCategoryOptions] = useState<CategoryModel[]>([]);
 
   function onSubmit(data: Transaction) {
     console.log(data);
   }
 
-  async function getCategories() {
-    const response = await listAll();
+  async function fetchCategories() {
+    const options = await listAll();
 
-    console.log({ response });
-
-    return response;
+    setCategoryOptions(options);
   }
 
   useEffect(() => {
-    getCategories();
+    fetchCategories();
   }, []);
 
   return (
@@ -95,7 +94,7 @@ export function TransactionFormModal({
                 style={styles.input}
                 placeholder="Ex: R$ 50,00"
                 placeholderTextColor={colors.gray[400]}
-                value={String(value)}
+                value={value && String(value)}
                 onChangeText={onChange}
                 keyboardType="decimal-pad"
               />
@@ -112,7 +111,7 @@ export function TransactionFormModal({
             render={({ field: { value, onChange } }) => (
               <InputSwitch
                 options={["Receita", "Despesa"]}
-                value={value}
+                value={value === "income" ? "Receita" : "Despesa"}
                 onChange={onChange}
               />
             )}
@@ -135,7 +134,7 @@ export function TransactionFormModal({
               render={({ field: { value, onChange } }) => (
                 <InputSwitch
                   options={["Sim", "Não"]}
-                  value={true ? "Sim" : "Não"}
+                  value={value === true ? "Sim" : "Não"}
                   onChange={onChange}
                 />
               )}
@@ -159,6 +158,23 @@ export function TransactionFormModal({
               )}
             />
           </View>
+        </View>
+
+        <View>
+          <Text style={styles.label}>Categoria</Text>
+
+          <Controller
+            control={control}
+            name="category_id"
+            render={({ field: { value, onChange } }) => (
+              <InputSelect
+                placeholder="Selecione uma categoria"
+                selectedOption={categoryOptions.find((option) => option.id === value)}
+                onChange={onChange}
+                options={categoryOptions}
+              />
+            )}
+          />
         </View>
 
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>

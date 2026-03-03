@@ -1,5 +1,5 @@
 import { useSQLiteContext } from "expo-sqlite";
-import { Category } from "@/models/category";
+import type { Category, CategoryModel } from "@/models/category";
 import { Alert } from "react-native";
 import { router } from "expo-router";
 
@@ -28,7 +28,13 @@ export function useCategoryDatabase() {
   }
 
   async function listAll() {
-    return await database.getAllAsync("SELECT * FROM categories");
+    try {
+      const response = await database.getAllAsync<CategoryModel>("SELECT * FROM categories");
+
+      return response;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return { create, listAll };

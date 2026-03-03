@@ -7,3 +7,7 @@ export const categorySchema = z.object({
 });
 
 export type Category = z.infer<typeof categorySchema>;
+
+export interface CategoryModel extends Category {
+  id: number;
+}
