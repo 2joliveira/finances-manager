@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     left: -20,
     right: -20,
     justifyContent: "space-between",
-    gap: 5,
+    gap: 10,
     backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -30,7 +30,6 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
   },
   label: {
-    padding: 5,
     fontFamily: fontFamily.medium,
     fontSize: 14,
     color: colors.gray[500],

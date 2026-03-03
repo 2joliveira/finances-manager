@@ -11,6 +11,7 @@ import { colors } from "@/theme";
 import { styles } from "./styles";
 import { useEffect, useState } from "react";
 import { CategoryModel } from "@/models/category";
+import { InputText } from "@/components/InputText";
 
 interface TransactionFormModalProps {
   isOpen: boolean;
@@ -27,7 +28,6 @@ export function TransactionFormModal({
       description: "",
       type: "expense",
       is_installment: false,
-      installments: 2,
       account_id: 0,
       transaction_date: new Date().toISOString(),
     },
@@ -70,42 +70,32 @@ export function TransactionFormModal({
           />
         </View>
 
-        <View>
-          <Text style={styles.label}>Descrição</Text>
+        <Controller
+          control={control}
+          name="description"
+          render={({ field: { value, onChange } }) => (
+            <InputText
+              placeholder="Descrição"
+              placeholderTextColor={colors.gray[400]}
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
 
-          <Controller
-            control={control}
-            name="description"
-            render={({ field: { value, onChange } }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="Ex: Almoço no restaurante"
-                placeholderTextColor={colors.gray[400]}
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-          />
-        </View>
-
-        <View>
-          <Text style={styles.label}>Valor</Text>
-
-          <Controller
-            control={control}
-            name="amount"
-            render={({ field: { value, onChange } }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="Ex: R$ 50,00"
-                placeholderTextColor={colors.gray[400]}
-                value={value && String(value)}
-                onChangeText={onChange}
-                keyboardType="decimal-pad"
-              />
-            )}
-          />
-        </View>
+        <Controller
+          control={control}
+          name="amount"
+          render={({ field: { value, onChange } }) => (
+            <InputText
+              placeholder="Valor"
+              placeholderTextColor={colors.gray[400]}
+              value={value && String(value)}
+              onChange={onChange}
+              keyboardType="decimal-pad"
+            />
+          )}
+        />
 
         <View>
           <Text style={styles.label}>Tipo da transação</Text>
@@ -155,19 +145,17 @@ export function TransactionFormModal({
             />
           </View>
 
-          <View>
-            <Text style={styles.label}>Número de parcelas</Text>
-
+          <View style={{ flex: 1, marginTop: 20 }}>
             <Controller
               control={control}
               name="installments"
               render={({ field: { value, onChange } }) => (
-                <TextInput
-                  style={styles.input}
-                  placeholder="Ex: 2"
+                <InputText
+                  placeholder="Número de parcelas"
                   placeholderTextColor={colors.gray[400]}
-                  value={String(value)}
-                  onChangeText={onChange}
+                  value={value && String(value)}
+                  onChange={onChange}
+                  keyboardType="numeric"
                 />
               )}
             />
