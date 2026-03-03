@@ -36,6 +36,11 @@ export function TransactionFormModal({
 
   const [categoryOptions, setCategoryOptions] = useState<CategoryModel[]>([]);
 
+  const typeOptions = [
+    { label: "Receita", value: "income" },
+    { label: "Despesa", value: "expense" },
+  ];
+
   function onSubmit(data: Transaction) {
     console.log(data);
   }
@@ -110,8 +115,11 @@ export function TransactionFormModal({
             name="type"
             render={({ field: { value, onChange } }) => (
               <InputSwitch
-                options={["Receita", "Despesa"]}
-                value={value === "income" ? "Receita" : "Despesa"}
+                options={typeOptions}
+                option={{
+                  label: value === "income" ? "Receita" : "Despesa",
+                  value,
+                }}
                 onChange={onChange}
               />
             )}
@@ -133,8 +141,14 @@ export function TransactionFormModal({
               name="is_installment"
               render={({ field: { value, onChange } }) => (
                 <InputSwitch
-                  options={["Sim", "Não"]}
-                  value={value === true ? "Sim" : "Não"}
+                  options={[
+                    { label: "Sim", value: "true" },
+                    { label: "Não", value: "false" },
+                  ]}
+                  option={{
+                    label: String(value) === "true" ? "Sim" : "Não",
+                    value: String(value),
+                  }}
                   onChange={onChange}
                 />
               )}
@@ -160,22 +174,20 @@ export function TransactionFormModal({
           </View>
         </View>
 
-        <View>
-          <Text style={styles.label}>Categoria</Text>
-
-          <Controller
-            control={control}
-            name="category_id"
-            render={({ field: { value, onChange } }) => (
-              <InputSelect
-                placeholder="Selecione uma categoria"
-                selectedOption={categoryOptions.find((option) => option.id === value)}
-                onChange={onChange}
-                options={categoryOptions}
-              />
-            )}
-          />
-        </View>
+        <Controller
+          control={control}
+          name="category_id"
+          render={({ field: { value, onChange } }) => (
+            <InputSelect
+              placeholder="Selecione uma categoria"
+              selectedOption={categoryOptions.find(
+                (option) => option.id === value,
+              )}
+              onChange={onChange}
+              options={categoryOptions}
+            />
+          )}
+        />
 
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
           <View style={styles.button}>
