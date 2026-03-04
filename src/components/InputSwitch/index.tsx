@@ -4,19 +4,19 @@ import { styles } from "./styles";
 
 interface Option {
   label: string;
-  value: string;
+  value: string | number;
 }
 
 interface InputSwitchProps {
   options: Option[];
   option: Option;
-  onChange: (value: string) => void;
+  onChange: (value: string | number) => void;
 }
 
 export function InputSwitch({ options, option, onChange }: InputSwitchProps) {
   const translateX = useRef(new Animated.Value(options[0].value === option.value ? 0 : 80)).current;
 
-  function handleChange(next: string) {
+  function handleChange(next: string | number) {
     onChange(next);
 
     Animated.timing(translateX, {

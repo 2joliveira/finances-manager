@@ -21,37 +21,37 @@ export function InputDate({ value, onChange, label, error }: DateInputProps) {
   };
 
   return (
-    <View
-      style={{
-        ...styles.container,
-        ...(error && {
-          borderWidth: 1,
-          borderColor: colors.red[500],
-        }),
-      }}
-    >
-      <Text style={value ? styles.placeholderOff : styles.placeholderOn}>
-        {label}
-      </Text>
-      <Pressable style={{ flex: 1 }} onPress={() => setIsOpen(true)}>
+    <Pressable style={{ flex: 1 }} onPress={() => setIsOpen(true)}>
+      <View
+        style={{
+          ...styles.container,
+          ...(error && {
+            borderWidth: 1,
+            borderColor: colors.red[500],
+          }),
+        }}
+      >
+        <Text style={value ? styles.placeholderOff : styles.placeholderOn}>
+          {label}
+        </Text>
         {value && (
           <Text style={styles.value}>{value?.toLocaleDateString("pt-BR")}</Text>
         )}
-      </Pressable>
 
-      <MaterialIcons name="event" size={20} color={colors.gray[400]} />
+        <MaterialIcons name="event" size={20} color={colors.gray[400]} />
 
-      {isOpen && (
-        <DateTimePicker
-          value={value}
-          mode="date"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
-          onChange={handleChange}
-        />
-      )}
+        {isOpen && (
+          <DateTimePicker
+            value={value}
+            mode="date"
+            display={Platform.OS === "ios" ? "spinner" : "default"}
+            onChange={handleChange}
+          />
+        )}
 
-      {error && <Error message={error} />}
-    </View>
+        {error && <Error message={error} />}
+      </View>
+    </Pressable>
   );
 }
 

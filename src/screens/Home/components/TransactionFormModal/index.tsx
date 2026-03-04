@@ -31,13 +31,18 @@ export function TransactionFormModal({
     handleSubmit,
     reset,
     formState: { errors },
+    watch,
   } = useForm({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       type: "expense",
-      is_installment: false,
+      is_installment: 0,
+      transaction_date: new Date(),
     },
   });
+
+  const isInstallment = watch("is_installment");
+
   const { listAll: listCategories } = useCategoryDatabase();
   const { listAll: listAccounts } = useAccountDatabase();
   const { create } = useTransactionDatabase();
@@ -49,6 +54,11 @@ export function TransactionFormModal({
     { label: "Receita", value: "income" },
     { label: "Despesa", value: "expense" },
   ];
+
+  function onCloseModal() {
+    reset();
+    setIsOpen(false);
+  }
 
   function onSubmit(data: Transaction) {
     create(data);
@@ -73,8 +83,6 @@ export function TransactionFormModal({
     fetchCategories();
   }, []);
 
-  if (errors) console.log({ errors });
-
   return (
     <Modal isVisible={isOpen}>
       <View style={styles.container}>
@@ -86,7 +94,7 @@ export function TransactionFormModal({
             size={22}
             color={colors.gray[500]}
             style={styles.closeButton}
-            onPress={() => setIsOpen(false)}
+            onPress={() => onCloseModal()}
           />
         </View>
 
@@ -111,7 +119,7 @@ export function TransactionFormModal({
             <InputText
               placeholder="Valor"
               placeholderTextColor={colors.gray[400]}
-              value={value && String(value)}
+              value={value ? String(value) : ""}
               onChange={onChange}
               keyboardType="decimal-pad"
               error={errors?.amount?.message}
@@ -154,12 +162,12 @@ export function TransactionFormModal({
               render={({ field: { value, onChange } }) => (
                 <InputSwitch
                   options={[
-                    { label: "Sim", value: "true" },
-                    { label: "Não", value: "false" },
+                    { label: "Sim", value: 1 },
+                    { label: "Não", value: 0 },
                   ]}
                   option={{
-                    label: String(value) === "true" ? "Sim" : "Não",
-                    value: String(value),
+                    label: value === 1 ? "Sim" : "Não",
+                    value,
                   }}
                   onChange={onChange}
                 />
@@ -167,21 +175,23 @@ export function TransactionFormModal({
             />
           </View>
 
-          <View style={{ flex: 1, marginTop: 30 }}>
-            <Controller
-              control={control}
-              name="installments"
-              render={({ field: { value, onChange } }) => (
-                <InputText
-                  placeholder="Número de parcelas"
-                  placeholderTextColor={colors.gray[400]}
-                  value={value && String(value)}
-                  onChange={onChange}
-                  keyboardType="numeric"
-                />
-              )}
-            />
-          </View>
+          {isInstallment === 1 && (
+            <View style={{ flex: 1, marginTop: 26 }}>
+              <Controller
+                control={control}
+                name="installments"
+                render={({ field: { value, onChange } }) => (
+                  <InputText
+                    placeholder="Número de parcelas"
+                    placeholderTextColor={colors.gray[400]}
+                    value={value && String(value)}
+                    onChange={onChange}
+                    keyboardType="numeric"
+                  />
+                )}
+              />
+            </View>
+          )}
         </View>
 
         <Controller
@@ -222,7 +232,7 @@ export function TransactionFormModal({
           render={({ field: { value, onChange } }) => (
             <InputDate
               label="Selecione a data da transação"
-              value={value ? new Date(value) : new Date()}
+              value={value}
               onChange={onChange}
               error={errors?.transaction_date?.message}
             />

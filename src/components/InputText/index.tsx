@@ -5,9 +5,9 @@ import { colors } from "@/theme";
 
 interface InputTextProps extends Omit<
   React.ComponentProps<typeof TextInput>,
-  "onChange"
+  "onChange" | "value"
 > {
-  value: string;
+  value?: string;
   placeholder: string;
   onChange: (text: string) => void;
   error?: string;
@@ -31,6 +31,7 @@ export function InputText({
     >
       {value && <Text style={styles.placeholder}>{props.placeholder}</Text>}
       <TextInput
+        value={value}
         style={{ ...styles.value, marginTop: value ? 10 : 0 }}
         onChangeText={onChange}
         {...props}

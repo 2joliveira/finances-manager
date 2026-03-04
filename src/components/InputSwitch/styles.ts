@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     width: 160,
     height: 50,
-    borderRadius: 20,
+    borderRadius: 10,
     backgroundColor: colors.gray[200],
     flexDirection: "row",
     alignItems: "center",
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     height: "100%",
     width: 80,
     backgroundColor: colors.blue[500],
-    borderRadius: 20,
+    borderRadius: 10,
   },
   option: {
     flex: 1,
