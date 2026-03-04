@@ -1,6 +1,6 @@
-import { colors } from "@/theme";
-import { MaterialIcons } from "@expo/vector-icons/";
 import { Text, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons/";
+import { colors } from "@/theme";
 import { styles } from "./styles";
 
 interface DetailItemProps {
