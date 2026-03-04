@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
@@ -7,9 +7,13 @@ import { TransactionFormModal } from "./components/TransactionFormModal";
 import { HomeHeader } from "./components/HomeHeader";
 import { MonthCard } from "./components/MonthCard";
 import { colors } from "@/theme";
+import { useTransactions } from "@/hooks/useTransaction";
 
 export function Home() {
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
+  const { months } = useTransactions();
+
+  console.log({ months });
 
   return (
     <View style={styles.container}>
@@ -61,5 +65,5 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     borderRadius: 50,
-  }
+  },
 });

@@ -12,7 +12,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Category, categorySchema } from "@/models/category";
 import { colors, fontFamily } from "@/theme";
 import { ActiveModal } from "../HomeHeader";
-import { useCategoryDatabase } from "@/hooks/useCategoryDatabase";
+import { useCategories } from "@/hooks/useCategory";
 
 interface CategoryFormProps {
   activeModal: boolean;
@@ -23,18 +23,14 @@ export function CategoryFormModal({
   activeModal,
   setActiveModal,
 }: CategoryFormProps) {
-  const {
-    control,
-    handleSubmit,
-    reset,
-  } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     resolver: zodResolver(categorySchema),
   });
 
-  const { create } = useCategoryDatabase();
+  const { createCategory } = useCategories();
 
   function onSubmit(data: Category) {
-    create(data);
+    createCategory(data);
     setActiveModal(null);
     reset();
   }

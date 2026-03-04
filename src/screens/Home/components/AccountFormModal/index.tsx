@@ -7,7 +7,7 @@ import { Account, accountSchema } from "@/models/account";
 import { colors } from "@/theme";
 import { ActiveModal } from "../HomeHeader";
 import { styles } from "./styles";
-import { useAccountDatabase } from "@/hooks/useAccountDatabase";
+import { useAccount } from "@/hooks/useAccount";
 
 interface CategoryFormProps {
   activeModal: boolean;
@@ -22,10 +22,10 @@ export function AccountFormModal({
     resolver: zodResolver(accountSchema),
   });
 
-  const { create } = useAccountDatabase();
+  const { createAccount } = useAccount();
 
   function onSubmit(data: Account) {
-    create(data);
+    createAccount(data);
     setActiveModal(null);
     reset();
   }

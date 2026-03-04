@@ -1,21 +1,18 @@
-import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useCategoryDatabase } from "@/hooks/useCategoryDatabase";
-import { useAccountDatabase } from "@/hooks/useAccountDatabase";
-import { useTransactionDatabase } from "@/hooks/useTransactionDatabase";
+import { useCategories } from "@/hooks/useCategory";
 import { InputSwitch } from "@/components/InputSwitch";
 import { InputSelect } from "@/components/InputSelect";
 import { InputText } from "@/components/InputText";
 import { InputDate } from "@/components/InputDate";
 import { Transaction, transactionSchema } from "@/models/transaction";
-import { CategoryModel } from "@/models/category";
-import { AccountModel } from "@/models/account";
 import { colors } from "@/theme";
 import { styles } from "./styles";
+import { useAccount } from "@/hooks/useAccount";
+import { useTransactions } from "@/hooks/useTransaction";
 
 interface TransactionFormModalProps {
   isOpen: boolean;
@@ -43,12 +40,10 @@ export function TransactionFormModal({
 
   const isInstallment = watch("is_installment");
 
-  const { listAll: listCategories } = useCategoryDatabase();
-  const { listAll: listAccounts } = useAccountDatabase();
-  const { create } = useTransactionDatabase();
+  const { accounts} = useAccount();
+  const { categories } = useCategories();
 
-  const [categoryOptions, setCategoryOptions] = useState<CategoryModel[]>([]);
-  const [accountOptions, setAccountOptions] = useState<AccountModel[]>([]);
+  const { createTransaction } = useTransactions();
 
   const typeOptions = [
     { label: "Receita", value: "income" },
@@ -61,27 +56,10 @@ export function TransactionFormModal({
   }
 
   function onSubmit(data: Transaction) {
-    create(data);
+    createTransaction(data);
     reset();
     setIsOpen(false);
   }
-
-  async function fetchCategories() {
-    const options = await listCategories();
-
-    setCategoryOptions(options);
-  }
-
-  async function fetchAccounts() {
-    const options = await listAccounts();
-
-    setAccountOptions(options);
-  }
-
-  useEffect(() => {
-    fetchAccounts();
-    fetchCategories();
-  }, []);
 
   return (
     <Modal isVisible={isOpen}>
@@ -200,11 +178,11 @@ export function TransactionFormModal({
           render={({ field: { value, onChange } }) => (
             <InputSelect
               placeholder="Selecione uma categoria"
-              selectedOption={categoryOptions.find(
+              selectedOption={categories.find(
                 (option) => option.id === value,
               )}
               onChange={onChange}
-              options={categoryOptions}
+              options={categories}
               error={errors?.category_id?.message}
             />
           )}
@@ -216,11 +194,11 @@ export function TransactionFormModal({
           render={({ field: { value, onChange } }) => (
             <InputSelect
               placeholder="Selecione uma conta"
-              selectedOption={accountOptions.find(
+              selectedOption={accounts.find(
                 (option) => option.id === value,
               )}
               onChange={onChange}
-              options={accountOptions}
+              options={accounts}
               error={errors?.account_id?.message}
             />
           )}

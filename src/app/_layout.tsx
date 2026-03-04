@@ -10,6 +10,7 @@ import {
 import { migrate } from "@/database/migrate";
 import { colors } from "@/theme";
 import { Loading } from "../components/Loading";
+import { FinancesManagerProvider } from "@/context/context";
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -24,13 +25,19 @@ export default function Layout() {
 
   return (
     <Suspense fallback={<Loading />}>
-      <SQLiteProvider databaseName="financesmanager.db" onInit={migrate} useSuspense>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: colors.gray[100] },
-          }}
-        />
+      <SQLiteProvider
+        databaseName="financesmanager.db"
+        onInit={migrate}
+        useSuspense
+      >
+        <FinancesManagerProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: colors.gray[100] },
+            }}
+          />
+        </FinancesManagerProvider>
       </SQLiteProvider>
     </Suspense>
   );

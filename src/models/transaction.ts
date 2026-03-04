@@ -9,7 +9,7 @@ export const transactionSchema = z.object({
     error: "Tipo deve ser 'income' ou 'expense'.",
   }),
   is_installment: z.number().default(0),
-  installments: z.number().optional(),
+  installments: z.coerce.number().optional(),
   category_id: z.number({ error: "Categoria é obrigatória." }),
   account_id: z.number({ error: "Conta é obrigatória." }),
   transaction_date: z.date({ error: "Data da transação é obrigatória." }),
