@@ -7,6 +7,7 @@ import { styles } from "./styles";
 import { MenuDialog } from "../MenuDialog";
 import { CategoryFormModal } from "../CategoryFomModal";
 import { AccountFormModal } from "../AccountFormModal";
+import InputYearPicker from "@/components/InputYearPicker";
 
 export type ActiveModal = "menu" | "categoryForm" | "accountForm" | null;
 
@@ -50,9 +51,11 @@ export function HomeHeader() {
           placeholderTextColor={colors.blue[300]}
         />
 
-        <View style={styles.yearSelect}>
+        {/*<View style={styles.yearSelect}>
           <Text style={styles.yearText}>2026</Text>
-        </View>
+        </View>*/}
+
+        <InputYearPicker />
       </View>
 
       <MenuDialog

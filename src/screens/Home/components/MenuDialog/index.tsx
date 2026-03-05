@@ -34,11 +34,17 @@ export function MenuDialog({ activeModal, setActiveModal }: MenuDialogProps) {
     <Modal
       isVisible={activeModal}
       onBackdropPress={() => setActiveModal(null)}
-      swipeDirection="right"
+      animationIn="fadeInRight"
+      animationOut="fadeOutRight"
     >
       <View style={styles.container}>
         {MENU_OPTIONS.map(({ icon, label, type }) => (
-          <MenuItem key={icon} icon={icon} label={label} onPress={() => setActiveModal(type)} />
+          <MenuItem
+            key={icon}
+            icon={icon}
+            label={label}
+            onPress={() => setActiveModal(type)}
+          />
         ))}
       </View>
     </Modal>

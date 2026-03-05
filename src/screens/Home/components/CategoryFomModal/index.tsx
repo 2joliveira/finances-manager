@@ -36,7 +36,10 @@ export function CategoryFormModal({
   }
 
   return (
-    <Modal isVisible={activeModal} onSwipeComplete={() => setActiveModal(null)}>
+    <Modal
+      isVisible={activeModal}
+      onSwipeComplete={() => setActiveModal(null)}
+    >
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Nova Categoria</Text>

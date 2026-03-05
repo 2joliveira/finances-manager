@@ -49,18 +49,4 @@ export const styles = StyleSheet.create({
     color: colors.gray[100],
     fontSize: 15,
   },
-  yearSelect: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 45,
-    padding: 8,
-    backgroundColor: colors.blue[500],
-    borderRadius: 10,
-  },
-  yearText: {
-    fontFamily: fontFamily.regular,
-    fontSize: 15,
-    color: colors.gray[100],
-  },
 });

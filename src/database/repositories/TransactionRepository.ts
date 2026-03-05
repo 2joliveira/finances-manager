@@ -44,7 +44,7 @@ export function TransactionRepository(db: SQLiteDatabase) {
       ]);
     },
 
-    listByYear: () =>
+    listByYear: (year: number = new Date().getFullYear()) =>
       db.getAllAsync<Month>(`
         SELECT
           strftime('%Y-%m', transaction_date) AS month,
@@ -65,8 +65,8 @@ export function TransactionRepository(db: SQLiteDatabase) {
             END
           ) AS total_expense
         FROM transactions
-        WHERE transaction_date >= '2026-01-01'
-          AND transaction_date <  '2027-01-01'
+        WHERE transaction_date >= '${year}-01-01'
+          AND transaction_date <  '${year + 1}-01-01'
         GROUP BY month
         ORDER BY month; 
       `),
