@@ -10,8 +10,8 @@ export function useTransactions() {
 
   const transactionRepo = useMemo(() => TransactionRepository(db), [db]);
 
-  async function loadMonths() {
-    const data = await transactionRepo.listByYear();
+  async function loadMonths(year: number = new Date().getFullYear()) {
+    const data = await transactionRepo.listByYear(year);
 
     dispatch({ type: "SET_MONTHS", payload: data });
   }
@@ -28,5 +28,6 @@ export function useTransactions() {
   return {
     createTransaction,
     months,
+    loadMonths,
   };
 }
