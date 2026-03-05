@@ -13,6 +13,7 @@ export function MonthCard({
   total_income,
   total_transactions,
 }: Month) {
+  const total = total_income - total_expense;
   return (
     <TouchableOpacity
       style={styles.container}
@@ -61,8 +62,13 @@ export function MonthCard({
       </View>
 
       <View style={styles.totalContainer}>
-        <Text style={{ ...styles.totalText, color: colors.green[500] }}>
-          {`Saldo: ${formatCurrency(total_income - total_expense)}`}
+        <Text
+          style={{
+            ...styles.totalText,
+            color: total > 0 ? colors.green[500] : colors.red[500],
+          }}
+        >
+          {`Saldo: ${formatCurrency(total)}`}
         </Text>
       </View>
     </TouchableOpacity>

@@ -21,7 +21,7 @@ export async function migrate(database: SQLiteDatabase) {
       type TEXT NOT NULL,
       is_installment INTEGER NOT NULL DEFAULT 0,
       installments INTEGER,
-      installment_amount FLOAT,
+      installments_number INTEGER,
       
       category_id INTEGER NOT NULL,
       account_id INTEGER NOT NULL,
@@ -35,18 +35,6 @@ export async function migrate(database: SQLiteDatabase) {
 
       CONSTRAINT fk_transactions_account
         FOREIGN KEY (account_id) REFERENCES accounts(id)
-    );
-
-    CREATE TABLE IF NOT EXISTS transaction_installments (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      transaction_id INTEGER NOT NULL,
-      installment_number INTEGER NOT NULL,
-      amount FLOAT NOT NULL,
-      due_date DATE NOT NULL,
-
-      CONSTRAINT fk_transaction_installments
-        FOREIGN KEY (transaction_id) REFERENCES transactions(id)
-        ON DELETE CASCADE
     );
   `);
 }
