@@ -13,8 +13,6 @@ export function Home() {
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
   const { months } = useTransactions();
 
-  console.log({ months });
-
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />

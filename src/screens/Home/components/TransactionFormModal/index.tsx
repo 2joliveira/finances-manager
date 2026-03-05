@@ -40,7 +40,7 @@ export function TransactionFormModal({
 
   const isInstallment = watch("is_installment");
 
-  const { accounts} = useAccount();
+  const { accounts } = useAccount();
   const { categories } = useCategories();
 
   const { createTransaction } = useTransactions();
@@ -89,40 +89,6 @@ export function TransactionFormModal({
             />
           )}
         />
-
-        <Controller
-          control={control}
-          name="amount"
-          render={({ field: { value, onChange } }) => (
-            <InputText
-              placeholder="Valor"
-              placeholderTextColor={colors.gray[400]}
-              value={value ? String(value) : ""}
-              onChange={onChange}
-              keyboardType="decimal-pad"
-              error={errors?.amount?.message}
-            />
-          )}
-        />
-
-        <View>
-          <Text style={styles.label}>Tipo da transação</Text>
-
-          <Controller
-            control={control}
-            name="type"
-            render={({ field: { value, onChange } }) => (
-              <InputSwitch
-                options={typeOptions}
-                option={{
-                  label: value === "income" ? "Receita" : "Despesa",
-                  value,
-                }}
-                onChange={onChange}
-              />
-            )}
-          />
-        </View>
 
         <View
           style={{
@@ -174,13 +140,45 @@ export function TransactionFormModal({
 
         <Controller
           control={control}
+          name="amount"
+          render={({ field: { value, onChange } }) => (
+            <InputText
+              placeholder={isInstallment === 1 ? "Valor da parcela" : "Valor"}
+              placeholderTextColor={colors.gray[400]}
+              value={value ? String(value) : ""}
+              onChange={onChange}
+              keyboardType="decimal-pad"
+              error={errors?.amount?.message}
+            />
+          )}
+        />
+
+        <View>
+          <Text style={styles.label}>Tipo da transação</Text>
+
+          <Controller
+            control={control}
+            name="type"
+            render={({ field: { value, onChange } }) => (
+              <InputSwitch
+                options={typeOptions}
+                option={{
+                  label: value === "income" ? "Receita" : "Despesa",
+                  value,
+                }}
+                onChange={onChange}
+              />
+            )}
+          />
+        </View>
+
+        <Controller
+          control={control}
           name="category_id"
           render={({ field: { value, onChange } }) => (
             <InputSelect
               placeholder="Selecione uma categoria"
-              selectedOption={categories.find(
-                (option) => option.id === value,
-              )}
+              selectedOption={categories.find((option) => option.id === value)}
               onChange={onChange}
               options={categories}
               error={errors?.category_id?.message}
@@ -194,9 +192,7 @@ export function TransactionFormModal({
           render={({ field: { value, onChange } }) => (
             <InputSelect
               placeholder="Selecione uma conta"
-              selectedOption={accounts.find(
-                (option) => option.id === value,
-              )}
+              selectedOption={accounts.find((option) => option.id === value)}
               onChange={onChange}
               options={accounts}
               error={errors?.account_id?.message}
