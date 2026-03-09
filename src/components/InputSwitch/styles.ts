@@ -3,7 +3,7 @@ import { colors } from "@/theme";
 
 export const styles = StyleSheet.create({
   container: {
-    width: 160,
+    width: "100%",
     height: 50,
     borderRadius: 10,
     backgroundColor: colors.gray[200],
@@ -16,8 +16,8 @@ export const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     height: "100%",
-    width: 80,
-    backgroundColor: colors.blue[500],
+    width: "50%",
+    backgroundColor: colors.blue[800],
     borderRadius: 10,
   },
   option: {

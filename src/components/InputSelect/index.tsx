@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
-import { colors } from "@/theme";
+import { colors, fontFamily } from "@/theme";
 import { styles } from "./styles";
 import { Error } from "../Error";
 
@@ -11,38 +11,46 @@ interface Option {
 }
 
 interface InputSelectProps {
+  id: string;
   placeholder: string;
   selectedOption: Option | null;
   onChange: (value: number) => void;
   options: Option[];
   error?: string;
+  isOpen: boolean;
+  setOpenSelect: (id: string | null) => void;
 }
 
 export function InputSelect({
+  id,
   placeholder,
   selectedOption,
   options,
   onChange,
   error,
+  isOpen,
+  setOpenSelect,
 }: InputSelectProps) {
-  const [isOpen, setIsOpen] = useState(false);
 
   function handleSelectOption(value: number) {
     onChange(value);
-    setIsOpen(false);
+    setOpenSelect(null);
   }
 
   return (
-    <View>
+    <View style={{ position: "relative" }}>
       <TouchableOpacity
         style={{
           ...styles.container,
+          ...(isOpen && {
+            zIndex: 4,
+          }),
           ...(error && {
             borderWidth: 1,
             borderColor: colors.red[500],
           }),
         }}
-        onPress={() => setIsOpen(!isOpen)}
+        onPress={() => setOpenSelect(isOpen ? null : id)}
       >
         <Text
           style={selectedOption ? styles.placeholderOff : styles.placeholderOn}
@@ -63,28 +71,33 @@ export function InputSelect({
         {error && <Error message={error} />}
       </TouchableOpacity>
 
-      <View
-        style={{ ...styles.modalContainer, display: isOpen ? "flex" : "none" }}
-      >
-        {options.map((option) => (
-          <TouchableOpacity
-            key={option.id}
-            onPress={() => handleSelectOption(option.id)}
-          >
-            <Text
-              style={
-                selectedOption?.id === option.id && {
-                  backgroundColor: colors.gray[100],
-                  padding: 5,
-                  borderRadius: 5,
-                }
-              }
+      {isOpen && (
+        <View style={styles.modalContainer}>
+          {options.map((option) => (
+            <TouchableOpacity
+              key={option.id}
+              onPress={() => handleSelectOption(option.id)}
+              style={{
+                flex: 1,
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              {option.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+              <Text
+                style={{
+                  ...{ padding: 5 },
+                  ...(selectedOption?.id === option.id && {
+                    fontFamily: fontFamily.bold,
+                  }),
+                }}
+              >
+                {option.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
     </View>
   );
 }

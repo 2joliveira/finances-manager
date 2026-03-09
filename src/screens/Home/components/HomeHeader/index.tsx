@@ -51,10 +51,6 @@ export function HomeHeader() {
           placeholderTextColor={colors.blue[300]}
         />
 
-        {/*<View style={styles.yearSelect}>
-          <Text style={styles.yearText}>2026</Text>
-        </View>*/}
-
         <InputYearPicker />
       </View>
 

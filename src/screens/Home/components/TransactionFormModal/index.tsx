@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +13,7 @@ import { colors } from "@/theme";
 import { styles } from "./styles";
 import { useAccount } from "@/hooks/useAccount";
 import { useTransactions } from "@/hooks/useTransaction";
+import { useState } from "react";
 
 interface TransactionFormModalProps {
   isOpen: boolean;
@@ -37,6 +38,8 @@ export function TransactionFormModal({
       transaction_date: new Date(),
     },
   });
+
+  const [openSelect, setOpenSelect] = useState<string | null>(null);
 
   const isInstallment = watch("is_installment");
 
@@ -76,142 +79,169 @@ export function TransactionFormModal({
           />
         </View>
 
-        <Controller
-          control={control}
-          name="description"
-          render={({ field: { value, onChange } }) => (
-            <InputText
-              placeholder="Descrição"
-              placeholderTextColor={colors.gray[400]}
-              value={value}
-              onChange={onChange}
-              error={errors?.description?.message}
-            />
-          )}
-        />
+        <View style={styles.content}>
+          <ScrollView>
+            <View
+              style={{
+                height: "100%",
+                gap: 20,
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <View>
+                <Text style={styles.label}>Tipo da transação</Text>
 
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            gap: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.label}>Compra parcelada</Text>
-
-            <Controller
-              control={control}
-              name="is_installment"
-              render={({ field: { value, onChange } }) => (
-                <InputSwitch
-                  options={[
-                    { label: "Sim", value: 1 },
-                    { label: "Não", value: 0 },
-                  ]}
-                  option={{
-                    label: value === 1 ? "Sim" : "Não",
-                    value,
-                  }}
-                  onChange={onChange}
+                <Controller
+                  control={control}
+                  name="type"
+                  render={({ field: { value, onChange } }) => (
+                    <InputSwitch
+                      options={typeOptions}
+                      option={{
+                        label: value === "income" ? "Receita" : "Despesa",
+                        value,
+                      }}
+                      onChange={onChange}
+                      optionSwitchWidth={345}
+                    />
+                  )}
                 />
-              )}
-            />
-          </View>
+              </View>
 
-          {isInstallment === 1 && (
-            <View style={{ flex: 1, marginTop: 26 }}>
               <Controller
                 control={control}
-                name="installments"
+                name="description"
                 render={({ field: { value, onChange } }) => (
                   <InputText
-                    placeholder="Número de parcelas"
+                    placeholder="Descrição"
                     placeholderTextColor={colors.gray[400]}
-                    value={value && String(value)}
+                    value={value}
                     onChange={onChange}
-                    keyboardType="numeric"
+                    error={errors?.description?.message}
+                  />
+                )}
+              />
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  gap: 10,
+                }}
+              >
+                <View>
+                  <Text style={styles.label}>Compra parcelada</Text>
+
+                  <Controller
+                    control={control}
+                    name="is_installment"
+                    render={({ field: { value, onChange } }) => (
+                      <InputSwitch
+                        options={[
+                          { label: "Sim", value: 1 },
+                          { label: "Não", value: 0 },
+                        ]}
+                        option={{
+                          label: value === 1 ? "Sim" : "Não",
+                          value,
+                        }}
+                        onChange={onChange}
+                        optionSwitchWidth={125}
+                      />
+                    )}
+                  />
+                </View>
+
+                {isInstallment === 1 && (
+                  <View style={{ flex: 1, marginTop: 26 }}>
+                    <Controller
+                      control={control}
+                      name="installments"
+                      render={({ field: { value, onChange } }) => (
+                        <InputText
+                          placeholder="Número de parcelas"
+                          placeholderTextColor={colors.gray[400]}
+                          value={value && String(value)}
+                          onChange={onChange}
+                          keyboardType="numeric"
+                        />
+                      )}
+                    />
+                  </View>
+                )}
+              </View>
+
+              <Controller
+                control={control}
+                name="amount"
+                render={({ field: { value, onChange } }) => (
+                  <InputText
+                    placeholder={
+                      isInstallment === 1 ? "Valor da parcela" : "Valor"
+                    }
+                    placeholderTextColor={colors.gray[400]}
+                    value={value ? String(value) : ""}
+                    onChange={onChange}
+                    keyboardType="decimal-pad"
+                    error={errors?.amount?.message}
+                  />
+                )}
+              />
+
+              <Controller
+                control={control}
+                name="category_id"
+                render={({ field: { value, onChange } }) => (
+                  <InputSelect
+                    id="category"
+                    placeholder="Selecione uma categoria"
+                    selectedOption={categories.find(
+                      (option) => option.id === value,
+                    )}
+                    onChange={onChange}
+                    options={categories}
+                    error={errors?.category_id?.message}
+                    isOpen={openSelect === "category"}
+                    setOpenSelect={setOpenSelect}
+                  />
+                )}
+              />
+
+              <Controller
+                control={control}
+                name="account_id"
+                render={({ field: { value, onChange } }) => (
+                  <InputSelect
+                    id="account"
+                    placeholder="Selecione uma conta"
+                    selectedOption={accounts.find(
+                      (option) => option.id === value,
+                    )}
+                    onChange={onChange}
+                    options={accounts}
+                    error={errors?.account_id?.message}
+                    isOpen={openSelect === "account"}
+                    setOpenSelect={setOpenSelect}
+                  />
+                )}
+              />
+
+              <Controller
+                control={control}
+                name="transaction_date"
+                render={({ field: { value, onChange } }) => (
+                  <InputDate
+                    label="Selecione a data da transação"
+                    value={value}
+                    onChange={onChange}
+                    error={errors?.transaction_date?.message}
                   />
                 )}
               />
             </View>
-          )}
+          </ScrollView>
         </View>
-
-        <Controller
-          control={control}
-          name="amount"
-          render={({ field: { value, onChange } }) => (
-            <InputText
-              placeholder={isInstallment === 1 ? "Valor da parcela" : "Valor"}
-              placeholderTextColor={colors.gray[400]}
-              value={value ? String(value) : ""}
-              onChange={onChange}
-              keyboardType="decimal-pad"
-              error={errors?.amount?.message}
-            />
-          )}
-        />
-
-        <View>
-          <Text style={styles.label}>Tipo da transação</Text>
-
-          <Controller
-            control={control}
-            name="type"
-            render={({ field: { value, onChange } }) => (
-              <InputSwitch
-                options={typeOptions}
-                option={{
-                  label: value === "income" ? "Receita" : "Despesa",
-                  value,
-                }}
-                onChange={onChange}
-              />
-            )}
-          />
-        </View>
-
-        <Controller
-          control={control}
-          name="category_id"
-          render={({ field: { value, onChange } }) => (
-            <InputSelect
-              placeholder="Selecione uma categoria"
-              selectedOption={categories.find((option) => option.id === value)}
-              onChange={onChange}
-              options={categories}
-              error={errors?.category_id?.message}
-            />
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="account_id"
-          render={({ field: { value, onChange } }) => (
-            <InputSelect
-              placeholder="Selecione uma conta"
-              selectedOption={accounts.find((option) => option.id === value)}
-              onChange={onChange}
-              options={accounts}
-              error={errors?.account_id?.message}
-            />
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="transaction_date"
-          render={({ field: { value, onChange } }) => (
-            <InputDate
-              label="Selecione a data da transação"
-              value={value}
-              onChange={onChange}
-              error={errors?.transaction_date?.message}
-            />
-          )}
-        />
 
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
           <View style={styles.button}>

@@ -25,6 +25,5 @@ export const styles = StyleSheet.create({
     fontFamily: fontFamily.medium,
     fontSize: 14,
     color: colors.gray[800],
-    zIndex: 999,
   },
 });
