@@ -103,6 +103,7 @@ export function TransactionFormModal({
                         value,
                       }}
                       onChange={onChange}
+                      optionSwitchWidth={345}
                     />
                   )}
                 />
@@ -146,6 +147,7 @@ export function TransactionFormModal({
                           value,
                         }}
                         onChange={onChange}
+                        optionSwitchWidth={125}
                       />
                     )}
                   />

@@ -11,11 +11,12 @@ interface InputSwitchProps {
   options: Option[];
   option: Option;
   onChange: (value: string | number) => void;
+  optionSwitchWidth: number;
 }
 
-export function InputSwitch({ options, option, onChange }: InputSwitchProps) {
+export function InputSwitch({ options, option, onChange, optionSwitchWidth }: InputSwitchProps) {
   const [containerWidth, setContainerWidth] = useState(
-    option.value === options[0].value ? 0 : 0,
+    option.value === options[0].value ? 0 : optionSwitchWidth,
   );
 
   const translateX = useRef(
