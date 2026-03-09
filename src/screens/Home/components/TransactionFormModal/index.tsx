@@ -13,6 +13,7 @@ import { colors } from "@/theme";
 import { styles } from "./styles";
 import { useAccount } from "@/hooks/useAccount";
 import { useTransactions } from "@/hooks/useTransaction";
+import { useState } from "react";
 
 interface TransactionFormModalProps {
   isOpen: boolean;
@@ -37,6 +38,8 @@ export function TransactionFormModal({
       transaction_date: new Date(),
     },
   });
+
+  const [openSelect, setOpenSelect] = useState<string | null>(null);
 
   const isInstallment = watch("is_installment");
 
@@ -189,6 +192,7 @@ export function TransactionFormModal({
                 name="category_id"
                 render={({ field: { value, onChange } }) => (
                   <InputSelect
+                    id="category"
                     placeholder="Selecione uma categoria"
                     selectedOption={categories.find(
                       (option) => option.id === value,
@@ -196,6 +200,8 @@ export function TransactionFormModal({
                     onChange={onChange}
                     options={categories}
                     error={errors?.category_id?.message}
+                    isOpen={openSelect === "category"}
+                    setOpenSelect={setOpenSelect}
                   />
                 )}
               />
@@ -205,6 +211,7 @@ export function TransactionFormModal({
                 name="account_id"
                 render={({ field: { value, onChange } }) => (
                   <InputSelect
+                    id="account"
                     placeholder="Selecione uma conta"
                     selectedOption={accounts.find(
                       (option) => option.id === value,
@@ -212,6 +219,8 @@ export function TransactionFormModal({
                     onChange={onChange}
                     options={accounts}
                     error={errors?.account_id?.message}
+                    isOpen={openSelect === "account"}
+                    setOpenSelect={setOpenSelect}
                   />
                 )}
               />
