@@ -1,5 +1,6 @@
 export const colors = {
   blue: {
+    50: "#dde6ffff",
     100: "#d8ddfc",
     200: "#b1bbf9",
     300: "#8DA2EB",

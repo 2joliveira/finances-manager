@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    position: "relative",
+    width: "100%",
     padding: 10,
     height: 50,
     backgroundColor: colors.gray[200],
@@ -29,19 +29,22 @@ export const styles = StyleSheet.create({
     fontFamily: fontFamily.medium,
     fontSize: 14,
     color: colors.gray[800],
+    zIndex: 5,
     marginTop: 10,
   },
   modalContainer: {
     position: "absolute",
-    bottom: 50,
+    bottom: 40,
     width: "100%",
-    padding: 15,
+    paddingTop: 15,
+    paddingBottom: 20,
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.gray[100],
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
+    borderBottomWidth: 0,
     gap: 20,
-    zIndex: 999,
+    zIndex: 3,
   }
 });

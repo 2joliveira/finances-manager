@@ -58,6 +58,7 @@ export function InputDate({ value, onChange, label, error }: DateInputProps) {
 const styles = StyleSheet.create({
   container: {
     position: "relative",
+    width: "100%",
     padding: 10,
     height: 50,
     backgroundColor: colors.gray[200],
