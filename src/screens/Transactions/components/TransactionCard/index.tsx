@@ -11,9 +11,9 @@ interface TransactionCard {
 }
 
 export function TransactionCard({ transaction }: TransactionCard) {
-  const { type, amount, description, is_installment } = transaction;
-
+  const { type, amount, description } = transaction;
   const isIncome = type === "income";
+
   return (
     <TouchableOpacity
       style={styles.container}

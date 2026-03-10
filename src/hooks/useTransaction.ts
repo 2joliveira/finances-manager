@@ -5,15 +5,15 @@ import { Context } from "@/context/context";
 import { Transaction } from "@/models/transaction";
 
 export function useTransactions() {
-  const { dispatch, months, transactions } = useContext(Context);
+  const { dispatch, months, transaction, transactions } = useContext(Context);
   const db = useSQLiteContext();
 
   const transactionRepo = useMemo(() => TransactionRepository(db), [db]);
 
   async function loadMonths(year: number = new Date().getFullYear()) {
-    const data = await transactionRepo.listByYear(year);
+    const response = await transactionRepo.listByYear(year);
 
-    dispatch({ type: "SET_MONTHS", payload: data });
+    dispatch({ type: "SET_MONTHS", payload: response });
   }
 
   async function listByPeriod(period?: string) {
@@ -29,15 +29,23 @@ export function useTransactions() {
     await loadMonths();
   }
 
+  async function showTransaction(id: string) {
+    const transaction = await transactionRepo.show(id);
+
+    dispatch({ type: "SET_TRANSACTION", payload: transaction });
+  }
+
   useEffect(() => {
     loadMonths();
   }, []);
 
   return {
-    createTransaction,
+    transaction,
+    transactions,
     months,
+    createTransaction,
+    showTransaction,
     loadMonths,
     listByPeriod,
-    transactions,
   };
 }
