@@ -12,6 +12,7 @@ const initialState: DatabaseState = {
   categories: [],
   accounts: [],
   months: [],
+  transactions: [],
 };
 
 export function FinancesManagerProvider({
@@ -28,6 +29,7 @@ export function FinancesManagerProvider({
         categories: state.categories,
         accounts: state.accounts,
         months: state.months,
+        transactions: state.transactions,
       }}
     >
       {children}

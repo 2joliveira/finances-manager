@@ -17,7 +17,7 @@ export function MonthCard({
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => router.navigate("/transactions/2023-01")}
+      onPress={() => router.navigate(`/transactions/${month}`)}
     >
       <View style={styles.cardHeader}>
         <Text style={styles.cardTitle}>{formatMonth(month)}</Text>
