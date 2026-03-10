@@ -3,11 +3,11 @@ import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Account, accountSchema } from "@/models/account";
+import { useAccount } from "@/hooks";
+import { Account, accountSchema } from "@/models";
 import { colors } from "@/theme";
 import { ActiveModal } from "../HomeHeader";
 import { styles } from "./styles";
-import { useAccount } from "@/hooks/useAccount";
 
 interface CategoryFormProps {
   activeModal: boolean;

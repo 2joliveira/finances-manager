@@ -10,7 +10,7 @@ import Modal from "react-native-modal";
 import { colors, fontFamily } from "@/theme";
 import { useTransactions } from "@/hooks/useTransaction";
 
-export default function InputYearPicker() {
+export function InputYearPicker() {
   const [selectedYear, setSelectedYear] = useState(2026);
   const [isOpen, setIsOpen] = useState(false);
 

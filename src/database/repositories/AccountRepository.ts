@@ -1,6 +1,6 @@
 import { Alert } from "react-native";
 import { SQLiteDatabase } from "expo-sqlite";
-import { Account, AccountModel } from "@/models/account";
+import { Account, AccountModel } from "@/models";
 
 export function AccountRepository(db: SQLiteDatabase) {
   return {

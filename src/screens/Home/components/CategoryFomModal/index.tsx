@@ -9,10 +9,10 @@ import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Category, categorySchema } from "@/models/category";
+import { useCategories } from "@/hooks";
+import { Category, categorySchema } from "@/models";
 import { colors, fontFamily } from "@/theme";
 import { ActiveModal } from "../HomeHeader";
-import { useCategories } from "@/hooks/useCategory";
 
 interface CategoryFormProps {
   activeModal: boolean;

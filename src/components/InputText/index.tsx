@@ -1,7 +1,7 @@
 import { Text, TextInput, View } from "react-native";
+import { colors } from "@/theme";
 import { Error } from "../Error";
 import { styles } from "./styles";
-import { colors } from "@/theme";
 
 interface InputTextProps extends Omit<
   React.ComponentProps<typeof TextInput>,

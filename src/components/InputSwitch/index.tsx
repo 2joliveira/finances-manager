@@ -1,4 +1,4 @@
-import { Pressable, Text, View, Animated, Dimensions } from "react-native";
+import { Pressable, Text, View, Animated } from "react-native";
 import { useRef, useState } from "react";
 import { styles } from "./styles";
 

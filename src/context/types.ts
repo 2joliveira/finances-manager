@@ -1,6 +1,4 @@
-import { Month } from "@/database/repositories/TransactionRepository";
-import { AccountModel } from "@/models/account";
-import { CategoryModel } from "@/models/category";
+import { AccountModel, CategoryModel, Month } from "@/models";
 
 export type DatabaseState = {
   categories: CategoryModel[];

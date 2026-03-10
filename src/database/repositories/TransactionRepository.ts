@@ -1,13 +1,6 @@
 import { Alert } from "react-native";
 import { SQLiteDatabase } from "expo-sqlite";
-import { Transaction } from "@/models/transaction";
-
-export interface Month {
-  month: string;
-  total_transactions: number;
-  total_expense: number;
-  total_income: number;
-}
+import { Month, Transaction } from "@/models";
 
 export function TransactionRepository(db: SQLiteDatabase) {
   return {
