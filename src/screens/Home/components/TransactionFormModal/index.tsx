@@ -1,19 +1,14 @@
+import { useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useCategories } from "@/hooks/useCategory";
-import { InputSwitch } from "@/components/InputSwitch";
-import { InputSelect } from "@/components/InputSelect";
-import { InputText } from "@/components/InputText";
-import { InputDate } from "@/components/InputDate";
-import { Transaction, transactionSchema } from "@/models/transaction";
+import { Transaction, transactionSchema } from "@/models";
+import { useAccount, useCategories, useTransactions } from "@/hooks";
+import { InputDate, InputSelect, InputSwitch, InputText } from "@/components";
 import { colors } from "@/theme";
 import { styles } from "./styles";
-import { useAccount } from "@/hooks/useAccount";
-import { useTransactions } from "@/hooks/useTransaction";
-import { useState } from "react";
 
 interface TransactionFormModalProps {
   isOpen: boolean;
@@ -42,6 +37,7 @@ export function TransactionFormModal({
   const [openSelect, setOpenSelect] = useState<string | null>(null);
 
   const isInstallment = watch("is_installment");
+  const isExpense = watch("type") === "expense";
 
   const { accounts } = useAccount();
   const { categories } = useCategories();
@@ -123,54 +119,56 @@ export function TransactionFormModal({
                 )}
               />
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  gap: 10,
-                }}
-              >
-                <View>
-                  <Text style={styles.label}>Compra parcelada</Text>
+              {isExpense && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    gap: 10,
+                  }}
+                >
+                  <View>
+                    <Text style={styles.label}>Compra parcelada</Text>
 
-                  <Controller
-                    control={control}
-                    name="is_installment"
-                    render={({ field: { value, onChange } }) => (
-                      <InputSwitch
-                        options={[
-                          { label: "Sim", value: 1 },
-                          { label: "Não", value: 0 },
-                        ]}
-                        option={{
-                          label: value === 1 ? "Sim" : "Não",
-                          value,
-                        }}
-                        onChange={onChange}
-                        optionSwitchWidth={125}
-                      />
-                    )}
-                  />
-                </View>
-
-                {isInstallment === 1 && (
-                  <View style={{ flex: 1, marginTop: 26 }}>
                     <Controller
                       control={control}
-                      name="installments"
+                      name="is_installment"
                       render={({ field: { value, onChange } }) => (
-                        <InputText
-                          placeholder="Número de parcelas"
-                          placeholderTextColor={colors.gray[400]}
-                          value={value && String(value)}
+                        <InputSwitch
+                          options={[
+                            { label: "Sim", value: 1 },
+                            { label: "Não", value: 0 },
+                          ]}
+                          option={{
+                            label: value === 1 ? "Sim" : "Não",
+                            value,
+                          }}
                           onChange={onChange}
-                          keyboardType="numeric"
+                          optionSwitchWidth={125}
                         />
                       )}
                     />
                   </View>
-                )}
-              </View>
+
+                  {isInstallment === 1 && (
+                    <View style={{ flex: 1, marginTop: 26 }}>
+                      <Controller
+                        control={control}
+                        name="installments"
+                        render={({ field: { value, onChange } }) => (
+                          <InputText
+                            placeholder="Número de parcelas"
+                            placeholderTextColor={colors.gray[400]}
+                            value={value && String(value)}
+                            onChange={onChange}
+                            keyboardType="numeric"
+                          />
+                        )}
+                      />
+                    </View>
+                  )}
+                </View>
+              )}
 
               <Controller
                 control={control}

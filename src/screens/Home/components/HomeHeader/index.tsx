@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { InputYearPicker } from "@/components";
 import { colors } from "@/theme";
-import { styles } from "./styles";
-import { MenuDialog } from "../MenuDialog";
 import { CategoryFormModal } from "../CategoryFomModal";
 import { AccountFormModal } from "../AccountFormModal";
-import InputYearPicker from "@/components/InputYearPicker";
+import { MenuDialog } from "../MenuDialog";
+import { styles } from "./styles";
 
 export type ActiveModal = "menu" | "categoryForm" | "accountForm" | null;
 

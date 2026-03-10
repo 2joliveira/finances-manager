@@ -1,6 +1,6 @@
 import { Alert } from "react-native";
 import { SQLiteDatabase } from "expo-sqlite";
-import type { Category, CategoryModel } from "@/models/category";
+import type { Category, CategoryModel } from "@/models";
 
 export function CategoryRepository(db: SQLiteDatabase) {
   return {

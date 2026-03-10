@@ -1,11 +1,11 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Month } from "@/database/repositories/TransactionRepository";
 import { formatCurrency } from "@/utils/formatCyrrency";
+import { formatMonth } from "@/utils/formatMonth";
+import { Month } from "@/models";
 import { colors } from "@/theme";
 import { styles } from "./styles";
-import { formatMonth } from "@/utils/formatMonth";
 
 export function MonthCard({
   month,

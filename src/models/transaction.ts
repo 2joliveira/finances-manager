@@ -20,3 +20,10 @@ export type Transaction = z.infer<typeof transactionSchema>;
 export interface TransactionModel extends Transaction {
   id: number;
 }
+
+export interface Month {
+  month: string;
+  total_transactions: number;
+  total_expense: number;
+  total_income: number;
+}
