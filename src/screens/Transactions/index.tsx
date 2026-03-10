@@ -1,28 +1,34 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 import { TransactionsHeader } from "./components/TransactionsHeader";
 import { TransactionCard } from "./components/TransactionCard";
+import { useTransactions } from "@/hooks";
+import { useEffect } from "react";
 
 export function Transactions() {
+  const { period } = useLocalSearchParams();
+
+  const { listByPeriod, transactions } = useTransactions();
+
+  useEffect(() => {
+    listByPeriod(period.toString());
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <TransactionsHeader />
 
       <ScrollView contentContainerStyle={styles.container}>
-          <TransactionCard
-            iconName="trending-up"
-            title="Salário"
-            subtitle="Receita"
-            value={1000}
-            type="income"
-          />
-
-          <TransactionCard
-            iconName="trending-down"
-            title="Aluguel"
-            subtitle="Despesa"
-            value={500}
-            type="expense"
-          />
+        {transactions ? (
+          transactions.map((transaction) => (
+            <TransactionCard
+              key={transaction.id}
+              transaction={transaction}
+            />
+          ))
+        ) : (
+          <Text>Não existe transações nesse periodo.</Text>
+        )}
       </ScrollView>
     </View>
   );
@@ -33,4 +39,4 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 12,
   },
-})
+});

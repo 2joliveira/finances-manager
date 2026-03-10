@@ -1,6 +1,11 @@
 import { Alert } from "react-native";
 import { SQLiteDatabase } from "expo-sqlite";
-import { Month, Transaction } from "@/models";
+import {
+  Month,
+  Transaction,
+  TransactionDetails,
+  TransactionModel,
+} from "@/models";
 
 export function TransactionRepository(db: SQLiteDatabase) {
   return {
@@ -63,5 +68,26 @@ export function TransactionRepository(db: SQLiteDatabase) {
         GROUP BY month
         ORDER BY month; 
       `),
+
+    listByPeriod: (period: string) =>
+      db.getAllAsync<TransactionModel>(`
+        SELECT * FROM transactions
+        WHERE transaction_date >= '${period}-01'
+          AND transaction_date < DATE('${period}-01', '+1 month')
+        ORDER BY transaction_date;
+      `),
+
+    show: (id: string) => {
+      return db.getFirstAsync<TransactionDetails>(`
+        SELECT 
+          t.*,
+          c.name AS category_name,
+          a.name AS account_name
+        FROM transactions t
+        JOIN categories c ON c.id = t.category_id
+        JOIN accounts a ON a.id = t.account_id
+        WHERE t.id = ${id}; 
+      `);
+    },
   };
 }

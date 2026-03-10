@@ -21,6 +21,11 @@ export interface TransactionModel extends Transaction {
   id: number;
 }
 
+export interface TransactionDetails extends TransactionModel {
+  category_name: string;
+  account_name: string;
+}
+
 export interface Month {
   month: string;
   total_transactions: number;
