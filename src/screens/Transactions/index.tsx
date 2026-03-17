@@ -16,7 +16,7 @@ export function Transactions() {
 
   return (
     <View style={{ flex: 1 }}>
-      <TransactionsHeader />
+      <TransactionsHeader period={period} />
 
       <ScrollView contentContainerStyle={styles.container}>
         {transactions ? (
