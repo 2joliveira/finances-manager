@@ -37,7 +37,7 @@ export async function migrate(database: SQLiteDatabase) {
         FOREIGN KEY (account_id) REFERENCES accounts(id)
     );
 
-    CREATE TABLE installments (
+    CREATE TABLE IF NOT EXISTS installments (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       transaction_id INTEGER NOT NULL,
       installment_number INTEGER NOT NULL,

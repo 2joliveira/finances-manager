@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Transaction, transactionSchema } from "@/models";
 import { useAccount, useCategories, useTransactions } from "@/hooks";
+import { typeOptions } from "@/context/types";
 import { InputDate, InputSelect, InputSwitch, InputText } from "@/components";
 import { colors } from "@/theme";
 import { styles } from "./styles";
@@ -43,11 +44,6 @@ export function TransactionFormModal({
   const { categories } = useCategories();
 
   const { createTransaction } = useTransactions();
-
-  const typeOptions = [
-    { label: "Receita", value: "income" },
-    { label: "Despesa", value: "expense" },
-  ];
 
   function onCloseModal() {
     reset();

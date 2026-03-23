@@ -9,10 +9,10 @@ export function CategoryRepository(db: SQLiteDatabase) {
 
     create: async (data: Category) => {
       const statement = await db.prepareAsync(
-        "INSERT INTO categories (name) VALUES ($name)",
+        "INSERT INTO categories (name, type) VALUES ($name, $type)",
       );
 
-      await statement.executeAsync({ $name: data.name });
+      await statement.executeAsync({ $name: data.name, $type: data.type });
 
       Alert.alert("Nova Categoria", "Categoria criada com sucesso!", [
         {

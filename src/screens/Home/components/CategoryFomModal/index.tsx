@@ -9,9 +9,11 @@ import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useCategories } from "@/hooks";
 import { Category, categorySchema } from "@/models";
+import { typeOptions } from "@/context/types";
+import { useCategories } from "@/hooks";
 import { colors, fontFamily } from "@/theme";
+import { InputSwitch, InputText } from "@/components";
 import { ActiveModal } from "../HomeHeader";
 
 interface CategoryFormProps {
@@ -23,8 +25,11 @@ export function CategoryFormModal({
   activeModal,
   setActiveModal,
 }: CategoryFormProps) {
-  const { control, handleSubmit, reset } = useForm({
+  const { control, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(categorySchema),
+    defaultValues: {
+      type: "expense",
+    }
   });
 
   const { createCategory } = useCategories();
@@ -53,22 +58,40 @@ export function CategoryFormModal({
           />
         </View>
 
-        <View>
-          <Text style={styles.label}>Nome da Categoria</Text>
-
+        <View style={{ display: "flex", gap: 20 }}>
           <Controller
             control={control}
             name="name"
             render={({ field: { value, onChange } }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="Ex: Alimentação"
+              <InputText
+                placeholder="Nome da Categoria"
                 placeholderTextColor={colors.gray[400]}
                 value={value}
-                onChangeText={onChange}
+                onChange={onChange}
+                error={errors?.name?.message}
               />
             )}
           />
+
+          <View>
+            <Text style={styles.label}>Tipo da transação</Text>
+
+            <Controller
+              control={control}
+              name="type"
+              render={({ field: { value, onChange } }) => (
+                <InputSwitch
+                  options={typeOptions}
+                  option={{
+                    label: value === "income" ? "Receita" : "Despesa",
+                    value,
+                  }}
+                  onChange={onChange}
+                  optionSwitchWidth={345}
+                />
+              )}
+            />
+          </View>
         </View>
 
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
@@ -84,7 +107,7 @@ export function CategoryFormModal({
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    height: "40%",
+    height: "50%",
     padding: 20,
     bottom: -20,
     right: -20,
