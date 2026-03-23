@@ -20,3 +20,8 @@ export type DatabaseAction =
   | { type: "SET_MONTHS"; payload: Month[] }
   | { type: "SET_TRANSACTION"; payload: TransactionDetails }
   | { type: "SET_TRANSACTIONS"; payload: TransactionModel[] };
+
+export const typeOptions = [
+  { label: "Receita", value: "income" },
+  { label: "Despesa", value: "expense" },
+];

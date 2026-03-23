@@ -21,7 +21,7 @@ export function Home() {
 
       <ScrollView>
         <View style={styles.list}>
-          {months.map((item) => (
+          {months?.map((item) => (
             <MonthCard key={item.month} {...item} />
           ))}
         </View>

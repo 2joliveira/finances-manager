@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Transaction, transactionSchema } from "@/models";
 import { useAccount, useCategories, useTransactions } from "@/hooks";
+import { typeOptions } from "@/context/types";
 import { InputDate, InputSelect, InputSwitch, InputText } from "@/components";
 import { colors } from "@/theme";
 import { styles } from "./styles";
@@ -44,11 +45,6 @@ export function TransactionFormModal({
 
   const { createTransaction } = useTransactions();
 
-  const typeOptions = [
-    { label: "Receita", value: "income" },
-    { label: "Despesa", value: "expense" },
-  ];
-
   function onCloseModal() {
     reset();
     setIsOpen(false);
@@ -75,8 +71,8 @@ export function TransactionFormModal({
           />
         </View>
 
-        <View style={styles.content}>
-          <ScrollView>
+        <ScrollView>
+          <View style={styles.content}>
             <View
               style={{
                 height: "100%",
@@ -122,8 +118,9 @@ export function TransactionFormModal({
               {isExpense && (
                 <View
                   style={{
+                    width: "100%",
                     flexDirection: "row",
-                    justifyContent: "space-between",
+                    justifyContent: isInstallment ? "space-between" : "flex-start",
                     gap: 10,
                   }}
                 >
@@ -238,14 +235,14 @@ export function TransactionFormModal({
                 )}
               />
             </View>
-          </ScrollView>
-        </View>
-
-        <TouchableOpacity onPress={handleSubmit(onSubmit)}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Criar Transação</Text>
           </View>
-        </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleSubmit(onSubmit)}>
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Criar Transação</Text>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     </Modal>
   );

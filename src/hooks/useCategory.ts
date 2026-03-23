@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo } from "react";
 import { useSQLiteContext } from "expo-sqlite";
 import { CategoryRepository } from "@/database/repositories/CategoryRepository";
 import { Context } from "@/context/context";
-import { Account } from "@/models/account";
+import { Category } from "@/models";
 
 export function useCategories() {
   const { dispatch, categories } = useContext(Context);
@@ -15,7 +15,7 @@ export function useCategories() {
     dispatch({ type: "SET_CATEGORIES", payload: data });
   }
 
-  async function createCategory(data: Account) {
+  async function createCategory(data: Category) {
     await categoryRepo.create(data);
     await loadCategories();
   }
