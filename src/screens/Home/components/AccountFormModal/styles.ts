@@ -4,7 +4,7 @@ import { colors, fontFamily } from "@/theme";
 export const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    height: "40%",
+    height: "45%",
     padding: 20,
     bottom: -20,
     right: -20,

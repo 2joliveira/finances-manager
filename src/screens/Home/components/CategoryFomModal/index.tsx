@@ -107,7 +107,7 @@ export function CategoryFormModal({
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    height: "50%",
+    height: "45%",
     padding: 20,
     bottom: -20,
     right: -20,

@@ -8,17 +8,26 @@ export function CategoryRepository(db: SQLiteDatabase) {
       db.getAllAsync<CategoryModel>("SELECT * FROM categories ORDER BY name"),
 
     create: async (data: Category) => {
-      const statement = await db.prepareAsync(
-        "INSERT INTO categories (name, type) VALUES ($name, $type)",
-      );
+      try {
+        const statement = await db.prepareAsync(`
+            INSERT INTO accounts (name, type) VALUES ($name, $type)  
+          `);
 
-      await statement.executeAsync({ $name: data.name, $type: data.type });
+        await statement.executeAsync({ $name: data.name, $type: data.type });
 
-      Alert.alert("Nova Categoria", "Categoria criada com sucesso!", [
-        {
-          text: "Ok",
-        },
-      ]);
+        Alert.alert("Nova Categoria", "Categoria criada com sucesso!", [
+          {
+            text: "Ok",
+          },
+        ]);
+      } catch (erro) {
+        Alert.alert("Nova Categoria", "Erro ao criar uma nova categoria !", [
+          {
+            text: "Ok",
+          },
+        ]);
+        console.error({ erro });
+      }
     },
   };
 }

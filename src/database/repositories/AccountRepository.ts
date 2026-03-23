@@ -10,17 +10,26 @@ export function AccountRepository(db: SQLiteDatabase) {
       `),
 
     create: async (data: Account) => {
-      const statement = await db.prepareAsync(`
-        INSERT INTO accounts (name) VALUES ($name)  
+      try {
+        const statement = await db.prepareAsync(`
+        INSERT INTO accounts (name, type) VALUES ($name, $type)  
       `);
 
-      await statement.executeAsync({ $name: data.name });
+        await statement.executeAsync({ $name: data.name, $type: data.type });
 
-      Alert.alert("Nova Categoria", "Categoria criada com sucesso!", [
-        {
-          text: "Ok",
-        },
-      ]);
+        Alert.alert("Nova Conta", "Conta criada com sucesso!", [
+          {
+            text: "Ok",
+          },
+        ]);
+      } catch (erro) {
+        Alert.alert("Nova Conta", "Erro ao criar uma nova conta !", [
+          {
+            text: "Ok",
+          },
+        ]);
+        console.error({ erro });
+      }
     },
   };
 }

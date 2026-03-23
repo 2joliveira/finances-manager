@@ -12,7 +12,8 @@ export async function migrate(database: SQLiteDatabase) {
 
     CREATE TABLE IF NOT EXISTS accounts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name VARCHAR(100) NOT NULL
+      name VARCHAR(100) NOT NULL,
+      type TEXT NOT NULL 
     );
     
     CREATE TABLE IF NOT EXISTS transactions (

@@ -8,8 +8,10 @@ import { Account, accountSchema } from "@/models";
 import { colors } from "@/theme";
 import { ActiveModal } from "../HomeHeader";
 import { styles } from "./styles";
+import { InputSwitch, InputText } from "@/components";
+import { typeOptions } from "@/context/types";
 
-interface CategoryFormProps {
+interface AccountFormProps {
   activeModal: boolean;
   setActiveModal: (activeModal: ActiveModal) => void;
 }
@@ -17,9 +19,12 @@ interface CategoryFormProps {
 export function AccountFormModal({
   activeModal,
   setActiveModal,
-}: CategoryFormProps) {
-  const { control, handleSubmit, reset } = useForm({
+}: AccountFormProps) {
+  const { control, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(accountSchema),
+    defaultValues: {
+      type: "expense",
+    }
   });
 
   const { createAccount } = useAccount();
@@ -45,22 +50,40 @@ export function AccountFormModal({
           />
         </View>
 
-        <View>
-          <Text style={styles.label}>Forma de pagamento</Text>
-
+        <View style={{ display: "flex", gap: 20 }}>
           <Controller
             control={control}
             name="name"
             render={({ field: { value, onChange } }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="Ex: Cartão de crédito"
+              <InputText
+                placeholder="Pagamento"
                 placeholderTextColor={colors.gray[400]}
                 value={value}
-                onChangeText={onChange}
+                onChange={onChange}
+                error={errors?.name?.message}
               />
             )}
           />
+
+          <View>
+            <Text style={styles.label}>Tipo da transação</Text>
+
+            <Controller
+              control={control}
+              name="type"
+              render={({ field: { value, onChange } }) => (
+                <InputSwitch
+                  options={typeOptions}
+                  option={{
+                    label: value === "income" ? "Receita" : "Despesa",
+                    value,
+                  }}
+                  onChange={onChange}
+                  optionSwitchWidth={345}
+                />
+              )}
+            />
+          </View>
         </View>
 
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
