@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    height: "98%",
+    height: "85%",
     paddingHorizontal: 20,
     paddingVertical: 15,
     bottom: -25,
@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 5,
   },
   title: {
     fontFamily: fontFamily.bold,
@@ -50,7 +49,7 @@ export const styles = StyleSheet.create({
     height: 50,
     backgroundColor: colors.blue[500],
     borderRadius: 10,
-    marginTop: 10,
+    marginTop: 20,
   },
   buttonText: {
     fontFamily: fontFamily.bold,
