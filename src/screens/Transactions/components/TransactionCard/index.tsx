@@ -11,7 +11,14 @@ interface TransactionCard {
 }
 
 export function TransactionCard({ transaction }: TransactionCard) {
-  const { type, amount, description } = transaction;
+  const {
+    type,
+    amount,
+    description,
+    is_installment,
+    installment_number,
+    installments
+  } = transaction;
   const isIncome = type === "income";
 
   return (
@@ -35,14 +42,20 @@ export function TransactionCard({ transaction }: TransactionCard) {
         <Text style={styles.subtitle}>{isIncome ? "Receita" : "Despesa"}</Text>
       </View>
 
-      <Text
-        style={{
-          ...styles.value,
-          color: isIncome ? colors.green[500] : colors.red[500],
-        }}
-      >
-        {`${!isIncome ? "-" : "+"} ${formatCurrency(amount)}`}
-      </Text>
+      <View>
+        <Text
+          style={{
+            ...styles.value,
+            color: isIncome ? colors.green[500] : colors.red[500],
+          }}
+        >
+          {`${!isIncome ? "-" : "+"} ${formatCurrency(amount)}`}
+        </Text>
+
+        {is_installment === 1 &&
+          <Text style={styles.installments}>{`Parcela ${installment_number} de ${installments}`}</Text>
+        }
+      </View>
     </TouchableOpacity>
   );
 }

@@ -108,9 +108,10 @@ export function TransactionRepository(db: SQLiteDatabase) {
             t.description,
             t.type,
             i.amount,
-            i.due_date AS date,
+            i.due_date AS transaction_date,
             i.installment_number,
             t.installments,
+            t.is_installment,
             c.name AS category_name,
             a.name AS account_name
           FROM installments i
@@ -129,9 +130,10 @@ export function TransactionRepository(db: SQLiteDatabase) {
             t.description,
             t.type,
             t.amount,
-            t.transaction_date AS date,
+            t.transaction_date,
             NULL AS installment_number,
             NULL AS installments,
+            t.is_installment,
             c.name AS category_name,
             a.name AS account_name
           FROM transactions t
@@ -141,9 +143,8 @@ export function TransactionRepository(db: SQLiteDatabase) {
           WHERE t.is_installment = 0
             AND t.transaction_date >= '${period}-01'
             AND t.transaction_date < DATE('${period}-01', '+1 month')
-
         )
-        ORDER BY date;
+        ORDER BY transaction_date;
       `);
     },
 
