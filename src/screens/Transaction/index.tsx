@@ -9,17 +9,9 @@ import { useTransactions } from "@/hooks";
 import { useEffect } from "react";
 import { Loading } from "@/components";
 
-const mock = {
-  type: "income",
-  title: "Salário",
-  date: "2026-01-01",
-  value: 5000,
-  description: "Salário",
-  category: "Salário",
-};
-
 export function Transaction() {
   const { id } = useLocalSearchParams();
+
   const { showTransaction, transaction } = useTransactions();
 
   const isIncome = transaction?.type === "income";
@@ -100,7 +92,7 @@ export function Transaction() {
         <DetailItem
           icon="event"
           title="Data"
-          value={transaction?.transaction_date.toString()}
+          value={transaction?.transaction_date?.toString()}
         />
         <View style={styles.divider} />
         <DetailItem icon="trending-up" title="Tipo" value={transaction?.type} />

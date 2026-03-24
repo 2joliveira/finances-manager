@@ -17,6 +17,11 @@ export const transactionSchema = z.object({
 
 export type Transaction = z.infer<typeof transactionSchema>;
 
+export interface InstallmentDetails {
+  amount: number;
+  due_date: Date;
+  installment_number: number;
+}
 export interface TransactionModel extends Transaction {
   id: number;
 }
@@ -24,6 +29,7 @@ export interface TransactionModel extends Transaction {
 export interface TransactionDetails extends TransactionModel {
   category_name: string;
   account_name: string;
+  installment_details?: InstallmentDetails;
 }
 
 export interface Month {

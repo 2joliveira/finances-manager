@@ -1,11 +1,12 @@
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useSQLiteContext } from "expo-sqlite";
 import { TransactionRepository } from "@/database/repositories/TransactionRepository";
 import { Context } from "@/context/context";
 import { Transaction } from "@/models/transaction";
 
 export function useTransactions() {
-  const { dispatch, months, transaction, transactions } = useContext(Context);
+  const { dispatch, months, transaction, transactions, selectedPeriod } =
+    useContext(Context);
   const db = useSQLiteContext();
 
   const transactionRepo = useMemo(() => TransactionRepository(db), [db]);
@@ -21,7 +22,7 @@ export function useTransactions() {
 
     const response = await transactionRepo.listByPeriod(period);
 
-    dispatch({ type: "SET_TRANSACTIONS", payload: response });
+    dispatch({ type: "SET_TRANSACTIONS", payload: { data: response, period } });
   }
 
   async function createTransaction(data: Transaction) {
@@ -30,7 +31,7 @@ export function useTransactions() {
   }
 
   async function showTransaction(id: string) {
-    const transaction = await transactionRepo.show(id);
+    const transaction = await transactionRepo.show(id, selectedPeriod);
 
     dispatch({ type: "SET_TRANSACTION", payload: transaction });
   }

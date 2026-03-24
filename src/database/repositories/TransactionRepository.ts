@@ -99,13 +99,12 @@ export function TransactionRepository(db: SQLiteDatabase) {
     },
 
     listByPeriod: (period: string) => {
-      return db.getAllAsync(`
+      return db.getAllAsync<TransactionModel>(`
         SELECT *
         FROM (
-
           -- 🟢 PARCELADAS
           SELECT 
-            i.id,
+            t.id,
             t.description,
             t.type,
             i.amount,
@@ -144,34 +143,39 @@ export function TransactionRepository(db: SQLiteDatabase) {
             AND t.transaction_date < DATE('${period}-01', '+1 month')
 
         )
-
         ORDER BY date;
       `);
     },
 
-    show: async (id: string) => {
-      const transaction = await db.getFirstAsync<TransactionDetails>(`
-        SELECT 
-          t.*,
-          c.name AS category_name,
-          a.name AS account_name
-        FROM transactions t
-        JOIN categories c ON c.id = t.category_id
-        JOIN accounts a ON a.id = t.account_id
-        WHERE t.id = ${id};
-      `);
+    show: async (id: string, period: string) => {
+      const startDate = `${period}-01`;
+      const endDate = `${period}-31`;
 
-      const installments = await db.getAllAsync(`
-        SELECT *
-        FROM installments
-        WHERE transaction_id = ${id}
-        ORDER BY installment_number
-      `);
-
-      return {
-        ...transaction,
-        installments,
-      };
+      return await db.getFirstAsync<TransactionDetails>(
+        `
+          SELECT 
+            t.*,
+            c.name AS category_name,
+            a.name AS account_name,
+            (
+              SELECT json_object(
+                'installment_number', i.installment_number,
+                'amount', i.amount,
+                'due_date', i.due_date
+              )
+              FROM installments i
+              WHERE i.transaction_id = t.id
+                AND i.due_date BETWEEN ? AND ?
+              ORDER BY i.due_date
+              LIMIT 1
+            ) AS installment_details
+          FROM transactions t
+          JOIN categories c ON c.id = t.category_id
+          JOIN accounts a ON a.id = t.account_id
+          WHERE t.id = ?
+        `,
+        [startDate, endDate, id],
+      );
     },
   };
 }
