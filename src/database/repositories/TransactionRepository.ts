@@ -158,21 +158,21 @@ export function TransactionRepository(db: SQLiteDatabase) {
             t.*,
             c.name AS category_name,
             a.name AS account_name,
-            (
-              SELECT json_object(
-                'installment_number', i.installment_number,
-                'amount', i.amount,
-                'due_date', i.due_date
-              )
-              FROM installments i
-              WHERE i.transaction_id = t.id
-                AND i.due_date BETWEEN ? AND ?
-              ORDER BY i.due_date
-              LIMIT 1
-            ) AS installment_details
+            i.installment_number,
+            i.due_date
           FROM transactions t
           JOIN categories c ON c.id = t.category_id
           JOIN accounts a ON a.id = t.account_id
+          LEFT JOIN installments i 
+            ON i.id = (
+              SELECT i2.id
+              FROM installments i2
+              WHERE i2.transaction_id = t.id
+                AND i2.due_date >= ?
+                AND i2.due_date <= ?
+              ORDER BY i2.due_date ASC
+              LIMIT 1
+            )
           WHERE t.id = ?
         `,
         [startDate, endDate, id],

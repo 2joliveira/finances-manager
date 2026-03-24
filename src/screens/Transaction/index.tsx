@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons/";
 import { formatCurrency } from "@/utils/formatCyrrency";
 import { DetailItem } from "./components/DetailItem";
@@ -15,6 +15,7 @@ export function Transaction() {
   const { showTransaction, transaction } = useTransactions();
 
   const isIncome = transaction?.type === "income";
+  const isInstallment = transaction?.is_installment === 1;
 
   useEffect(() => {
     showTransaction(id.toString());
@@ -71,32 +72,50 @@ export function Transaction() {
       <Text style={styles.detailsText}>Detalhes</Text>
 
       <View style={styles.detailsContainer}>
-        <DetailItem
-          icon="description"
-          title="Descrição"
-          value={transaction?.description}
-        />
-        <View style={styles.divider} />
-        <DetailItem
-          icon="attach-money"
-          title="Valor"
-          value={formatCurrency(transaction?.amount)}
-        />
-        <View style={styles.divider} />
-        <DetailItem
-          icon="local-offer"
-          title="Categoria"
-          value={transaction?.category_name?.toString()}
-        />
-        <View style={styles.divider} />
-        <DetailItem
-          icon="event"
-          title="Data"
-          value={transaction?.transaction_date?.toString()}
-        />
-        <View style={styles.divider} />
-        <DetailItem icon="trending-up" title="Tipo" value={transaction?.type} />
+        <ScrollView>
+          <DetailItem
+            icon="description"
+            title="Descrição"
+            value={transaction?.description}
+          />
+          <View style={styles.divider} />
+          <DetailItem
+            icon="attach-money"
+            title="Valor"
+            value={formatCurrency(transaction?.amount)}
+          />
+          <View style={styles.divider} />
+          {isInstallment && (
+            <>
+              <DetailItem
+                icon="local-offer"
+                title="Valor total"
+                value={formatCurrency(transaction?.amount * transaction.installments)}
+              />
+              <View style={styles.divider} />
+            </>
+          )}
+          <DetailItem
+            icon="event"
+            title="Data"
+            value={isInstallment ? transaction.due_date?.toString() : transaction?.transaction_date?.toString()}
+          />
+          {isInstallment && (
+            <>
+              <View style={styles.divider} />
+              <DetailItem
+                icon="add-card"
+                title="Parcelas"
+                value={`${transaction?.installment_number} de ${transaction?.installments}`} />
+            </>
+          )}
+          <View style={styles.divider} />
+          <DetailItem
+            icon="account-balance"
+            title="Conta"
+            value={transaction?.account_name} />
+        </ScrollView>
       </View>
-    </View>
+    </View >
   );
 }

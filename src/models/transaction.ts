@@ -26,6 +26,7 @@ export interface TransactionModel extends Transaction {
 export interface TransactionDetails extends TransactionModel {
   category_name: string;
   account_name: string;
+  due_date?: Date;
 }
 
 export interface Month {
