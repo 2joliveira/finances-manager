@@ -99,19 +99,19 @@ export function TransactionRepository(db: SQLiteDatabase) {
     },
 
     listByPeriod: (period: string) => {
-      return db.getAllAsync(`
+      return db.getAllAsync<TransactionModel>(`
         SELECT *
         FROM (
-
           -- 🟢 PARCELADAS
           SELECT 
-            i.id,
+            t.id,
             t.description,
             t.type,
             i.amount,
-            i.due_date AS date,
+            i.due_date AS transaction_date,
             i.installment_number,
             t.installments,
+            t.is_installment,
             c.name AS category_name,
             a.name AS account_name
           FROM installments i
@@ -130,9 +130,10 @@ export function TransactionRepository(db: SQLiteDatabase) {
             t.description,
             t.type,
             t.amount,
-            t.transaction_date AS date,
+            t.transaction_date,
             NULL AS installment_number,
             NULL AS installments,
+            t.is_installment,
             c.name AS category_name,
             a.name AS account_name
           FROM transactions t
@@ -142,36 +143,40 @@ export function TransactionRepository(db: SQLiteDatabase) {
           WHERE t.is_installment = 0
             AND t.transaction_date >= '${period}-01'
             AND t.transaction_date < DATE('${period}-01', '+1 month')
-
         )
-
-        ORDER BY date;
+        ORDER BY transaction_date;
       `);
     },
 
-    show: async (id: string) => {
-      const transaction = await db.getFirstAsync<TransactionDetails>(`
-        SELECT 
-          t.*,
-          c.name AS category_name,
-          a.name AS account_name
-        FROM transactions t
-        JOIN categories c ON c.id = t.category_id
-        JOIN accounts a ON a.id = t.account_id
-        WHERE t.id = ${id};
-      `);
+    show: async (id: string, period: string) => {
+      const startDate = `${period}-01`;
+      const endDate = `${period}-31`;
 
-      const installments = await db.getAllAsync(`
-        SELECT *
-        FROM installments
-        WHERE transaction_id = ${id}
-        ORDER BY installment_number
-      `);
-
-      return {
-        ...transaction,
-        installments,
-      };
+      return await db.getFirstAsync<TransactionDetails>(
+        `
+          SELECT 
+            t.*,
+            c.name AS category_name,
+            a.name AS account_name,
+            i.installment_number,
+            i.due_date
+          FROM transactions t
+          JOIN categories c ON c.id = t.category_id
+          JOIN accounts a ON a.id = t.account_id
+          LEFT JOIN installments i 
+            ON i.id = (
+              SELECT i2.id
+              FROM installments i2
+              WHERE i2.transaction_id = t.id
+                AND i2.due_date >= ?
+                AND i2.due_date <= ?
+              ORDER BY i2.due_date ASC
+              LIMIT 1
+            )
+          WHERE t.id = ?
+        `,
+        [startDate, endDate, id],
+      );
     },
   };
 }

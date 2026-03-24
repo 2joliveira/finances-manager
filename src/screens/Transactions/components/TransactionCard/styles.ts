@@ -31,6 +31,12 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.gray[600],
   },
+  installments: {
+    fontFamily: fontFamily.regular,
+    fontSize: 12,
+    color: colors.gray[600],
+    textAlign: "right"
+  },
   value: {
     fontFamily: fontFamily.bold,
     fontSize: 16,

@@ -19,11 +19,14 @@ export type Transaction = z.infer<typeof transactionSchema>;
 
 export interface TransactionModel extends Transaction {
   id: number;
+  amount: number;
+  installment_number: number;
 }
 
 export interface TransactionDetails extends TransactionModel {
   category_name: string;
   account_name: string;
+  due_date?: Date;
 }
 
 export interface Month {

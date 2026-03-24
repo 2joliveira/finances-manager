@@ -1,8 +1,8 @@
-import { DatabaseAction, DatabaseState } from "./types";
+import { Actions, DatabaseState } from "./types";
 
 export function databaseReducer(
   state: DatabaseState,
-  action: DatabaseAction,
+  action: Actions,
 ): DatabaseState {
   switch (action.type) {
     case "SET_CATEGORIES":
@@ -18,7 +18,7 @@ export function databaseReducer(
       return { ...state, transaction: action.payload };
 
     case "SET_TRANSACTIONS":
-      return { ...state, transactions: action.payload };
+      return { ...state, transactions: action.payload.data, selectedPeriod: action.payload.period };
 
     default:
       return state;

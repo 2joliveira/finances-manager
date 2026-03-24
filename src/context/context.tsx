@@ -1,9 +1,9 @@
 import { createContext, useReducer } from "react";
 import { databaseReducer } from "./reducer";
-import { DatabaseAction, DatabaseState } from "./types";
+import { Actions, DatabaseState } from "./types";
 
 type ContextData = DatabaseState & {
-  dispatch: React.ActionDispatch<[action: DatabaseAction]>;
+  dispatch: React.ActionDispatch<[action: Actions]>;
 };
 
 export const Context = createContext<ContextData>({} as ContextData);
@@ -14,6 +14,7 @@ const initialState: DatabaseState = {
   months: [],
   transactions: [],
   transaction: null,
+  selectedPeriod: null,
 };
 
 export function FinancesManagerProvider({
@@ -32,6 +33,7 @@ export function FinancesManagerProvider({
         months: state.months,
         transactions: state.transactions,
         transaction: state.transaction,
+        selectedPeriod: state.selectedPeriod,
       }}
     >
       {children}
