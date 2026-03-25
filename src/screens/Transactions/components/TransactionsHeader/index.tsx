@@ -12,6 +12,9 @@ export function TransactionsHeader({ period }: { period: string | string[] }) {
 
   const currentMonth = months.find(month => month.month === period);
 
+  const totalIncome = currentMonth?.total_income ? currentMonth.total_income : 0;
+  const totalExpense = currentMonth?.total_expense ? currentMonth.total_expense : 0;
+
   return (
     <LinearGradient
       colors={[colors.blue[500], colors.blue[800]]}
@@ -31,12 +34,12 @@ export function TransactionsHeader({ period }: { period: string | string[] }) {
       </View>
 
       <View style={styles.detailsContainer}>
-        <DetailsCard title="Receita" iconName="trending-up" value={currentMonth.total_income} />
-        <DetailsCard title="Despesas" iconName="trending-down" value={currentMonth.total_expense} />
+        <DetailsCard title="Receita" iconName="trending-up" value={totalIncome} />
+        <DetailsCard title="Despesas" iconName="trending-down" value={totalExpense} />
         <DetailsCard
           title="Saldo"
           iconName="drag-handle"
-          value={currentMonth.total_income - currentMonth.total_expense}
+          value={totalIncome - totalExpense}
         />
       </View>
     </LinearGradient>

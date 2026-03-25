@@ -15,6 +15,7 @@ const initialState: DatabaseState = {
   transactions: [],
   transaction: null,
   selectedPeriod: null,
+  selectedYear: null,
 };
 
 export function FinancesManagerProvider({
@@ -34,6 +35,7 @@ export function FinancesManagerProvider({
         transactions: state.transactions,
         transaction: state.transaction,
         selectedPeriod: state.selectedPeriod,
+        selectedYear: state.selectedYear,
       }}
     >
       {children}

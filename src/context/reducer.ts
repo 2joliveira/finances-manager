@@ -12,13 +12,21 @@ export function databaseReducer(
       return { ...state, accounts: action.payload };
 
     case "SET_MONTHS":
-      return { ...state, months: action.payload };
+      return {
+        ...state,
+        months: action.payload.data,
+        selectedYear: action.payload.year,
+      };
 
     case "SET_TRANSACTION":
       return { ...state, transaction: action.payload };
 
     case "SET_TRANSACTIONS":
-      return { ...state, transactions: action.payload.data, selectedPeriod: action.payload.period };
+      return {
+        ...state,
+        transactions: action.payload.data,
+        selectedPeriod: action.payload.period,
+      };
 
     default:
       return state;
