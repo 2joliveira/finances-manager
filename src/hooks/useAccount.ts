@@ -1,31 +1,35 @@
-import { useContext, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useSQLiteContext } from "expo-sqlite";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AccountRepository } from "@/database/repositories/AccountRepository";
-import { Context } from "@/context/context";
 import { Account } from "@/models";
 
 export function useAccount() {
-  const { dispatch, accounts } = useContext(Context);
   const db = useSQLiteContext();
+  const queryClient = useQueryClient();
 
   const accountRepo = useMemo(() => AccountRepository(db), [db]);
 
-  async function loadAccounts() {
-    const data = await accountRepo.findAll();
-    dispatch({ type: "SET_ACCOUNTS", payload: data });
-  }
+  const { data: accounts, isLoading: isLoadingAccounts } = useQuery({
+    queryKey: ["accounts"],
+    queryFn: () => {
+      return accountRepo.findAll();
+    },
+  });
 
-  async function createAccount(data: Account) {
-    await accountRepo.create(data);
-    await loadAccounts();
-  }
-
-  useEffect(() => {
-    loadAccounts();
-  }, []);
+  const createAccount = useMutation({
+    mutationFn: async (data: Account) => {
+      return await accountRepo.create(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+    },
+  });
 
   return {
-    createAccount,
     accounts,
+    isLoadingAccounts,
+    createAccount: createAccount.mutateAsync,
+    isCreatingAccount: createAccount.isPending,
   };
 }

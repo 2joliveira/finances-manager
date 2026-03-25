@@ -40,7 +40,7 @@ export function TransactionFormModal({
   const isInstallment = watch("is_installment");
   const isExpense = watch("type") === "expense";
 
-  const { accounts } = useAccount();
+  const { accounts, isLoadingAccounts } = useAccount();
   const { categories, isLoadingCategories } = useCategories();
 
   const { createTransaction, isCreatingTransaction } = useTransactions();
@@ -222,7 +222,7 @@ export function TransactionFormModal({
                     error={errors?.account_id?.message}
                     isOpen={openSelect === "account"}
                     setOpenSelect={setOpenSelect}
-                    isLoading={isLoadingCategories}
+                    isLoading={isLoadingAccounts}
                   />
                 )}
               />

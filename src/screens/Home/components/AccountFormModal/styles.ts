@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.gray[800],
   },
-  buton: {
+  button: {
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
