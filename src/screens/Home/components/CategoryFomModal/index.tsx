@@ -2,7 +2,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from "react-native";
 import Modal from "react-native-modal";
@@ -12,8 +11,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Category, categorySchema } from "@/models";
 import { typeOptions } from "@/context/types";
 import { useCategories } from "@/hooks";
+import { InputSwitch, InputText, Loading } from "@/components";
 import { colors, fontFamily } from "@/theme";
-import { InputSwitch, InputText } from "@/components";
 import { ActiveModal } from "../HomeHeader";
 
 interface CategoryFormProps {
@@ -32,12 +31,15 @@ export function CategoryFormModal({
     }
   });
 
-  const { createCategory } = useCategories();
+  const { createCategory, isCreatingCategory } = useCategories();
 
   function onSubmit(data: Category) {
     createCategory(data);
-    setActiveModal(null);
-    reset();
+
+    if (!isCreatingCategory) {
+      setActiveModal(null);
+      reset();
+    }
   }
 
   return (
@@ -96,7 +98,9 @@ export function CategoryFormModal({
 
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
           <View style={styles.button}>
-            <Text style={styles.buttonText}>Criar Categoria</Text>
+            {isCreatingCategory
+              ? <Loading color={colors.white} />
+              : <Text style={styles.buttonText}>Criar Categoria</Text>}
           </View>
         </TouchableOpacity>
       </View>

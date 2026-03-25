@@ -3,6 +3,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { colors, fontFamily } from "@/theme";
 import { styles } from "./styles";
 import { Error } from "../Error";
+import { Loading } from "../Loading";
 
 interface Option {
   id: number;
@@ -18,6 +19,7 @@ interface InputSelectProps {
   error?: string;
   isOpen: boolean;
   setOpenSelect: (id: string | null) => void;
+  isLoading: boolean;
 }
 
 export function InputSelect({
@@ -29,6 +31,7 @@ export function InputSelect({
   error,
   isOpen,
   setOpenSelect,
+  isLoading,
 }: InputSelectProps) {
 
   function handleSelectOption(value: number) {
@@ -72,29 +75,31 @@ export function InputSelect({
 
       {isOpen && (
         <View style={styles.modalContainer}>
-          {options.map((option) => (
-            <TouchableOpacity
-              key={option.id}
-              onPress={() => handleSelectOption(option.id)}
-              style={{
-                flex: 1,
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text
+          {isLoading
+            ? <Loading />
+            : options.map((option) => (
+              <TouchableOpacity
+                key={option.id}
+                onPress={() => handleSelectOption(option.id)}
                 style={{
-                  ...{ padding: 5 },
-                  ...(selectedOption?.id === option.id && {
-                    fontFamily: fontFamily.bold,
-                  }),
+                  flex: 1,
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                {option.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
+                <Text
+                  style={{
+                    ...{ padding: 5 },
+                    ...(selectedOption?.id === option.id && {
+                      fontFamily: fontFamily.bold,
+                    }),
+                  }}
+                >
+                  {option.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
         </View>
       )}
     </View>

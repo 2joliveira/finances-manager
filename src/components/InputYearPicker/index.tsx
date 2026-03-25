@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -8,22 +8,21 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { colors, fontFamily } from "@/theme";
-import { useTransactions } from "@/hooks/useTransaction";
+import { Context } from "@/context/context";
 
 export function InputYearPicker() {
-  const [selectedYear, setSelectedYear] = useState(2026);
   const [isOpen, setIsOpen] = useState(false);
 
-  const scrollRef = useRef<ScrollView>(null);
+  const { dispatch, selectedYear } = useContext(Context);
 
-  const { loadMonths } = useTransactions();
+
+  const scrollRef = useRef<ScrollView>(null);
 
   const years = Array.from({ length: 20 }, (_, i) => 2020 + i);
 
   function handleSelectYear(year: number) {
     setIsOpen(false);
-    loadMonths(year);
-    setSelectedYear(year);
+    dispatch({ type: "SET_SELECTED_YEAR", payload: year })
   }
 
   return (

@@ -3,15 +3,16 @@ import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useTransactions } from "@/hooks/useTransactions";
+import { Loading } from "@/components";
+import { colors } from "@/theme";
 import { TransactionFormModal } from "./components/TransactionFormModal";
 import { HomeHeader } from "./components/HomeHeader";
 import { MonthCard } from "./components/MonthCard";
-import { colors } from "@/theme";
-import { useTransactions } from "@/hooks/useTransaction";
 
 export function Home() {
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
-  const { months } = useTransactions();
+  const { months, isLoadingMonths } = useTransactions();
 
   return (
     <View style={styles.container}>
@@ -20,11 +21,15 @@ export function Home() {
       <HomeHeader />
 
       <ScrollView>
-        <View style={styles.list}>
-          {months?.map((item) => (
-            <MonthCard key={item.month} {...item} />
-          ))}
-        </View>
+        {isLoadingMonths
+          ? <Loading />
+          : (
+            <View style={styles.list}>
+              {months?.map((item) => (
+                <MonthCard key={item.month} {...item} />
+              ))}
+            </View>
+          )}
       </ScrollView>
 
       <TouchableOpacity

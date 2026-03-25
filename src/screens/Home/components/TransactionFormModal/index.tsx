@@ -4,10 +4,10 @@ import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
+import { typeOptions } from "@/context/types";
 import { Transaction, transactionSchema } from "@/models";
 import { useAccount, useCategories, useTransactions } from "@/hooks";
-import { typeOptions } from "@/context/types";
-import { InputDate, InputSelect, InputSwitch, InputText } from "@/components";
+import { InputDate, InputSelect, InputSwitch, InputText, Loading } from "@/components";
 import { colors } from "@/theme";
 import { styles } from "./styles";
 
@@ -40,10 +40,10 @@ export function TransactionFormModal({
   const isInstallment = watch("is_installment");
   const isExpense = watch("type") === "expense";
 
-  const { accounts } = useAccount();
-  const { categories } = useCategories();
+  const { accounts, isLoadingAccounts } = useAccount();
+  const { categories, isLoadingCategories } = useCategories();
 
-  const { createTransaction } = useTransactions();
+  const { createTransaction, isCreatingTransaction } = useTransactions();
 
   function onCloseModal() {
     reset();
@@ -52,8 +52,11 @@ export function TransactionFormModal({
 
   function onSubmit(data: Transaction) {
     createTransaction(data);
-    reset();
-    setIsOpen(false);
+
+    if (!isCreatingTransaction) {
+      reset();
+      setIsOpen(false);
+    }
   }
 
   return (
@@ -191,7 +194,7 @@ export function TransactionFormModal({
                   <InputSelect
                     id="category"
                     placeholder="Selecione uma categoria"
-                    selectedOption={categories.find(
+                    selectedOption={categories?.find(
                       (option) => option.id === value,
                     )}
                     onChange={onChange}
@@ -199,6 +202,7 @@ export function TransactionFormModal({
                     error={errors?.category_id?.message}
                     isOpen={openSelect === "category"}
                     setOpenSelect={setOpenSelect}
+                    isLoading={isLoadingCategories}
                   />
                 )}
               />
@@ -210,7 +214,7 @@ export function TransactionFormModal({
                   <InputSelect
                     id="account"
                     placeholder="Selecione uma conta"
-                    selectedOption={accounts.find(
+                    selectedOption={accounts?.find(
                       (option) => option.id === value,
                     )}
                     onChange={onChange}
@@ -218,6 +222,7 @@ export function TransactionFormModal({
                     error={errors?.account_id?.message}
                     isOpen={openSelect === "account"}
                     setOpenSelect={setOpenSelect}
+                    isLoading={isLoadingAccounts}
                   />
                 )}
               />
@@ -239,7 +244,10 @@ export function TransactionFormModal({
 
           <TouchableOpacity onPress={handleSubmit(onSubmit)}>
             <View style={styles.button}>
-              <Text style={styles.buttonText}>Criar Transação</Text>
+              {isCreatingTransaction
+                ? <Loading color={colors.white} />
+                : <Text style={styles.buttonText}>Criar Transação</Text>
+              }
             </View>
           </TouchableOpacity>
         </ScrollView>

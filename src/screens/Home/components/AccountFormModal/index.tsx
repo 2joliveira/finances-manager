@@ -8,7 +8,7 @@ import { Account, accountSchema } from "@/models";
 import { colors } from "@/theme";
 import { ActiveModal } from "../HomeHeader";
 import { styles } from "./styles";
-import { InputSwitch, InputText } from "@/components";
+import { InputSwitch, InputText, Loading } from "@/components";
 import { typeOptions } from "@/context/types";
 
 interface AccountFormProps {
@@ -27,7 +27,7 @@ export function AccountFormModal({
     }
   });
 
-  const { createAccount } = useAccount();
+  const { createAccount, isCreatingAccount } = useAccount();
 
   function onSubmit(data: Account) {
     createAccount(data);
@@ -87,8 +87,11 @@ export function AccountFormModal({
         </View>
 
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
-          <View style={styles.buton}>
-            <Text style={styles.buttonText}>Criar Forma de Pagamento</Text>
+          <View style={styles.button}>
+            {isCreatingAccount
+              ? <Loading color={colors.white} />
+              : <Text style={styles.buttonText}>Criar Forma de Pagamento</Text>
+            }
           </View>
         </TouchableOpacity>
       </View>

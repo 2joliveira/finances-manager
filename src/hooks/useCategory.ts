@@ -1,31 +1,33 @@
-import { useContext, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useSQLiteContext } from "expo-sqlite";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CategoryRepository } from "@/database/repositories/CategoryRepository";
-import { Context } from "@/context/context";
 import { Category } from "@/models";
 
 export function useCategories() {
-  const { dispatch, categories } = useContext(Context);
   const db = useSQLiteContext();
+  const queryClient = useQueryClient();
 
   const categoryRepo = useMemo(() => CategoryRepository(db), [db]);
 
-  async function loadCategories() {
-    const data = await categoryRepo.findAll();
-    dispatch({ type: "SET_CATEGORIES", payload: data });
-  }
+  const { data: categories, isLoading: isLoadingCategories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => categoryRepo.findAll(),
+  });
 
-  async function createCategory(data: Category) {
-    await categoryRepo.create(data);
-    await loadCategories();
-  }
-
-  useEffect(() => {
-    loadCategories();
-  }, []);
+  const createCategory = useMutation({
+    mutationFn: async (data: Category) => {
+      return await categoryRepo.create(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+  });
 
   return {
-    categories,
-    createCategory,
+    categories: categories || [],
+    isLoadingCategories,
+    createCategory: createCategory.mutateAsync,
+    isCreatingCategory: createCategory.isPending,
   };
 }
