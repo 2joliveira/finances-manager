@@ -9,8 +9,6 @@ type ContextData = DatabaseState & {
 export const Context = createContext<ContextData>({} as ContextData);
 
 const initialState: DatabaseState = {
-  categories: [],
-  accounts: [],
   selectedPeriod: null,
   selectedYear: new Date().getFullYear(),
 };
@@ -26,8 +24,6 @@ export function FinancesManagerProvider({
     <Context.Provider
       value={{
         dispatch,
-        categories: state.categories,
-        accounts: state.accounts,
         selectedPeriod: state.selectedPeriod,
         selectedYear: state.selectedYear,
       }}

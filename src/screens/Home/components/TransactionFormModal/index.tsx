@@ -41,7 +41,7 @@ export function TransactionFormModal({
   const isExpense = watch("type") === "expense";
 
   const { accounts } = useAccount();
-  const { categories } = useCategories();
+  const { categories, isLoadingCategories } = useCategories();
 
   const { createTransaction, isCreatingTransaction } = useTransactions();
 
@@ -194,7 +194,7 @@ export function TransactionFormModal({
                   <InputSelect
                     id="category"
                     placeholder="Selecione uma categoria"
-                    selectedOption={categories.find(
+                    selectedOption={categories?.find(
                       (option) => option.id === value,
                     )}
                     onChange={onChange}
@@ -202,6 +202,7 @@ export function TransactionFormModal({
                     error={errors?.category_id?.message}
                     isOpen={openSelect === "category"}
                     setOpenSelect={setOpenSelect}
+                    isLoading={isLoadingCategories}
                   />
                 )}
               />
@@ -213,7 +214,7 @@ export function TransactionFormModal({
                   <InputSelect
                     id="account"
                     placeholder="Selecione uma conta"
-                    selectedOption={accounts.find(
+                    selectedOption={accounts?.find(
                       (option) => option.id === value,
                     )}
                     onChange={onChange}
@@ -221,6 +222,7 @@ export function TransactionFormModal({
                     error={errors?.account_id?.message}
                     isOpen={openSelect === "account"}
                     setOpenSelect={setOpenSelect}
+                    isLoading={isLoadingCategories}
                   />
                 )}
               />
@@ -243,7 +245,7 @@ export function TransactionFormModal({
           <TouchableOpacity onPress={handleSubmit(onSubmit)}>
             <View style={styles.button}>
               {isCreatingTransaction
-                ? <Loading />
+                ? <Loading color={colors.white} />
                 : <Text style={styles.buttonText}>Criar Transação</Text>
               }
             </View>
