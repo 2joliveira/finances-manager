@@ -11,11 +11,8 @@ export const Context = createContext<ContextData>({} as ContextData);
 const initialState: DatabaseState = {
   categories: [],
   accounts: [],
-  months: [],
-  transactions: [],
-  transaction: null,
   selectedPeriod: null,
-  selectedYear: null,
+  selectedYear: new Date().getFullYear(),
 };
 
 export function FinancesManagerProvider({
@@ -31,9 +28,6 @@ export function FinancesManagerProvider({
         dispatch,
         categories: state.categories,
         accounts: state.accounts,
-        months: state.months,
-        transactions: state.transactions,
-        transaction: state.transaction,
         selectedPeriod: state.selectedPeriod,
         selectedYear: state.selectedYear,
       }}

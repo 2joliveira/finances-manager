@@ -1,32 +1,23 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons/";
 import { formatCurrency } from "@/utils/formatCyrrency";
 import { DetailItem } from "./components/DetailItem";
 import { colors } from "@/theme";
 import { styles } from "./styles";
 import { useTransactions } from "@/hooks";
-import { useEffect } from "react";
 import { Loading } from "@/components";
 
 export function Transaction() {
   const { id } = useLocalSearchParams();
 
-  const { showTransaction, transaction } = useTransactions();
+  const { transaction, isLoadingTransaction } = useTransactions(id.toString());
 
   const isIncome = transaction?.type === "income";
   const isInstallment = transaction?.is_installment === 1;
   const date = isInstallment ? transaction?.due_date : transaction?.transaction_date;
 
-  useEffect(() => {
-    showTransaction(id.toString());
-
-    return () => {
-      showTransaction(null);
-    };
-  }, []);
-
-  if (!transaction) return <Loading />
+  if (isLoadingTransaction) return <Loading />
 
   return (
     <View style={{ flex: 1 }}>

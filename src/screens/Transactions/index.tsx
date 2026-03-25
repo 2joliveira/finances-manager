@@ -3,16 +3,11 @@ import { useLocalSearchParams } from "expo-router";
 import { TransactionsHeader } from "./components/TransactionsHeader";
 import { TransactionCard } from "./components/TransactionCard";
 import { useTransactions } from "@/hooks";
-import { useEffect } from "react";
 
 export function Transactions() {
   const { period } = useLocalSearchParams();
 
-  const { listByPeriod, transactions } = useTransactions();
-
-  useEffect(() => {
-    listByPeriod(period.toString());
-  }, []);
+  const { transactions } = useTransactions();
 
   return (
     <View style={{ flex: 1 }}>

@@ -6,6 +6,8 @@ import { formatMonth } from "@/utils/formatMonth";
 import { Month } from "@/models";
 import { colors } from "@/theme";
 import { styles } from "./styles";
+import { useContext } from "react";
+import { Context } from "@/context/context";
 
 export function MonthCard({
   month,
@@ -13,11 +15,18 @@ export function MonthCard({
   total_income,
   total_transactions,
 }: Month) {
+  const { dispatch } = useContext(Context);
   const total = total_income - total_expense;
+
+  function handleSelectMonth() {
+    dispatch({ type: "SET_SELECTED_PERIOD", payload: month });
+    router.navigate(`/transactions/${month}`)
+  }
+
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => router.navigate(`/transactions/${month}`)}
+      onPress={handleSelectMonth}
     >
       <View style={styles.cardHeader}>
         <Text style={styles.cardTitle}>{formatMonth(month)}</Text>

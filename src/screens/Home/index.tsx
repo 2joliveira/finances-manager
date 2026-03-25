@@ -7,7 +7,7 @@ import { TransactionFormModal } from "./components/TransactionFormModal";
 import { HomeHeader } from "./components/HomeHeader";
 import { MonthCard } from "./components/MonthCard";
 import { colors } from "@/theme";
-import { useTransactions } from "@/hooks/useTransaction";
+import { useTransactions } from "@/hooks/useTransactions";
 
 export function Home() {
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);

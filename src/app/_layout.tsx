@@ -8,9 +8,10 @@ import {
   Inter_700Bold,
 } from "@expo-google-fonts/inter";
 import { migrate } from "@/database/migrate";
+import { FinancesManagerProvider } from "@/context/context";
+import { ReactQueryProvider } from "@/services/react-query-provider";
 import { colors } from "@/theme";
 import { Loading } from "../components/Loading";
-import { FinancesManagerProvider } from "@/context/context";
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -30,14 +31,16 @@ export default function Layout() {
         onInit={migrate}
         useSuspense
       >
-        <FinancesManagerProvider>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: { backgroundColor: colors.gray[100] },
-            }}
-          />
-        </FinancesManagerProvider>
+        <ReactQueryProvider>
+          <FinancesManagerProvider>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                contentStyle: { backgroundColor: colors.gray[100] },
+              }}
+            />
+          </FinancesManagerProvider>
+        </ReactQueryProvider>
       </SQLiteProvider>
     </Suspense>
   );

@@ -4,10 +4,10 @@ import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
+import { typeOptions } from "@/context/types";
 import { Transaction, transactionSchema } from "@/models";
 import { useAccount, useCategories, useTransactions } from "@/hooks";
-import { typeOptions } from "@/context/types";
-import { InputDate, InputSelect, InputSwitch, InputText } from "@/components";
+import { InputDate, InputSelect, InputSwitch, InputText, Loading } from "@/components";
 import { colors } from "@/theme";
 import { styles } from "./styles";
 
@@ -43,7 +43,7 @@ export function TransactionFormModal({
   const { accounts } = useAccount();
   const { categories } = useCategories();
 
-  const { createTransaction } = useTransactions();
+  const { createTransaction, isCreatingTransaction } = useTransactions();
 
   function onCloseModal() {
     reset();
@@ -52,8 +52,11 @@ export function TransactionFormModal({
 
   function onSubmit(data: Transaction) {
     createTransaction(data);
-    reset();
-    setIsOpen(false);
+
+    if (!isCreatingTransaction) {
+      reset();
+      setIsOpen(false);
+    }
   }
 
   return (
@@ -239,7 +242,10 @@ export function TransactionFormModal({
 
           <TouchableOpacity onPress={handleSubmit(onSubmit)}>
             <View style={styles.button}>
-              <Text style={styles.buttonText}>Criar Transação</Text>
+              {isCreatingTransaction
+                ? <Loading />
+                : <Text style={styles.buttonText}>Criar Transação</Text>
+              }
             </View>
           </TouchableOpacity>
         </ScrollView>
