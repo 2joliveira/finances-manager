@@ -1,13 +1,18 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
+import { useTransactions } from "@/hooks";
+import { Loading } from "@/components";
 import { TransactionsHeader } from "./components/TransactionsHeader";
 import { TransactionCard } from "./components/TransactionCard";
-import { useTransactions } from "@/hooks";
 
 export function Transactions() {
   const { period } = useLocalSearchParams();
 
-  const { transactions } = useTransactions();
+  const { transactions, isLoadingTransactions } = useTransactions();
+
+  if (isLoadingTransactions) {
+    return <Loading />
+  }
 
   return (
     <View style={{ flex: 1 }}>
