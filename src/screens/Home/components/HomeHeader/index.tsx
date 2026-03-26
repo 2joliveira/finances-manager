@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { InputYearPicker } from "@/components";
 import { colors } from "@/theme";
 import { CategoryFormModal } from "../CategoryFomModal";
 import { AccountFormModal } from "../AccountFormModal";
-import { MenuDialog } from "../MenuDialog";
 import { styles } from "./styles";
 
-export type ActiveModal = "menu" | "categoryForm" | "accountForm" | null;
+export type ActiveModal = "categoryForm" | "accountForm" | null;
 
 export function HomeHeader() {
   const [activeModal, setActiveModal] = useState<ActiveModal>(null);
@@ -20,44 +19,24 @@ export function HomeHeader() {
       style={styles.container}
     >
       <View style={styles.content}>
-        <Ionicons
-          name="wallet-outline"
-          color={colors.gray[100]}
-          size={24}
-          style={styles.icon}
-        />
-
         <View style={{ flex: 1 }}>
           <Text style={styles.title}>Minhas Finanças</Text>
-          <Text style={styles.subtitle}>Saldo: R$ 5.000,00</Text>
+          <Text style={styles.subtitle}>Controle seus gastos</Text>
         </View>
 
-        <TouchableOpacity
-          onPress={() => setActiveModal("menu")}
-          style={{ padding: 10, marginRight: -15 }}
-        >
+        <TouchableOpacity>
           <Ionicons
-            name="ellipsis-vertical"
-            size={20}
+            name="person"
             color={colors.gray[100]}
+            size={24}
+            style={styles.icon}
           />
         </TouchableOpacity>
       </View>
 
       <View style={styles.filter}>
-        <TextInput
-          placeholder="Buscar mês"
-          style={styles.textInput}
-          placeholderTextColor={colors.blue[300]}
-        />
-
         <InputYearPicker />
       </View>
-
-      <MenuDialog
-        activeModal={activeModal === "menu"}
-        setActiveModal={setActiveModal}
-      />
 
       <CategoryFormModal
         activeModal={activeModal === "categoryForm"}
