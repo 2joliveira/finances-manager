@@ -6,9 +6,13 @@ import { DetailsCard } from "./components/detailsCard";
 import { useTransactions } from "@/hooks";
 import { colors } from "@/theme";
 import { styles } from "./styles";
+import { useContext } from "react";
+import { Context } from "@/context/context";
+import { formatMonth } from "@/utils/formatMonth";
 
 export function TransactionsHeader({ period }: { period: string | string[] }) {
   const { months } = useTransactions();
+  const { selectedPeriod, selectedYear } = useContext(Context);
 
   const currentMonth = months.find(month => month.month === period);
 
@@ -30,7 +34,7 @@ export function TransactionsHeader({ period }: { period: string | string[] }) {
           />
         </TouchableOpacity>
 
-        <Text style={styles.title}>Janeiro 2026</Text>
+        <Text style={styles.title}>{formatMonth(selectedPeriod)} {selectedYear}</Text>
       </View>
 
       <View style={styles.detailsContainer}>

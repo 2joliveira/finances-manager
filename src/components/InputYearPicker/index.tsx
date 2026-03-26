@@ -1,77 +1,51 @@
-import { useContext, useRef, useState } from "react";
+import { useContext } from "react";
 import {
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import Modal from "react-native-modal";
+import { Ionicons } from "@expo/vector-icons";
 import { colors, fontFamily } from "@/theme";
 import { Context } from "@/context/context";
+import { useTransactions } from "@/hooks";
 
 export function InputYearPicker() {
-  const [isOpen, setIsOpen] = useState(false);
-
   const { dispatch, selectedYear } = useContext(Context);
-
-
-  const scrollRef = useRef<ScrollView>(null);
-
-  const years = Array.from({ length: 20 }, (_, i) => 2020 + i);
+  const { isLoadingMonths } = useTransactions();
 
   function handleSelectYear(year: number) {
-    setIsOpen(false);
     dispatch({ type: "SET_SELECTED_YEAR", payload: year })
   }
 
   return (
-    <>
-      <View style={styles.container}>
-        <TouchableOpacity onPress={() => setIsOpen(true)}>
-          <Text style={styles.text}>{selectedYear}</Text>
-        </TouchableOpacity>
-      </View>
-
-      <Modal
-        isVisible={isOpen}
-        style={styles.listContainer}
-        onBackdropPress={() => setIsOpen(false)}
-        animationIn="fadeInRight"
-        animationOut="fadeOutRight"
-        onModalShow={() => {
-          const index = years.indexOf(selectedYear);
-
-          scrollRef.current?.scrollTo({
-            y: index * 35,
-            animated: false,
-          });
-        }}
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleSelectYear(selectedYear - 1)}
+        disabled={isLoadingMonths}
       >
-        <ScrollView ref={scrollRef}>
-          {years.map((item) => (
-            <TouchableOpacity
-              key={item}
-              onPress={() => handleSelectYear(item)}
-              style={{
-                ...styles.listItem,
-                backgroundColor: item === selectedYear && colors.gray[400],
-              }}
-            >
-              <Text
-                style={{
-                  flex: 1,
-                  textAlign: "center",
-                  fontFamily: item === selectedYear && fontFamily.bold,
-                }}
-              >
-                {item}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </Modal>
-    </>
+        <Ionicons
+          name="chevron-back"
+          color={colors.gray[100]}
+          size={22}
+        />
+      </TouchableOpacity>
+
+      <Text style={styles.text}>{selectedYear}</Text>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleSelectYear(selectedYear + 1)}
+        disabled={isLoadingMonths}
+      >
+        <Ionicons
+          name="chevron-forward"
+          color={colors.gray[100]}
+          size={22}
+        />
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -79,31 +53,24 @@ const styles = StyleSheet.create({
   container: {
     position: "relative",
     display: "flex",
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
     height: 45,
+    width: "100%",
     padding: 8,
-    backgroundColor: colors.blue[500],
     borderRadius: 10,
   },
   text: {
-    fontFamily: fontFamily.regular,
-    fontSize: 15,
+    fontFamily: fontFamily.bold,
+    fontSize: 18,
     color: colors.gray[100],
   },
-  listContainer: {
-    position: "absolute",
-    width: "20%",
-    height: 200,
-    top: 70,
-    right: 70,
-    borderRadius: 8,
-    backgroundColor: colors.gray[100],
-    gap: 25,
-    overflow: "scroll",
-  },
-  listItem: {
-    flex: 1,
-    padding: 10,
-  },
+  button: {
+    width: 30,
+    height: 30,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });

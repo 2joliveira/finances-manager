@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
   },
   subtitle: {
     fontFamily: fontFamily.medium,
-    color: colors.gray[100],
+    color: colors.gray[500],
     fontSize: 12,
   },
   filter: {
@@ -38,6 +38,7 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     gap: 10,
   },
   textInput: {
