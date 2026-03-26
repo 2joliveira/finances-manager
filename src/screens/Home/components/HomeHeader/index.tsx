@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { InputYearPicker } from "@/components";
 import { colors } from "@/theme";
@@ -24,11 +25,11 @@ export function HomeHeader() {
           <Text style={styles.subtitle}>Controle seus gastos</Text>
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.navigate("/profile")}>
           <Ionicons
             name="person"
             color={colors.gray[100]}
-            size={24}
+            size={20}
             style={styles.icon}
           />
         </TouchableOpacity>
