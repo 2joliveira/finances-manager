@@ -8,9 +8,10 @@ import { styles } from "./styles";
 
 interface TransactionCard {
   transaction: TransactionModel;
+  period: string;
 }
 
-export function TransactionCard({ transaction }: TransactionCard) {
+export function TransactionCard({ transaction, period }: TransactionCard) {
   const {
     type,
     amount,
@@ -24,7 +25,7 @@ export function TransactionCard({ transaction }: TransactionCard) {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => router.navigate(`/transaction/${transaction.id}`)}
+      onPress={() => router.navigate(`/transactions/${period}/${transaction.id}`)}
     >
       <MaterialIcons
         name={isIncome ? "trending-up" : "trending-down"}

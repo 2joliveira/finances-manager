@@ -24,6 +24,7 @@ export function Transactions() {
             <TransactionCard
               key={transaction.id}
               transaction={transaction}
+              period={period.toString()}
             />
           ))
         ) : (
