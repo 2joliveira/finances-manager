@@ -88,191 +88,189 @@ export function TransactionFormModal({
           />
         </View>
 
-        <ScrollView>
-          <View style={styles.content}>
-            <View
-              onLayout={typeSwitchMeasure.onLayout}
-              style={{
-                height: "100%",
-                gap: 20,
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <View>
-                <Text style={styles.label}>Tipo da transação</Text>
-
-                <Controller
-                  control={control}
-                  name="type"
-                  render={({ field: { value, onChange } }) =>
-                    typeSwitchMeasure.width > 0 && (
-                      <InputSwitch
-                        options={typeOptions}
-                        option={{
-                          label: value === "income" ? "Receita" : "Despesa",
-                          value,
-                        }}
-                        onChange={onChange}
-                        optionSwitchWidth={typeSwitchMeasure.width}
-                      />
-                    )
-                  }
-                />
-              </View>
+        <View style={styles.content}>
+          <View
+            onLayout={typeSwitchMeasure.onLayout}
+            style={{
+              height: "100%",
+              gap: 20,
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <View>
+              <Text style={styles.label}>Tipo da transação</Text>
 
               <Controller
                 control={control}
-                name="description"
-                render={({ field: { value, onChange } }) => (
-                  <InputText
-                    placeholder="Descrição"
-                    placeholderTextColor={colors.gray[400]}
-                    value={value}
-                    onChange={onChange}
-                    error={errors?.description?.message}
-                  />
-                )}
+                name="type"
+                render={({ field: { value, onChange } }) =>
+                  typeSwitchMeasure.width > 0 && (
+                    <InputSwitch
+                      options={typeOptions}
+                      option={{
+                        label: value === "income" ? "Receita" : "Despesa",
+                        value,
+                      }}
+                      onChange={onChange}
+                      optionSwitchWidth={typeSwitchMeasure.width}
+                    />
+                  )
+                }
               />
+            </View>
 
-              {isExpense && (
-                <View
-                  style={{
-                    width: "100%",
-                    flexDirection: "row",
-                    justifyContent: isInstallment
-                      ? "space-between"
-                      : "flex-start",
-                    gap: 10,
-                  }}
-                >
-                  <View onLayout={isInstallmentSwitchMeasure.onLayout}>
-                    <Text style={styles.label}>Compra parcelada</Text>
+            <Controller
+              control={control}
+              name="description"
+              render={({ field: { value, onChange } }) => (
+                <InputText
+                  placeholder="Descrição"
+                  placeholderTextColor={colors.gray[400]}
+                  value={value}
+                  onChange={onChange}
+                  error={errors?.description?.message}
+                />
+              )}
+            />
 
+            {isExpense && (
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: isInstallment
+                    ? "space-between"
+                    : "flex-start",
+                  gap: 10,
+                }}
+              >
+                <View onLayout={isInstallmentSwitchMeasure.onLayout}>
+                  <Text style={styles.label}>Compra parcelada</Text>
+
+                  <Controller
+                    control={control}
+                    name="is_installment"
+                    render={({ field: { value, onChange } }) =>
+                      isInstallmentSwitchMeasure.width > 0 && (
+                        <InputSwitch
+                          options={[
+                            { label: "Sim", value: 1 },
+                            { label: "Não", value: 0 },
+                          ]}
+                          option={{
+                            label: value === 1 ? "Sim" : "Não",
+                            value,
+                          }}
+                          onChange={onChange}
+                          optionSwitchWidth={isInstallmentSwitchMeasure.width}
+                        />
+                      )
+                    }
+                  />
+                </View>
+
+                {isInstallment === 1 && (
+                  <View style={{ flex: 1, marginTop: 26 }}>
                     <Controller
                       control={control}
-                      name="is_installment"
-                      render={({ field: { value, onChange } }) =>
-                        isInstallmentSwitchMeasure.width > 0 && (
-                          <InputSwitch
-                            options={[
-                              { label: "Sim", value: 1 },
-                              { label: "Não", value: 0 },
-                            ]}
-                            option={{
-                              label: value === 1 ? "Sim" : "Não",
-                              value,
-                            }}
-                            onChange={onChange}
-                            optionSwitchWidth={isInstallmentSwitchMeasure.width}
-                          />
-                        )
-                      }
+                      name="installments"
+                      render={({ field: { value, onChange } }) => (
+                        <InputText
+                          placeholder="Número de parcelas"
+                          placeholderTextColor={colors.gray[400]}
+                          value={value && String(value)}
+                          onChange={onChange}
+                          keyboardType="numeric"
+                        />
+                      )}
                     />
                   </View>
+                )}
+              </View>
+            )}
 
-                  {isInstallment === 1 && (
-                    <View style={{ flex: 1, marginTop: 26 }}>
-                      <Controller
-                        control={control}
-                        name="installments"
-                        render={({ field: { value, onChange } }) => (
-                          <InputText
-                            placeholder="Número de parcelas"
-                            placeholderTextColor={colors.gray[400]}
-                            value={value && String(value)}
-                            onChange={onChange}
-                            keyboardType="numeric"
-                          />
-                        )}
-                      />
-                    </View>
+            <Controller
+              control={control}
+              name="amount"
+              render={({ field: { value, onChange } }) => (
+                <InputText
+                  placeholder={
+                    isInstallment === 1 ? "Valor da parcela" : "Valor"
+                  }
+                  placeholderTextColor={colors.gray[400]}
+                  value={value ? String(value) : ""}
+                  onChange={onChange}
+                  keyboardType="decimal-pad"
+                  error={errors?.amount?.message}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="category_id"
+              render={({ field: { value, onChange } }) => (
+                <InputSelect
+                  id="category"
+                  placeholder="Selecione uma categoria"
+                  selectedOption={categories?.find(
+                    (option) => option.id === value,
                   )}
-                </View>
+                  onChange={onChange}
+                  options={categories}
+                  error={errors?.category_id?.message}
+                  isOpen={openSelect === "category"}
+                  setOpenSelect={setOpenSelect}
+                  isLoading={isLoadingCategories}
+                />
               )}
+            />
 
-              <Controller
-                control={control}
-                name="amount"
-                render={({ field: { value, onChange } }) => (
-                  <InputText
-                    placeholder={
-                      isInstallment === 1 ? "Valor da parcela" : "Valor"
-                    }
-                    placeholderTextColor={colors.gray[400]}
-                    value={value ? String(value) : ""}
-                    onChange={onChange}
-                    keyboardType="decimal-pad"
-                    error={errors?.amount?.message}
-                  />
-                )}
-              />
+            <Controller
+              control={control}
+              name="account_id"
+              render={({ field: { value, onChange } }) => (
+                <InputSelect
+                  id="account"
+                  placeholder="Selecione uma conta"
+                  selectedOption={accounts?.find(
+                    (option) => option.id === value,
+                  )}
+                  onChange={onChange}
+                  options={accounts}
+                  error={errors?.account_id?.message}
+                  isOpen={openSelect === "account"}
+                  setOpenSelect={setOpenSelect}
+                  isLoading={isLoadingAccounts}
+                />
+              )}
+            />
 
-              <Controller
-                control={control}
-                name="category_id"
-                render={({ field: { value, onChange } }) => (
-                  <InputSelect
-                    id="category"
-                    placeholder="Selecione uma categoria"
-                    selectedOption={categories?.find(
-                      (option) => option.id === value,
-                    )}
-                    onChange={onChange}
-                    options={categories}
-                    error={errors?.category_id?.message}
-                    isOpen={openSelect === "category"}
-                    setOpenSelect={setOpenSelect}
-                    isLoading={isLoadingCategories}
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="account_id"
-                render={({ field: { value, onChange } }) => (
-                  <InputSelect
-                    id="account"
-                    placeholder="Selecione uma conta"
-                    selectedOption={accounts?.find(
-                      (option) => option.id === value,
-                    )}
-                    onChange={onChange}
-                    options={accounts}
-                    error={errors?.account_id?.message}
-                    isOpen={openSelect === "account"}
-                    setOpenSelect={setOpenSelect}
-                    isLoading={isLoadingAccounts}
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="transaction_date"
-                render={({ field: { value, onChange } }) => (
-                  <InputDate
-                    label="Selecione a data da transação"
-                    value={value}
-                    onChange={onChange}
-                    error={errors?.transaction_date?.message}
-                  />
-                )}
-              />
-            </View>
+            <Controller
+              control={control}
+              name="transaction_date"
+              render={({ field: { value, onChange } }) => (
+                <InputDate
+                  label="Selecione a data da transação"
+                  value={value}
+                  onChange={onChange}
+                  error={errors?.transaction_date?.message}
+                />
+              )}
+            />
           </View>
+        </View>
 
-          <TouchableOpacity onPress={handleSubmit(onSubmit)}>
-            <View style={styles.button}>
-              {isCreatingTransaction ? (
-                <Loading color={colors.white} />
-              ) : (
-                <Text style={styles.buttonText}>Criar Transação</Text>
-              )}
-            </View>
-          </TouchableOpacity>
-        </ScrollView>
+        <TouchableOpacity onPress={handleSubmit(onSubmit)}>
+          <View style={styles.button}>
+            {isCreatingTransaction ? (
+              <Loading color={colors.white} />
+            ) : (
+              <Text style={styles.buttonText}>Criar Transação</Text>
+            )}
+          </View>
+        </TouchableOpacity>
       </View>
     </Modal>
   );
