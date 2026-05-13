@@ -2,13 +2,13 @@ import { StyleSheet, Text, TouchableOpacity, TouchableOpacityProps  } from "reac
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors, fontFamily } from "@/theme";
 
-export interface TagCardProps extends TouchableOpacityProps  {
+export interface TagOptionProps extends TouchableOpacityProps  {
   icon: React.ComponentProps<typeof MaterialIcons>["name"];
   title: string;
   selected?: boolean;
 }
 
-export function TagCard({ icon, title, selected, ...props }: TagCardProps) {
+export function TagOption({ icon, title, selected, ...props }: TagOptionProps) {
   return (
     <TouchableOpacity
       style={{ ...styles.container, ...(selected && { backgroundColor: colors.white }) }}
@@ -23,11 +23,11 @@ export function TagCard({ icon, title, selected, ...props }: TagCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
-    paddingHorizontal: 17,
+    height: 45,
+    width: "33%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     gap: 5,
     borderRadius: 8,
   },
