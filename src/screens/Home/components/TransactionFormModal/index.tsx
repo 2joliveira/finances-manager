@@ -6,8 +6,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
 import { typeOptions } from "@/context/types";
 import { Transaction, transactionSchema } from "@/models";
-import { useAccount, useCategories, useTransactions } from "@/hooks";
-import { InputDate, InputSelect, InputSwitch, InputText, Loading } from "@/components";
+import {
+  useAccount,
+  useCategories,
+  useMeasure,
+  useTransactions,
+} from "@/hooks";
+import {
+  InputDate,
+  InputSelect,
+  InputSwitch,
+  InputText,
+  Loading,
+} from "@/components";
 import { colors } from "@/theme";
 import { styles } from "./styles";
 
@@ -43,6 +54,9 @@ export function TransactionFormModal({
   const { accounts, isLoadingAccounts } = useAccount();
   const { categories, isLoadingCategories } = useCategories();
 
+  const typeSwitchMeasure = useMeasure();
+  const isInstallmentSwitchMeasure = useMeasure();
+
   const { createTransaction, isCreatingTransaction } = useTransactions();
 
   function onCloseModal() {
@@ -77,6 +91,7 @@ export function TransactionFormModal({
         <ScrollView>
           <View style={styles.content}>
             <View
+              onLayout={typeSwitchMeasure.onLayout}
               style={{
                 height: "100%",
                 gap: 20,
@@ -90,17 +105,19 @@ export function TransactionFormModal({
                 <Controller
                   control={control}
                   name="type"
-                  render={({ field: { value, onChange } }) => (
-                    <InputSwitch
-                      options={typeOptions}
-                      option={{
-                        label: value === "income" ? "Receita" : "Despesa",
-                        value,
-                      }}
-                      onChange={onChange}
-                      optionSwitchWidth={345}
-                    />
-                  )}
+                  render={({ field: { value, onChange } }) =>
+                    typeSwitchMeasure.width > 0 && (
+                      <InputSwitch
+                        options={typeOptions}
+                        option={{
+                          label: value === "income" ? "Receita" : "Despesa",
+                          value,
+                        }}
+                        onChange={onChange}
+                        optionSwitchWidth={typeSwitchMeasure.width}
+                      />
+                    )
+                  }
                 />
               </View>
 
@@ -123,30 +140,34 @@ export function TransactionFormModal({
                   style={{
                     width: "100%",
                     flexDirection: "row",
-                    justifyContent: isInstallment ? "space-between" : "flex-start",
+                    justifyContent: isInstallment
+                      ? "space-between"
+                      : "flex-start",
                     gap: 10,
                   }}
                 >
-                  <View>
+                  <View onLayout={isInstallmentSwitchMeasure.onLayout}>
                     <Text style={styles.label}>Compra parcelada</Text>
 
                     <Controller
                       control={control}
                       name="is_installment"
-                      render={({ field: { value, onChange } }) => (
-                        <InputSwitch
-                          options={[
-                            { label: "Sim", value: 1 },
-                            { label: "Não", value: 0 },
-                          ]}
-                          option={{
-                            label: value === 1 ? "Sim" : "Não",
-                            value,
-                          }}
-                          onChange={onChange}
-                          optionSwitchWidth={125}
-                        />
-                      )}
+                      render={({ field: { value, onChange } }) =>
+                        isInstallmentSwitchMeasure.width > 0 && (
+                          <InputSwitch
+                            options={[
+                              { label: "Sim", value: 1 },
+                              { label: "Não", value: 0 },
+                            ]}
+                            option={{
+                              label: value === 1 ? "Sim" : "Não",
+                              value,
+                            }}
+                            onChange={onChange}
+                            optionSwitchWidth={isInstallmentSwitchMeasure.width}
+                          />
+                        )
+                      }
                     />
                   </View>
 
@@ -244,10 +265,11 @@ export function TransactionFormModal({
 
           <TouchableOpacity onPress={handleSubmit(onSubmit)}>
             <View style={styles.button}>
-              {isCreatingTransaction
-                ? <Loading color={colors.white} />
-                : <Text style={styles.buttonText}>Criar Transação</Text>
-              }
+              {isCreatingTransaction ? (
+                <Loading color={colors.white} />
+              ) : (
+                <Text style={styles.buttonText}>Criar Transação</Text>
+              )}
             </View>
           </TouchableOpacity>
         </ScrollView>
