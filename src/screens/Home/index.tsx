@@ -4,9 +4,8 @@ import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTransactions } from "@/hooks/useTransactions";
-import { Loading } from "@/components";
+import { Loading, TransactionFormModal } from "@/components";
 import { colors } from "@/theme";
-import { TransactionFormModal } from "./components/TransactionFormModal";
 import { HomeHeader } from "./components/HomeHeader";
 import { MonthCard } from "./components/MonthCard";
 
@@ -21,15 +20,15 @@ export function Home() {
       <HomeHeader />
 
       <ScrollView>
-        {isLoadingMonths
-          ? <Loading />
-          : (
-            <View style={styles.list}>
-              {months?.map((item) => (
-                <MonthCard key={item.month} {...item} />
-              ))}
-            </View>
-          )}
+        {isLoadingMonths ? (
+          <Loading />
+        ) : (
+          <View style={styles.list}>
+            {months?.map((item) => (
+              <MonthCard key={item.month} {...item} />
+            ))}
+          </View>
+        )}
       </ScrollView>
 
       <TouchableOpacity

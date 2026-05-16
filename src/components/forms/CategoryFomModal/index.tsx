@@ -1,58 +1,61 @@
-import { useState } from "react";
 import {
   TouchableOpacity,
+  StyleSheet,
   Text,
   View,
-  LayoutChangeEvent,
 } from "react-native";
 import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useAccount, useMeasure } from "@/hooks";
-import { Account, accountSchema } from "@/models";
-import { colors } from "@/theme";
-import { ActiveModal } from "../HomeHeader";
-import { styles } from "./styles";
-import { InputSwitch, InputText, Loading } from "@/components";
+import { Category, categorySchema } from "@/models";
 import { typeOptions } from "@/context/types";
+import { useCategories, useMeasure } from "@/hooks";
+import { colors, fontFamily } from "@/theme";
+import { ActiveModal } from "@/types";
+import { InputText } from "@/components/InputText";
+import { InputSwitch } from "@/components/InputSwitch";
+import { Loading } from "@/components/Loading";
 
-interface AccountFormProps {
+interface CategoryFormProps {
   activeModal: boolean;
   setActiveModal: (activeModal: ActiveModal) => void;
 }
 
-export function AccountFormModal({
+export function CategoryFormModal({
   activeModal,
   setActiveModal,
-}: AccountFormProps) {
+}: CategoryFormProps) {
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(accountSchema),
+    resolver: zodResolver(categorySchema),
     defaultValues: {
       type: "expense",
     },
   });
 
+  const { createCategory, isCreatingCategory } = useCategories();
+
   const { width: switchWidth, onLayout } = useMeasure();
 
-  const { createAccount, isCreatingAccount } = useAccount();
+  function onSubmit(data: Category) {
+    createCategory(data);
 
-  function onSubmit(data: Account) {
-    createAccount(data);
-    setActiveModal(null);
-    reset();
+    if (!isCreatingCategory) {
+      setActiveModal(null);
+      reset();
+    }
   }
 
   return (
     <Modal isVisible={activeModal} onSwipeComplete={() => setActiveModal(null)}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>Nova Conta</Text>
+          <Text style={styles.title}>Nova Categoria</Text>
 
           <MaterialIcons
             name="close"
@@ -69,7 +72,7 @@ export function AccountFormModal({
             name="name"
             render={({ field: { value, onChange } }) => (
               <InputText
-                placeholder="Pagamento"
+                placeholder="Nome da Categoria"
                 placeholderTextColor={colors.gray[400]}
                 value={value}
                 onChange={onChange}
@@ -103,10 +106,10 @@ export function AccountFormModal({
 
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
           <View style={styles.button}>
-            {isCreatingAccount ? (
+            {isCreatingCategory ? (
               <Loading color={colors.white} />
             ) : (
-              <Text style={styles.buttonText}>Criar Forma de Pagamento</Text>
+              <Text style={styles.buttonText}>Criar Categoria</Text>
             )}
           </View>
         </TouchableOpacity>
@@ -114,3 +117,61 @@ export function AccountFormModal({
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    height: "45%",
+    padding: 20,
+    bottom: -20,
+    right: -20,
+    left: -20,
+    justifyContent: "space-between",
+    gap: 10,
+    backgroundColor: colors.white,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  title: {
+    fontFamily: fontFamily.bold,
+    fontSize: 20,
+  },
+  closeButton: {
+    padding: 8,
+    backgroundColor: colors.gray[200],
+    borderRadius: 50,
+  },
+  label: {
+    padding: 5,
+    fontFamily: fontFamily.medium,
+    fontSize: 14,
+    color: colors.gray[500],
+  },
+  input: {
+    padding: 10,
+    height: 50,
+    backgroundColor: colors.gray[200],
+    borderRadius: 10,
+    fontFamily: fontFamily.medium,
+    fontSize: 16,
+    color: colors.gray[800],
+  },
+  button: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    backgroundColor: colors.blue[500],
+    borderRadius: 10,
+  },
+  buttonText: {
+    fontFamily: fontFamily.bold,
+    fontSize: 16,
+    color: colors.gray[100],
+  },
+});

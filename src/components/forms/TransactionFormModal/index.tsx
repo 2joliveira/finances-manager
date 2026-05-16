@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,14 +12,12 @@ import {
   useMeasure,
   useTransactions,
 } from "@/hooks";
-import {
-  InputDate,
-  InputSelect,
-  InputSwitch,
-  InputText,
-  Loading,
-} from "@/components";
 import { colors } from "@/theme";
+import { InputSwitch } from "@/components/InputSwitch";
+import { InputText } from "@/components/InputText";
+import { InputSelect } from "@/components/InputSelect";
+import { InputDate } from "@/components/InputDate";
+import { Loading } from "@/components/Loading";
 import { styles } from "./styles";
 
 interface TransactionFormModalProps {

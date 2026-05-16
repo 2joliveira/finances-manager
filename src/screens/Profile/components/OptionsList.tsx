@@ -1,11 +1,10 @@
+import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors, fontFamily } from "@/theme";
-import { CategoryFormModal } from "@/screens/Home/components/CategoryFomModal";
-import { useState } from "react";
-import { ActiveModal } from "@/screens/Home/components/HomeHeader";
-import { AccountFormModal } from "@/screens/Home/components/AccountFormModal";
+import { AccountFormModal, CategoryFormModal } from "@/components";
+import { ActiveModal } from "@/types";
 
 interface ItemProps {
   id: number;
