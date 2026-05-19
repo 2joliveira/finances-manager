@@ -5,6 +5,7 @@ import { useState } from "react";
 import { TagOption, TagOptionProps } from "./components/TagOption";
 import { OptionsList } from "./components/OptionsList";
 import { useAccount, useCategories } from "@/hooks";
+import { FixedExpensesList } from "./components/FixedExpensesList";
 
 interface TagsOptionsProps extends TagOptionProps {
   option: string;
@@ -57,6 +58,10 @@ export function Profile() {
               selectedTag === "categories" ? "categoryForm" : "accountForm"
             }
           />
+        )}
+
+        {selectedTag === "transactions" && (
+          <FixedExpensesList />
         )}
       </View>
     </View>
