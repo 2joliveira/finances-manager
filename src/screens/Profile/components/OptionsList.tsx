@@ -2,9 +2,9 @@ import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
-import { colors, fontFamily } from "@/theme";
+import { ActiveModal } from "@/context/types";
 import { AccountFormModal, CategoryFormModal } from "@/components";
-import { ActiveModal } from "@/types";
+import { colors, fontFamily } from "@/theme";
 
 interface ItemProps {
   id: number;
@@ -87,7 +87,7 @@ export function OptionsList({ options, typeList }: OptionsList) {
 const styles = StyleSheet.create({
   button: {
     position: "absolute",
-    bottom: 80,
+    bottom: -40,
     right: 10,
   },
   gradient: {

@@ -39,14 +39,14 @@ function FixedExpensesCard() {
       {/*<TouchableOpacity>
         <MaterialIcons name="edit" size={18} color={colors.gray[600]} />
       </TouchableOpacity>
-      */}
+      
       <TouchableOpacity>
         <MaterialIcons
           name="delete-outline"
           size={18}
           color={colors.red[400]}
         />
-      </TouchableOpacity>
+      </TouchableOpacity>*/}
     </View>
   );
 }

@@ -7,12 +7,11 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    padding: 10,
     gap: 10,
   },
   tags_options: {
-    padding: 4,
+    padding: 2,
     flexDirection: "row",
     justifyContent: "space-around",
     backgroundColor: colors.gray[300],

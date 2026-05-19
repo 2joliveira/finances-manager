@@ -1,1 +1,0 @@
-export type ActiveModal = "categoryForm" | "accountForm" | null;

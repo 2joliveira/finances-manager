@@ -11,3 +11,5 @@ export const typeOptions = [
   { label: "Receita", value: "income" },
   { label: "Despesa", value: "expense" },
 ];
+
+export type ActiveModal = "categoryForm" | "accountForm" | null;
