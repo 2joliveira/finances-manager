@@ -32,7 +32,7 @@ const TAGS_OPTIONS: TagsOptionsProps[] = [
 
 export function Profile() {
   const { categories } = useCategories();
-  const { accounts } = useAccount();
+  const { accounts, deleteAccount, isDeletingAccount } = useAccount();
   const [selectedTag, setSelectedTag] = useState("categories");
   const insets = useSafeAreaInsets()
 
@@ -59,6 +59,8 @@ export function Profile() {
             typeList={
               selectedTag === "categories" ? "categoryForm" : "accountForm"
             }
+            removeOption={deleteAccount}
+            isLoading={isDeletingAccount}
           />
         )}
 

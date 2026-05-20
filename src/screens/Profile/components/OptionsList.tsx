@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ActiveModal } from "@/context/types";
-import { AccountFormModal, CategoryFormModal } from "@/components";
+import { AccountFormModal, CategoryFormModal, Loading } from "@/components";
 import { colors, fontFamily } from "@/theme";
 
 interface ItemProps {
@@ -15,45 +15,56 @@ interface ItemProps {
 interface OptionsList {
   options: ItemProps[];
   typeList: "categoryForm" | "accountForm";
+  removeOption: (id: number) => void;
+  isLoading: boolean;
 }
 
-function Option({ name, type }: ItemProps) {
-  return (
-    <View
-      style={[
-        styles.optionContainer,
-        {
-          borderColor: type === "expense" ? colors.red[500] : colors.green[500],
-        },
-      ]}
-    >
-      <Text style={styles.optionName}>{name}</Text>
-
-      {/*<TouchableOpacity>
-        <MaterialIcons name="edit" size={18} color={colors.gray[600]} />
-      </TouchableOpacity>
-
-      <TouchableOpacity>
-        <MaterialIcons
-          name="delete-outline"
-          size={18}
-          color={colors.red[400]}
-        />
-      </TouchableOpacity>*/}
-    </View>
-  );
-}
-
-export function OptionsList({ options, typeList }: OptionsList) {
+export function OptionsList({
+  options,
+  typeList,
+  removeOption,
+  isLoading,
+}: OptionsList) {
   const [isModalOpen, setIsModalOpen] = useState<ActiveModal>(null);
+
+  function renderOption({ id, name, type }: ItemProps) {
+    return (
+      <View
+        key={id}
+        style={[
+          styles.optionContainer,
+          {
+            borderColor:
+              type === "expense" ? colors.red[500] : colors.green[500],
+          },
+        ]}
+      >
+        <Text style={styles.optionName}>{name}</Text>
+
+        {/*<TouchableOpacity>
+        <MaterialIcons name="edit" size={18} color={colors.gray[600]} />
+      </TouchableOpacity>*/}
+
+        <TouchableOpacity onPress={() => removeOption(id)}>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <MaterialIcons
+              name="delete-outline"
+              size={18}
+              color={colors.red[400]}
+            />
+          )}
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={{ position: "relative", flex: 1 }}>
       {options.length > 0 ? (
         <View style={{ gap: 5 }}>
-          {options.map((option) => (
-            <Option key={option.id} {...option} />
-          ))}
+          {options.map((option) => renderOption(option))}
         </View>
       ) : (
         <Text>Lista vazia</Text>

@@ -32,10 +32,10 @@ export async function migrate(database: SQLiteDatabase) {
       updated_at timestamp NOT NULL DEFAULT current_timestamp,
 
       CONSTRAINT fk_transactions_category
-        FOREIGN KEY (category_id) REFERENCES categories(id),
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
 
       CONSTRAINT fk_transactions_account
-        FOREIGN KEY (account_id) REFERENCES accounts(id)
+        FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
     );
 
     CREATE TABLE IF NOT EXISTS installments (

@@ -26,10 +26,21 @@ export function useAccount() {
     },
   });
 
+  const deleteAccount = useMutation({
+    mutationFn: async (id: number) => {
+      return await accountRepo.remove(id);
+    },
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["accounts"] })
+    },
+  });
+
   return {
     accounts,
     isLoadingAccounts,
     createAccount: createAccount.mutateAsync,
     isCreatingAccount: createAccount.isPending,
+    deleteAccount: deleteAccount.mutateAsync,
+    isDeletingAccount: deleteAccount.isPending,
   };
 }
