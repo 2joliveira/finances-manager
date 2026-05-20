@@ -1,11 +1,12 @@
-import { Text, View } from "react-native";
-import { ProfileHeader } from "./ProfileHeader";
-import { styles } from "./styles";
+import { View } from "react-native";
 import { useState } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useAccount, useCategories } from "@/hooks";
 import { TagOption, TagOptionProps } from "./components/TagOption";
 import { OptionsList } from "./components/OptionsList";
-import { useAccount, useCategories } from "@/hooks";
 import { FixedExpensesList } from "./components/FixedExpensesList";
+import { styles } from "./styles";
+import { ProfileHeader } from "./components/ProfileHeader";
 
 interface TagsOptionsProps extends TagOptionProps {
   option: string;
@@ -33,9 +34,10 @@ export function Profile() {
   const { categories } = useCategories();
   const { accounts } = useAccount();
   const [selectedTag, setSelectedTag] = useState("categories");
+  const insets = useSafeAreaInsets()
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <ProfileHeader />
 
       <View style={styles.content}>
@@ -60,9 +62,7 @@ export function Profile() {
           />
         )}
 
-        {selectedTag === "transactions" && (
-          <FixedExpensesList />
-        )}
+        {selectedTag === "transactions" && <FixedExpensesList />}
       </View>
     </View>
   );

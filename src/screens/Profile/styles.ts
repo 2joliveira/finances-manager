@@ -7,7 +7,8 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingTop: 10,
     gap: 10,
   },
   tags_options: {

@@ -48,7 +48,7 @@ export function OptionsList({ options, typeList }: OptionsList) {
   const [isModalOpen, setIsModalOpen] = useState<ActiveModal>(null);
 
   return (
-    <View style={{ position: "relative", height: "85%" }}>
+    <View style={{ position: "relative", flex: 1 }}>
       {options.length > 0 ? (
         <View style={{ gap: 5 }}>
           {options.map((option) => (
@@ -87,7 +87,7 @@ export function OptionsList({ options, typeList }: OptionsList) {
 const styles = StyleSheet.create({
   button: {
     position: "absolute",
-    bottom: -40,
+    bottom: 0,
     right: 10,
   },
   gradient: {
