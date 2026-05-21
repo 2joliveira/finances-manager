@@ -36,7 +36,7 @@ export function useAccount() {
   });
 
   return {
-    accounts,
+    accounts: accounts || [],
     isLoadingAccounts,
     createAccount: createAccount.mutateAsync,
     isCreatingAccount: createAccount.isPending,

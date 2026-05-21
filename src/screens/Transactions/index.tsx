@@ -37,7 +37,7 @@ export function Transactions() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    gap: 12,
+    padding: 10,
+    gap: 10,
   },
 });

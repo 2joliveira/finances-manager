@@ -54,7 +54,7 @@ export function OptionsList({ options, typeList, removeOption }: OptionsList) {
 
   return (
     <View style={{ position: "relative", flex: 1 }}>
-      {options.length > 0 ? (
+      {options?.length > 0 ? (
         <View style={{ gap: 5 }}>
           {options.map((option) => renderOption(option))}
         </View>

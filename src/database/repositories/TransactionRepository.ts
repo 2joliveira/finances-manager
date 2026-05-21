@@ -11,7 +11,7 @@ export function TransactionRepository(db: SQLiteDatabase) {
   return {
     create: async (data: Transaction) => {
       const statement = await db.prepareAsync(
-        "INSERT INTO transactions (description, amount, type, is_installment, installments, category_id, account_id, transaction_date) values ($description, $amount, $type, $is_installment, $installments, $category_id, $account_id, $transaction_date)",
+        "INSERT INTO transactions (description, amount, type, is_fixed, is_installment, installments, category_id, account_id, transaction_date) values ($description, $amount, $type, $is_fixed, $is_installment, $installments, $category_id, $account_id, $transaction_date)",
       );
 
       const isInstallment = data.is_installment === 1;
@@ -20,6 +20,7 @@ export function TransactionRepository(db: SQLiteDatabase) {
         $description: data.description,
         $amount: Number(data.amount),
         $type: data.type,
+        $is_fixed: data.is_fixed,
         $is_installment: data.is_installment,
         $installments: isInstallment ? data.installments : 0,
         $category_id: data.category_id,
@@ -111,6 +112,7 @@ export function TransactionRepository(db: SQLiteDatabase) {
             i.due_date AS transaction_date,
             i.installment_number,
             t.installments,
+            t.is_fixed,
             t.is_installment,
             c.name AS category_name,
             a.name AS account_name
@@ -133,6 +135,7 @@ export function TransactionRepository(db: SQLiteDatabase) {
             t.transaction_date,
             NULL AS installment_number,
             NULL AS installments,
+            t.is_fixed,
             t.is_installment,
             c.name AS category_name,
             a.name AS account_name
@@ -145,6 +148,12 @@ export function TransactionRepository(db: SQLiteDatabase) {
             AND t.transaction_date < DATE('${period}-01', '+1 month')
         )
         ORDER BY transaction_date;
+      `);
+    },
+
+    listFixed: async () => {
+      return db.getAllAsync<TransactionModel>(`
+        SELECT * FROM transactions WHERE type = fixed
       `);
     },
 

@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     position: "relative",
     flex: 1,
     height: "100%",
-    padding: 20,
+    padding: 10,
     gap: 20,
   },
   button: {

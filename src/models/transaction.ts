@@ -8,6 +8,7 @@ export const transactionSchema = z.object({
   type: z.enum(["income", "expense"], {
     error: "Tipo deve ser 'income' ou 'expense'.",
   }),
+  is_fixed: z.number().default(0),
   is_installment: z.number().default(0),
   installments: z.coerce.number().optional(),
   category_id: z.number({ error: "Categoria é obrigatória." }),

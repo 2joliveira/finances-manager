@@ -21,6 +21,7 @@ export async function migrate(database: SQLiteDatabase) {
       description TEXT NOT NULL,
       amount FLOAT NOT NULL,
       type TEXT NOT NULL,
+      is_fixed INTEGER NOT NULL DEFAULT 0,
       is_installment INTEGER NOT NULL DEFAULT 0,
       installments INTEGER,
       
@@ -52,7 +53,8 @@ export async function migrate(database: SQLiteDatabase) {
   `);
 }
 
-/* export async function migrate(database: SQLiteDatabase) {
+/*
+export async function migrate(database: SQLiteDatabase) {
   await database.execAsync(`
     PRAGMA foreign_keys = OFF;
 
@@ -63,4 +65,5 @@ export async function migrate(database: SQLiteDatabase) {
 
     PRAGMA foreign_keys = ON;
   `);
-} */
+}
+  */

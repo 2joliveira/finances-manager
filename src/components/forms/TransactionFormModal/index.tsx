@@ -23,11 +23,13 @@ import { styles } from "./styles";
 interface TransactionFormModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  isFixed?: boolean;
 }
 
 export function TransactionFormModal({
   isOpen,
   setIsOpen,
+  isFixed,
 }: TransactionFormModalProps) {
   const {
     control,
@@ -40,6 +42,7 @@ export function TransactionFormModal({
     defaultValues: {
       type: "expense",
       is_installment: 0,
+      is_fixed: isFixed ? 1 : 0,
       transaction_date: new Date(),
     },
   });
