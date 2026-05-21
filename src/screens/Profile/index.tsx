@@ -5,11 +5,11 @@ import { useAccount, useCategories } from "@/hooks";
 import { TagOption, TagOptionProps } from "./components/TagOption";
 import { OptionsList } from "./components/OptionsList";
 import { FixedExpensesList } from "./components/FixedExpensesList";
-import { styles } from "./styles";
 import { ProfileHeader } from "./components/ProfileHeader";
+import { styles } from "./styles";
 
 interface TagsOptionsProps extends TagOptionProps {
-  option: string;
+  option: "accounts" | "categories" | "transactions";
 }
 
 const TAGS_OPTIONS: TagsOptionsProps[] = [
@@ -31,10 +31,11 @@ const TAGS_OPTIONS: TagsOptionsProps[] = [
 ];
 
 export function Profile() {
-  const { categories } = useCategories();
-  const { accounts, deleteAccount, isDeletingAccount } = useAccount();
-  const [selectedTag, setSelectedTag] = useState("categories");
-  const insets = useSafeAreaInsets()
+  const { categories, deleteCategory } = useCategories();
+  const { accounts, deleteAccount } = useAccount();
+  const [selectedTag, setSelectedTag] =
+    useState<TagsOptionsProps["option"]>("categories");
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
@@ -53,14 +54,19 @@ export function Profile() {
           ))}
         </View>
 
-        {selectedTag != "transactions" && (
+        {selectedTag === "accounts" && (
           <OptionsList
-            options={selectedTag === "categories" ? categories : accounts}
-            typeList={
-              selectedTag === "categories" ? "categoryForm" : "accountForm"
-            }
+            options={accounts}
+            typeList="accountForm"
             removeOption={deleteAccount}
-            isLoading={isDeletingAccount}
+          />
+        )}
+
+        {selectedTag === "categories" && (
+          <OptionsList
+            options={categories}
+            typeList="categoryForm"
+            removeOption={deleteCategory}
           />
         )}
 

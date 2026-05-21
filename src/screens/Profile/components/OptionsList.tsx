@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ActiveModal } from "@/context/types";
-import { AccountFormModal, CategoryFormModal, Loading } from "@/components";
+import { AccountFormModal, CategoryFormModal } from "@/components";
 import { colors, fontFamily } from "@/theme";
 
 interface ItemProps {
@@ -16,18 +16,12 @@ interface OptionsList {
   options: ItemProps[];
   typeList: "categoryForm" | "accountForm";
   removeOption: (id: number) => void;
-  isLoading: boolean;
 }
 
-export function OptionsList({
-  options,
-  typeList,
-  removeOption,
-  isLoading,
-}: OptionsList) {
+export function OptionsList({ options, typeList, removeOption }: OptionsList) {
   const [isModalOpen, setIsModalOpen] = useState<ActiveModal>(null);
 
-  function renderOption({ id, name, type }: ItemProps) {
+  const renderOption = useCallback(({ id, name, type }: ItemProps) => {
     return (
       <View
         key={id}
@@ -41,24 +35,22 @@ export function OptionsList({
       >
         <Text style={styles.optionName}>{name}</Text>
 
-        {/*<TouchableOpacity>
-        <MaterialIcons name="edit" size={18} color={colors.gray[600]} />
-      </TouchableOpacity>*/}
+        {/*
+          <TouchableOpacity>
+            <MaterialIcons name="edit" size={18} color={colors.gray[600]} />
+          </TouchableOpacity>
+        */}
 
         <TouchableOpacity onPress={() => removeOption(id)}>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <MaterialIcons
-              name="delete-outline"
-              size={18}
-              color={colors.red[400]}
-            />
-          )}
+          <MaterialIcons
+            name="delete-outline"
+            size={18}
+            color={colors.red[400]}
+          />
         </TouchableOpacity>
       </View>
     );
-  }
+  }, []);
 
   return (
     <View style={{ position: "relative", flex: 1 }}>

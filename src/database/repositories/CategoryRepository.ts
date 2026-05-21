@@ -29,5 +29,13 @@ export function CategoryRepository(db: SQLiteDatabase) {
         console.error({ erro });
       }
     },
+
+    remove: async (id: number) => {
+      try {
+        await db.runAsync("DELETE FROM categories WHERE id = ?", id);
+      } catch (error) {
+        console.error({ error });
+      }
+    },
   };
 }

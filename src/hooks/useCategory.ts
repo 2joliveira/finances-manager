@@ -24,10 +24,20 @@ export function useCategories() {
     },
   });
 
+  const deleteCategory = useMutation({
+    mutationFn: async (id: number) => {
+      return await categoryRepo.remove(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+  });
+
   return {
     categories: categories || [],
     isLoadingCategories,
     createCategory: createCategory.mutateAsync,
     isCreatingCategory: createCategory.isPending,
+    deleteCategory: deleteCategory.mutateAsync,
   };
 }
