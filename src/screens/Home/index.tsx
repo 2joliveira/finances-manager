@@ -26,9 +26,11 @@ export function Home() {
       ) : (
         <View style={styles.list}>
           <ScrollView>
-            {months?.map((item) => (
-              <MonthCard key={item.month} {...item} />
-            ))}
+            <View style={{ gap: 10 }}>
+              {months?.map((item) => (
+                <MonthCard key={item.month} {...item} />
+              ))}
+            </View>
           </ScrollView>
 
           <TouchableOpacity

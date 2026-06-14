@@ -22,7 +22,7 @@ export function Transactions() {
         {transactions ? (
           transactions.map((transaction) => (
             <TransactionCard
-              key={transaction.id}
+              key={`${transaction.id}-${transaction.transaction_date}`}
               transaction={transaction}
               period={period.toString()}
             />
