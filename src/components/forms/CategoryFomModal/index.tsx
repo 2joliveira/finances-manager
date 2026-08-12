@@ -9,11 +9,11 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Category, categorySchema } from "@/models";
-import { typeOptions } from "@/context/types";
+import { ActiveModal } from "@/context/types";
 import { useCategories } from "@/hooks";
-import { InputSwitch, InputText, Loading } from "@/components";
 import { colors, fontFamily } from "@/theme";
-import { ActiveModal } from "../HomeHeader";
+import { InputText } from "@/components/InputText";
+import { Loading } from "@/components/Loading";
 
 interface CategoryFormProps {
   activeModal: boolean;
@@ -24,11 +24,13 @@ export function CategoryFormModal({
   activeModal,
   setActiveModal,
 }: CategoryFormProps) {
-  const { control, handleSubmit, reset, formState: { errors } } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(categorySchema),
-    defaultValues: {
-      type: "expense",
-    }
   });
 
   const { createCategory, isCreatingCategory } = useCategories();
@@ -43,10 +45,7 @@ export function CategoryFormModal({
   }
 
   return (
-    <Modal
-      isVisible={activeModal}
-      onSwipeComplete={() => setActiveModal(null)}
-    >
+    <Modal isVisible={activeModal} onSwipeComplete={() => setActiveModal(null)}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Nova Categoria</Text>
@@ -74,33 +73,15 @@ export function CategoryFormModal({
               />
             )}
           />
-
-          <View>
-            <Text style={styles.label}>Tipo da transação</Text>
-
-            <Controller
-              control={control}
-              name="type"
-              render={({ field: { value, onChange } }) => (
-                <InputSwitch
-                  options={typeOptions}
-                  option={{
-                    label: value === "income" ? "Receita" : "Despesa",
-                    value,
-                  }}
-                  onChange={onChange}
-                  optionSwitchWidth={345}
-                />
-              )}
-            />
-          </View>
         </View>
 
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
           <View style={styles.button}>
-            {isCreatingCategory
-              ? <Loading color={colors.white} />
-              : <Text style={styles.buttonText}>Criar Categoria</Text>}
+            {isCreatingCategory ? (
+              <Loading color={colors.white} />
+            ) : (
+              <Text style={styles.buttonText}>Criar Categoria</Text>
+            )}
           </View>
         </TouchableOpacity>
       </View>

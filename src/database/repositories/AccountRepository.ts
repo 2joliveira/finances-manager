@@ -4,10 +4,13 @@ import { Account, AccountModel } from "@/models";
 
 export function AccountRepository(db: SQLiteDatabase) {
   return {
-    findAll: () =>
-      db.getAllSync<AccountModel>(`
+    findAll: () => {
+      const result = db.getAllSync<AccountModel>(`
         SELECT * FROM accounts ORDER BY name
-      `),
+      `);
+
+      return result
+    },
 
     create: async (data: Account) => {
       try {
@@ -29,6 +32,14 @@ export function AccountRepository(db: SQLiteDatabase) {
           },
         ]);
         console.error({ erro });
+      }
+    },
+
+    remove: async (id: number) => {
+      try {
+        await db.runAsync("DELETE FROM accounts WHERE id = ?", id);
+      } catch (error) {
+        console.error({ error });
       }
     },
   };

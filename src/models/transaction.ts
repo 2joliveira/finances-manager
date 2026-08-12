@@ -8,6 +8,10 @@ export const transactionSchema = z.object({
   type: z.enum(["income", "expense"], {
     error: "Tipo deve ser 'income' ou 'expense'.",
   }),
+  payment_method: z
+    .string({ error: "Método de pagamento é obrigatório." })
+    .min(2, { error: "Descrição deve ter mais de 2 letras." }),
+  is_fixed: z.number().default(0),
   is_installment: z.number().default(0),
   installments: z.coerce.number().optional(),
   category_id: z.number({ error: "Categoria é obrigatória." }),

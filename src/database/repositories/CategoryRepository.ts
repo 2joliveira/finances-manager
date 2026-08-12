@@ -10,10 +10,10 @@ export function CategoryRepository(db: SQLiteDatabase) {
     create: async (data: Category) => {
       try {
         const statement = await db.prepareAsync(`
-            INSERT INTO categories (name, type) VALUES ($name, $type)  
+            INSERT INTO categories (name) VALUES ($name)  
           `);
 
-        await statement.executeAsync({ $name: data.name, $type: data.type });
+        await statement.executeAsync({ $name: data.name });
 
         Alert.alert("Nova Categoria", "Categoria criada com sucesso!", [
           {
@@ -27,6 +27,14 @@ export function CategoryRepository(db: SQLiteDatabase) {
           },
         ]);
         console.error({ erro });
+      }
+    },
+
+    remove: async (id: number) => {
+      try {
+        await db.runAsync("DELETE FROM categories WHERE id = ?", id);
+      } catch (error) {
+        console.error({ error });
       }
     },
   };

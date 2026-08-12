@@ -5,6 +5,9 @@ import { InputSwitch } from "./InputSwitch";
 import { InputText } from "./InputText";
 import { InputYearPicker } from "./InputYearPicker";
 import { Loading } from "./Loading";
+import { AccountFormModal } from "./forms/AccountFormModal";
+import { CategoryFormModal } from "./forms/CategoryFomModal";
+import { TransactionFormModal } from "./forms/TransactionFormModal";
 
 export {
   Error,
@@ -14,4 +17,7 @@ export {
   InputText,
   InputYearPicker,
   Loading,
+  AccountFormModal,
+  CategoryFormModal,
+  TransactionFormModal,
 };

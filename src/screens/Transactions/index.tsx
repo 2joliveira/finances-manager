@@ -22,8 +22,9 @@ export function Transactions() {
         {transactions ? (
           transactions.map((transaction) => (
             <TransactionCard
-              key={transaction.id}
+              key={`${transaction.id}-${transaction.transaction_date}`}
               transaction={transaction}
+              period={period.toString()}
             />
           ))
         ) : (
@@ -36,7 +37,7 @@ export function Transactions() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    gap: 12,
+    padding: 10,
+    gap: 10,
   },
 });

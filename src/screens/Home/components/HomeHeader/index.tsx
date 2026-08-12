@@ -1,18 +1,12 @@
-import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { InputYearPicker } from "@/components";
 import { colors } from "@/theme";
-import { CategoryFormModal } from "../CategoryFomModal";
-import { AccountFormModal } from "../AccountFormModal";
 import { styles } from "./styles";
 
-export type ActiveModal = "categoryForm" | "accountForm" | null;
-
 export function HomeHeader() {
-  const [activeModal, setActiveModal] = useState<ActiveModal>(null);
-
   return (
     <LinearGradient
       colors={[colors.blue[500], colors.blue[800]]}
@@ -24,11 +18,11 @@ export function HomeHeader() {
           <Text style={styles.subtitle}>Controle seus gastos</Text>
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.navigate("/profile")}>
           <Ionicons
             name="person"
             color={colors.gray[100]}
-            size={24}
+            size={20}
             style={styles.icon}
           />
         </TouchableOpacity>
@@ -37,16 +31,6 @@ export function HomeHeader() {
       <View style={styles.filter}>
         <InputYearPicker />
       </View>
-
-      <CategoryFormModal
-        activeModal={activeModal === "categoryForm"}
-        setActiveModal={setActiveModal}
-      />
-
-      <AccountFormModal
-        activeModal={activeModal === "accountForm"}
-        setActiveModal={setActiveModal}
-      />
     </LinearGradient>
   );
 }

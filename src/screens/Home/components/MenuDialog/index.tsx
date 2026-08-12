@@ -1,8 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import Modal from "react-native-modal";
 import { MaterialIcons } from "@expo/vector-icons";
+import { ActiveModal } from "@/context/types";
 import { colors } from "@/theme";
-import { ActiveModal } from "../HomeHeader";
 import { MenuItem } from "../MenuItem";
 
 interface MenuDialogProps {

@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "react";
 import { useSQLiteContext } from "expo-sqlite";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { TransactionRepository } from "@/database/repositories/TransactionRepository";
+import { TransactionRepository } from "@/database/repositories";
 import { Context } from "@/context/context";
 import { Transaction } from "@/models/transaction";
 
@@ -28,6 +28,12 @@ export function useTransactions(transactionId?: string) {
     enabled: !!transactionId,
   });
 
+  const { data: fixedTransactions, isLoading: isLoadingFixedTransactions } =
+    useQuery({
+      queryKey: ["transactions", selectedPeriod],
+      queryFn: () => transactionRepo.listFixed(),
+    });
+
   const createTransaction = useMutation({
     mutationFn: async (data: Transaction) => {
       return await transactionRepo.create(data);
@@ -46,5 +52,7 @@ export function useTransactions(transactionId?: string) {
     isLoadingTransaction,
     createTransaction: createTransaction.mutateAsync,
     isCreatingTransaction: createTransaction.isPending,
+    fixedTransactions,
+    isLoadingFixedTransactions,
   };
 }

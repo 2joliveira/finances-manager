@@ -26,10 +26,20 @@ export function useAccount() {
     },
   });
 
+  const deleteAccount = useMutation({
+    mutationFn: async (id: number) => {
+      return await accountRepo.remove(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+    },
+  });
+
   return {
-    accounts,
+    accounts: accounts || [],
     isLoadingAccounts,
     createAccount: createAccount.mutateAsync,
     isCreatingAccount: createAccount.isPending,
+    deleteAccount: deleteAccount.mutateAsync,
   };
 }

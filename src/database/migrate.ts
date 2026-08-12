@@ -6,14 +6,13 @@ export async function migrate(database: SQLiteDatabase) {
 
     CREATE TABLE IF NOT EXISTS categories (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      type TEXT NOT NULL 
+      name TEXT NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS accounts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name VARCHAR(100) NOT NULL,
-      type TEXT NOT NULL 
+      type TEXT NOT NULL
     );
     
     CREATE TABLE IF NOT EXISTS transactions (
@@ -21,6 +20,8 @@ export async function migrate(database: SQLiteDatabase) {
       description TEXT NOT NULL,
       amount FLOAT NOT NULL,
       type TEXT NOT NULL,
+      payment_method TEXT NOT NULL,
+      is_fixed INTEGER NOT NULL DEFAULT 0,
       is_installment INTEGER NOT NULL DEFAULT 0,
       installments INTEGER,
       
@@ -32,10 +33,10 @@ export async function migrate(database: SQLiteDatabase) {
       updated_at timestamp NOT NULL DEFAULT current_timestamp,
 
       CONSTRAINT fk_transactions_category
-        FOREIGN KEY (category_id) REFERENCES categories(id),
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
 
       CONSTRAINT fk_transactions_account
-        FOREIGN KEY (account_id) REFERENCES accounts(id)
+        FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
     );
 
     CREATE TABLE IF NOT EXISTS installments (
@@ -52,7 +53,8 @@ export async function migrate(database: SQLiteDatabase) {
   `);
 }
 
-/* export async function migrate(database: SQLiteDatabase) {
+/*
+export async function migrate(database: SQLiteDatabase) {
   await database.execAsync(`
     PRAGMA foreign_keys = OFF;
 
@@ -63,4 +65,5 @@ export async function migrate(database: SQLiteDatabase) {
 
     PRAGMA foreign_keys = ON;
   `);
-} */
+}
+  */

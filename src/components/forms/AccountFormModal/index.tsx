@@ -1,15 +1,16 @@
-import { TouchableOpacity, Text, TextInput, View } from "react-native";
+import { TouchableOpacity, Text, View } from "react-native";
 import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useAccount } from "@/hooks";
+import { useAccount, useMeasure } from "@/hooks";
 import { Account, accountSchema } from "@/models";
 import { colors } from "@/theme";
-import { ActiveModal } from "../HomeHeader";
+import { ActiveModal, typeOptions } from "@/context/types";
+import { InputText } from "@/components/InputText";
+import { InputSwitch } from "@/components/InputSwitch";
+import { Loading } from "@/components/Loading";
 import { styles } from "./styles";
-import { InputSwitch, InputText, Loading } from "@/components";
-import { typeOptions } from "@/context/types";
 
 interface AccountFormProps {
   activeModal: boolean;
@@ -20,12 +21,19 @@ export function AccountFormModal({
   activeModal,
   setActiveModal,
 }: AccountFormProps) {
-  const { control, handleSubmit, reset, formState: { errors } } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(accountSchema),
     defaultValues: {
       type: "expense",
-    }
+    },
   });
+
+  const { width: switchWidth, onLayout } = useMeasure();
 
   const { createAccount, isCreatingAccount } = useAccount();
 
@@ -65,33 +73,36 @@ export function AccountFormModal({
             )}
           />
 
-          <View>
+          <View onLayout={onLayout}>
             <Text style={styles.label}>Tipo da transação</Text>
 
             <Controller
               control={control}
               name="type"
-              render={({ field: { value, onChange } }) => (
-                <InputSwitch
-                  options={typeOptions}
-                  option={{
-                    label: value === "income" ? "Receita" : "Despesa",
-                    value,
-                  }}
-                  onChange={onChange}
-                  optionSwitchWidth={345}
-                />
-              )}
+              render={({ field: { value, onChange } }) =>
+                switchWidth > 0 && (
+                  <InputSwitch
+                    options={typeOptions}
+                    option={{
+                      label: value === "income" ? "Receita" : "Despesa",
+                      value,
+                    }}
+                    onChange={onChange}
+                    optionSwitchWidth={switchWidth}
+                  />
+                )
+              }
             />
           </View>
         </View>
 
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
           <View style={styles.button}>
-            {isCreatingAccount
-              ? <Loading color={colors.white} />
-              : <Text style={styles.buttonText}>Criar Forma de Pagamento</Text>
-            }
+            {isCreatingAccount ? (
+              <Loading color={colors.white} />
+            ) : (
+              <Text style={styles.buttonText}>Criar Forma de Pagamento</Text>
+            )}
           </View>
         </TouchableOpacity>
       </View>
