@@ -11,16 +11,16 @@ export function TransactionRepository(db: SQLiteDatabase) {
   return {
     create: async (data: Transaction) => {
       const statement = await db.prepareAsync(
-        "INSERT INTO transactions (description, amount, type, is_fixed, is_installment, installments, category_id, account_id, transaction_date) values ($description, $amount, $type, $is_fixed, $is_installment, $installments, $category_id, $account_id, $transaction_date)",
+        "INSERT INTO transactions (description, amount, type, payment_method, is_fixed, is_installment, installments, category_id, account_id, transaction_date) values ($description, $amount, $type, $payment_method, $is_fixed, $is_installment, $installments, $category_id, $account_id, $transaction_date)",
       );
 
       const isInstallment = data.is_installment === 1;
-      const isFixed = data.is_fixed === 1;
 
       const transaction = await statement.executeAsync({
         $description: data.description,
         $amount: Number(data.amount),
         $type: data.type,
+        $payment_method: data.payment_method,
         $is_fixed: data.is_fixed,
         $is_installment: data.is_installment,
         $installments: isInstallment ? data.installments : 0,
@@ -170,6 +170,7 @@ export function TransactionRepository(db: SQLiteDatabase) {
             t.id,
             t.description,
             t.type,
+            t.payment_method,
             i.amount,
             i.due_date AS transaction_date,
             i.installment_number,
@@ -193,6 +194,7 @@ export function TransactionRepository(db: SQLiteDatabase) {
             t.id,
             t.description,
             t.type,
+            t.payment_method,
             t.amount,
             t.transaction_date,
             NULL AS installment_number,
@@ -218,9 +220,10 @@ export function TransactionRepository(db: SQLiteDatabase) {
             t.id,
             t.description,
             t.type,
+            t.payment_method,
             t.amount,
             -- build a date in the current period that preserves the original day-of-month
-            DATE('${period}-01', printf('+%d days', CAST(strftime('%d', t.transaction_date) AS integer) - 1)) AS transaction_date,
+            t.transaction_date,
             NULL AS installment_number,
             NULL AS installments,
             t.is_fixed,
@@ -250,7 +253,8 @@ export function TransactionRepository(db: SQLiteDatabase) {
           c.name AS category_name
         FROM transactions t
         JOIN categories c ON c.id = t.category_id
-        WHERE is_fixed = 1 ORDER BY transaction_date;
+        WHERE t.is_fixed = 1
+        ORDER BY transaction_date;
       `);
     },
 

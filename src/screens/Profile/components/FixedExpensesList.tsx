@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { format } from "date-fns";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TransactionDetails } from "@/models";
 import { useTransactions } from "@/hooks";
@@ -46,7 +47,7 @@ export function FixedExpensesList() {
 
               <MaterialIcons name="circle" size={4} color={colors.gray[500]} />
 
-              <Text style={styles.detail}>{String(transaction_date)}</Text>
+              <Text style={styles.detail}>{format(transaction_date, "dd/MM/yyyy")}</Text>
 
               <MaterialIcons name="circle" size={4} color={colors.gray[500]} />
 

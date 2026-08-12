@@ -210,6 +210,20 @@ export function TransactionFormModal({
 
             <Controller
               control={control}
+              name="payment_method"
+              render={({ field: { value, onChange } }) => (
+                <InputText
+                  placeholder="Método de pagamento"
+                  placeholderTextColor={colors.gray[400]}
+                  value={value}
+                  onChange={onChange}
+                  error={errors?.payment_method?.message}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
               name="category_id"
               render={({ field: { value, onChange } }) => (
                 <InputSelect

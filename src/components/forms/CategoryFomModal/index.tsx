@@ -9,11 +9,10 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Category, categorySchema } from "@/models";
-import { ActiveModal, typeOptions } from "@/context/types";
-import { useCategories, useMeasure } from "@/hooks";
+import { ActiveModal } from "@/context/types";
+import { useCategories } from "@/hooks";
 import { colors, fontFamily } from "@/theme";
 import { InputText } from "@/components/InputText";
-import { InputSwitch } from "@/components/InputSwitch";
 import { Loading } from "@/components/Loading";
 
 interface CategoryFormProps {
@@ -32,14 +31,9 @@ export function CategoryFormModal({
     formState: { errors },
   } = useForm({
     resolver: zodResolver(categorySchema),
-    defaultValues: {
-      type: "expense",
-    },
   });
 
   const { createCategory, isCreatingCategory } = useCategories();
-
-  const { width: switchWidth, onLayout } = useMeasure();
 
   function onSubmit(data: Category) {
     createCategory(data);
@@ -79,28 +73,6 @@ export function CategoryFormModal({
               />
             )}
           />
-
-          <View onLayout={onLayout}>
-            <Text style={styles.label}>Tipo da transação</Text>
-
-            <Controller
-              control={control}
-              name="type"
-              render={({ field: { value, onChange } }) =>
-                switchWidth > 0 && (
-                  <InputSwitch
-                    options={typeOptions}
-                    option={{
-                      label: value === "income" ? "Receita" : "Despesa",
-                      value,
-                    }}
-                    onChange={onChange}
-                    optionSwitchWidth={switchWidth}
-                  />
-                )
-              }
-            />
-          </View>
         </View>
 
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>

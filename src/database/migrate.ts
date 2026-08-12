@@ -6,14 +6,13 @@ export async function migrate(database: SQLiteDatabase) {
 
     CREATE TABLE IF NOT EXISTS categories (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      type TEXT NOT NULL 
+      name TEXT NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS accounts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name VARCHAR(100) NOT NULL,
-      type TEXT NOT NULL 
+      type TEXT NOT NULL
     );
     
     CREATE TABLE IF NOT EXISTS transactions (
@@ -21,6 +20,7 @@ export async function migrate(database: SQLiteDatabase) {
       description TEXT NOT NULL,
       amount FLOAT NOT NULL,
       type TEXT NOT NULL,
+      payment_method TEXT NOT NULL,
       is_fixed INTEGER NOT NULL DEFAULT 0,
       is_installment INTEGER NOT NULL DEFAULT 0,
       installments INTEGER,
