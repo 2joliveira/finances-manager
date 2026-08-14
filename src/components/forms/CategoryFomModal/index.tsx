@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
 } from "react-native";
 import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
@@ -14,6 +15,7 @@ import { useCategories } from "@/hooks";
 import { colors, fontFamily } from "@/theme";
 import { InputText } from "@/components/InputText";
 import { Loading } from "@/components/Loading";
+import { KeyboardContainer } from "@/components/KeyboardContainer";
 
 interface CategoryFormProps {
   activeModal: boolean;
@@ -46,45 +48,49 @@ export function CategoryFormModal({
 
   return (
     <Modal isVisible={activeModal} onSwipeComplete={() => setActiveModal(null)}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Nova Categoria</Text>
+      <KeyboardContainer>
+        <ScrollView style={{ flex: 1 }}>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text style={styles.title}>Nova Categoria</Text>
 
-          <MaterialIcons
-            name="close"
-            size={24}
-            color={colors.gray[500]}
-            style={styles.closeButton}
-            onPress={() => setActiveModal(null)}
-          />
-        </View>
-
-        <View style={{ display: "flex", gap: 20 }}>
-          <Controller
-            control={control}
-            name="name"
-            render={({ field: { value, onChange } }) => (
-              <InputText
-                placeholder="Nome da Categoria"
-                placeholderTextColor={colors.gray[400]}
-                value={value}
-                onChange={onChange}
-                error={errors?.name?.message}
+              <MaterialIcons
+                name="close"
+                size={24}
+                color={colors.gray[500]}
+                style={styles.closeButton}
+                onPress={() => setActiveModal(null)}
               />
-            )}
-          />
-        </View>
+            </View>
 
-        <TouchableOpacity onPress={handleSubmit(onSubmit)}>
-          <View style={styles.button}>
-            {isCreatingCategory ? (
-              <Loading color={colors.white} />
-            ) : (
-              <Text style={styles.buttonText}>Criar Categoria</Text>
-            )}
+            <View style={{ display: "flex", gap: 20 }}>
+              <Controller
+                control={control}
+                name="name"
+                render={({ field: { value, onChange } }) => (
+                  <InputText
+                    placeholder="Nome da Categoria"
+                    placeholderTextColor={colors.gray[400]}
+                    value={value}
+                    onChange={onChange}
+                    error={errors?.name?.message}
+                  />
+                )}
+              />
+            </View>
+
+            <TouchableOpacity onPress={handleSubmit(onSubmit)}>
+              <View style={styles.button}>
+                {isCreatingCategory ? (
+                  <Loading color={colors.white} />
+                ) : (
+                  <Text style={styles.buttonText}>Criar Categoria</Text>
+                )}
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </View>
+        </ScrollView>
+      </KeyboardContainer>
     </Modal>
   );
 }

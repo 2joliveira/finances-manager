@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, View } from "react-native";
+import { TouchableOpacity, Text, View, ScrollView } from "react-native";
 import Modal from "react-native-modal";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +11,7 @@ import { InputText } from "@/components/InputText";
 import { InputSwitch } from "@/components/InputSwitch";
 import { Loading } from "@/components/Loading";
 import { styles } from "./styles";
+import { KeyboardContainer } from "@/components/KeyboardContainer";
 
 interface AccountFormProps {
   activeModal: boolean;
@@ -45,67 +46,73 @@ export function AccountFormModal({
 
   return (
     <Modal isVisible={activeModal} onSwipeComplete={() => setActiveModal(null)}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Nova Conta</Text>
+      <KeyboardContainer>
+        <ScrollView style={{ flex: 1 }}>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text style={styles.title}>Nova Conta</Text>
 
-          <MaterialIcons
-            name="close"
-            size={24}
-            color={colors.gray[500]}
-            style={styles.closeButton}
-            onPress={() => setActiveModal(null)}
-          />
-        </View>
-
-        <View style={{ display: "flex", gap: 20 }}>
-          <Controller
-            control={control}
-            name="name"
-            render={({ field: { value, onChange } }) => (
-              <InputText
-                placeholder="Pagamento"
-                placeholderTextColor={colors.gray[400]}
-                value={value}
-                onChange={onChange}
-                error={errors?.name?.message}
+              <MaterialIcons
+                name="close"
+                size={24}
+                color={colors.gray[500]}
+                style={styles.closeButton}
+                onPress={() => setActiveModal(null)}
               />
-            )}
-          />
+            </View>
 
-          <View onLayout={onLayout}>
-            <Text style={styles.label}>Tipo da transação</Text>
-
-            <Controller
-              control={control}
-              name="type"
-              render={({ field: { value, onChange } }) =>
-                switchWidth > 0 && (
-                  <InputSwitch
-                    options={typeOptions}
-                    option={{
-                      label: value === "income" ? "Receita" : "Despesa",
-                      value,
-                    }}
+            <View style={{ display: "flex", gap: 20 }}>
+              <Controller
+                control={control}
+                name="name"
+                render={({ field: { value, onChange } }) => (
+                  <InputText
+                    placeholder="Pagamento"
+                    placeholderTextColor={colors.gray[400]}
+                    value={value}
                     onChange={onChange}
-                    optionSwitchWidth={switchWidth}
+                    error={errors?.name?.message}
                   />
-                )
-              }
-            />
-          </View>
-        </View>
+                )}
+              />
 
-        <TouchableOpacity onPress={handleSubmit(onSubmit)}>
-          <View style={styles.button}>
-            {isCreatingAccount ? (
-              <Loading color={colors.white} />
-            ) : (
-              <Text style={styles.buttonText}>Criar Forma de Pagamento</Text>
-            )}
+              <View onLayout={onLayout}>
+                <Text style={styles.label}>Tipo da transação</Text>
+
+                <Controller
+                  control={control}
+                  name="type"
+                  render={({ field: { value, onChange } }) =>
+                    switchWidth > 0 && (
+                      <InputSwitch
+                        options={typeOptions}
+                        option={{
+                          label: value === "income" ? "Receita" : "Despesa",
+                          value,
+                        }}
+                        onChange={onChange}
+                        optionSwitchWidth={switchWidth}
+                      />
+                    )
+                  }
+                />
+              </View>
+            </View>
+
+            <TouchableOpacity onPress={handleSubmit(onSubmit)}>
+              <View style={styles.button}>
+                {isCreatingAccount ? (
+                  <Loading color={colors.white} />
+                ) : (
+                  <Text style={styles.buttonText}>
+                    Criar Forma de Pagamento
+                  </Text>
+                )}
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </View>
+        </ScrollView>
+      </KeyboardContainer>
     </Modal>
   );
 }
