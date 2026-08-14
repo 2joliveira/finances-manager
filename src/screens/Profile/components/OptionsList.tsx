@@ -9,7 +9,7 @@ import { colors, fontFamily } from "@/theme";
 interface ItemProps {
   id: number;
   name: string;
-  type: "income" | "expense";
+  type?: "income" | "expense";
 }
 
 interface OptionsList {
@@ -27,7 +27,7 @@ export function OptionsList({ options, typeList, removeOption }: OptionsList) {
         key={id}
         style={[
           styles.optionContainer,
-          {
+          type && {
             borderColor:
               type === "expense" ? colors.red[500] : colors.green[500],
           },
